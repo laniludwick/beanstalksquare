@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  <h1>All pods </h1>
+{% endblock %}
+
+{% block body %}
+
+<table class="table">
+  <thead>
+
+
+    <tr> 
+      <th scope="col">Zipcode</th>
+      <th scope="col">Days per week</th>
+      <th scope="col">Hours per day</th>
+      <th scope="col">Hired teacher</th>
+    </tr> 
+  </thead>
+  <tbody>
+    {% for pod in pods %}
+    <tr><a href="/pods/{{pod.pod_id}}"> </a>
+      <th scope="row">1</th>
+      <td>{{pod.zipcode}}</td>
+      <td>{{pod.days_per_week}}</td>
+      <td>{{pod.total_hours_per_day}}</td>
+      <td>{{pod.hired_teacher}}</td>
+    </tr>
+    {% endfor %}
+{% endblock %}
+    
+  </tbody>
+</table> 

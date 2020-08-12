@@ -1,0 +1,68 @@
+[
+    {
+        "fname": "Foxyparent", 
+        "lname": "Fox",
+        "email": "foxy@gmail.com",
+        "password": "asdf"
+    },
+    {
+        "fname": "Boxyparent", 
+        "lname": "Box",
+        "email": "boxy@gmail.com",
+        "password": "asdf"
+    },
+    {
+        "fname": "Moxyparent", 
+        "lname": "Mox",
+        "email": "moxy@gmail.com",
+        "password": "asdf"
+    },
+    {
+        "fname": "Loxyparent", 
+        "lname": "Lox",
+        "email": "loxy@gmail.com",
+        "password": "asdf"
+    },
+    {
+        "fname": "Roxyparent", 
+        "lname": "Rox",
+        "email": "roxy@gmail.com",
+        "password": "asdf"
+    },
+    {
+        "fname": "Soxyparent", 
+        "lname": "Sox",
+        "email": "soxy@gmail.com",
+        "password": "asdf"
+    },
+    {
+       "fname": "Doxyparent", 
+        "lname": "Dox",
+        "email": "doxy@gmail.com",
+        "password": "asdf"
+    },
+    {
+        "fname": "Whalyparent", 
+        "lname": "Whale",
+        "email": "whale@gmail.com",
+        "password": "asdf"
+    },
+    {
+        "fname": "Shalyparent", 
+        "lname": "Shale",
+        "email": "shale@gmail.com",
+        "password": "asdf"
+    },
+    {
+        "fname": "Snalyparent", 
+        "lname": "Snail",
+        "email": "snail@gmail.com",
+        "password": "asdf"
+    },
+    {
+        "fname": "Blockyparent", 
+        "lname": "Block",
+        "email": "block@gmail.com",
+        "password": "asdf"
+    }
+]
