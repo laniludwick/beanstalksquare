@@ -1,6 +1,7 @@
 """Models for PeachPodSquare app."""
 
 from flask_sqlalchemy import SQLAlchemy
+#import crud
 
 db = SQLAlchemy()
 
@@ -43,7 +44,7 @@ class Pod(db.Model):
     same_grade_only = db.Column(db.Boolean)
     outdoors_only = db.Column(db.Boolean)
     periodic_covid_testing = db.Column(db.Boolean)
-    covid_risk_profile_id = db.Column(db.Integer, ForeignKey('covid_risk_profiles.covid_risk_profile_id')) #one risk profile (e.g. "Very strict") can have many pods
+    covid_risk_profile_id = db.Column(db.Integer, db.ForeignKey('covid_risk_profiles.covid_risk_profile_id')) #one risk profile (e.g. "Very strict") can have many pods
     cost_per_hour = db.Column(db.Float)
 
     parent_pod = db.relationship('Parent_Pod')
@@ -65,6 +66,7 @@ class Child(db.Model):
     fname = db.Column(db.String(50))
     lname = db.Column(db.String(50))
     household_id = db.Column(db.Integer, db.ForeignKey('households.household_id'))
+    zipcode = db.Column(db.Integer)
     school_id = db.Column(db.Integer, db.ForeignKey('schools.school_id'))
     school_program = db.Column(db.String(50))
     grade_id = db.Column(db.Integer, db.ForeignKey('grades.grade_id'))
@@ -90,7 +92,7 @@ class Child(db.Model):
 
 
 class Pod_Location(db.Model):
-    """A pod, which can be associated with students (and eventually teachers)."""
+    """A pod, which can be associated with children (and eventually teachers)."""
 
     __tablename__="pod_locations"
 
@@ -111,19 +113,20 @@ class Pod_Location(db.Model):
 
 
 class Household(db.Model):
-    """A pod, which can be associated with students (and eventually teachers)."""
+    """A household, which can be associated with children and parents."""
 
     __tablename__="households"
 
     household_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     covid_risk_profile_id = db.Column(db.Integer, db.ForeignKey('covid_risk_profiles.covid_risk_profile_id'))
+    household_join_code = db.Column(db.String)
 
     child = db.relationship('Child')
     covid_risk_profile = db.relationship('Covid_Risk_Profile')
     parent = db.relationship('Parent')
 
     def __repr__(self):
-        return f'<Household household_id={self.pod_id} covid_risk_profile_id={self.covid_risk_profile_id}>'
+        return f'<Household household_id={self.household_id} covid_risk_profile_id={self.covid_risk_profile_id}>'
 
 
 class Covid_Risk_Profile(db.Model):
@@ -139,7 +142,7 @@ class Covid_Risk_Profile(db.Model):
     pod = db.relationship('Pod')
 
     def __repr__(self):
-        return f'<Covid_Risk_Profile covid_risk_profile_id={self.pod_id} scale_value={self.scale_value}>'
+        return f'<Covid_Risk_Profile covid_risk_profile_id={self.covid_risk_profile_id} scale_value={self.scale_value}>'
 
 
 class Parent_Pod(db.Model):
@@ -190,17 +193,17 @@ class Grade(db.Model):
 
 
 class School(db.Model):
-    """A child's grade or year in school, e.g. "1st grade."""
+    """A child's school name."""
 
     __tablename__ ="schools"
 
-    grade_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    grade_name = db.Column(db.String)
+    school_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    school_name = db.Column(db.String)
 
     child = db.relationship('Child')
 
     def __repr__(self):
-        return f'<Grade grade_id={self.grade_id} grade_name={self.grade_name}>'
+        return f'<School school_id={self.school_id} school_name={self.school_name}>'
 
 
 
@@ -213,6 +216,42 @@ def connect_to_db(flask_app, db_uri='postgresql:///beanstalksquare', echo=True):
     db.init_app(flask_app)
 
     print('Connected to the db!')
+
+
+def example_data():
+    """Create some sample data."""
+
+    #In case this is run more than once, empty out existing data in the tables.
+    Covid_Risk_Profile.query.delete()
+    Parent.query.delete()
+    Child.query.delete()
+    Child_Pod.query.delete()
+    Parent_Pod.query.delete()
+    School.query.delete()
+    Grade.query.delete()
+    Pod_Location.query.delete()
+    Pod.query.delete()
+
+    #Add sample data (via SQLAlchemy class instantiation) for all tables above
+    cov = Covid_Risk_Profile(scale_value="Very strict", scale_description="Masks 100% of the time")
+    cov2 = Covid_Risk_Profile(scale_value="Mostly strict", scale_description="Masks 80% of the time")
+    hou = Household(covid_risk_profile_id=1)
+    hou2 = Household(covid_risk_profile_id=2)
+    par = Parent(fname="Fred", lname="Jamesson",household_id=1)
+    par2 = Parent(fname="Frida", lname="Jones",household_id=2)
+    gr = Grade(grade_name="Kindergarten")
+    sch = School(school_name="Eldorado School")
+    kid = Child(fname="Linky", lname="Williams", household_id=2, )
+    kid2 = Child(fname="Alex", lname="Williams", household_id=2)
+    falcon = Pod(pod_name="Falcons", covid_risk_profile_id=1)
+    pokemon = Pod(pod_name="Pokemon", covid_risk_profile_id=2)
+    loc = Pod_Location(street_address="1355 S. Walnut St")
+    cp = Child_Pod(child_id=1, pod_id=1)
+    pp = Parent_Pod(parent_id=2, pod_id=2)
+
+    db.session.add_all([cov, cov2, hou, hou2, par, par2, kid, kid2, falcon, pokemon, gr, sch, loc, cp, pp])
+    db.session.commit()
+
 
 
 if __name__ == '__main__':

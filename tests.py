@@ -1,8 +1,11 @@
 """Tests for PeachPodSquare Flask app."""
 
 import unittest #Python standard library
-import server
-
+import crud
+from model import connect_to_db
+from flask_sqlalchemy import SQLAlchemy
+db = SQLAlchemy()
+from server import app
 
 class BeanstalkUnitTestCases(unittest.TestCase):
     """Tests for my party site."""
@@ -10,8 +13,11 @@ class BeanstalkUnitTestCases(unittest.TestCase):
     def setUp(self):
         """Code to run before every test."""
 
-        self.client = server.app.test_client() #This method makes a pretend web browser
-        server.app.config['TESTING'] = True 
+        self.client = app.test_client() #This method makes a pretend web browser
+        app.config['TESTING'] = True 
+        connect_to_db(app, "postgresql:///testdb")
+        db.create_all()
+        example_data() #This is in model.py, it's example data added in tables.
 
 
     def test_homepage(self):
@@ -37,7 +43,7 @@ class BeanstalkUnitTestCases(unittest.TestCase):
 
         result = self.client.get('/all_pods', data=zip)
 
-        #self.assertIn(b'{zip_info}', result.data)
+        #self.assertIn(b'{zip}', result.data)
         self.assertNotIn(b'Find Students', result.data)
 
 
@@ -61,6 +67,14 @@ class BeanstalkUnitTestCases(unittest.TestCase):
 
         # Will this work? self.assertIn(b'You successfully registered', result.data)
         # Can I add a query to show the data is in the db?
+
+
+    #def test_create_household(self):
+
+    #testhouse = crud.create_household(covid_risk_profile_id=4)
+    #testparent = crud.create_parent(fname="Bento", lname="Willow", email="bento@gmail.com", password="asdf", household_id=4)
+    #testchild = crud.create_child(fname="Dood", lname="Man", zipcode="94000", school_id=4, grade_id=4, household_id=5) 
+    #testpod = crud.create_pod(pod_name="Dragons", max_child_capacity=5, days_per_week=3, total_hours_per_day=6, covid_risk_profile_id=4)
 
 
 if __name__ == '__main__':
