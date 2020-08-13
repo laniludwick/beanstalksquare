@@ -6,6 +6,23 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 
+class Household(db.Model):
+    """A household, which can be associated with children and parents."""
+
+    __tablename__="households"
+
+    household_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    covid_risk_profile_id = db.Column(db.Integer, db.ForeignKey('covid_risk_profiles.covid_risk_profile_id'))
+    household_join_code = db.Column(db.String)
+
+    child = db.relationship('Child')
+    covid_risk_profile = db.relationship('Covid_Risk_Profile')
+    parent = db.relationship('Parent')
+
+    def __repr__(self):
+        return f'<Household household_id={self.household_id} covid_risk_profile_id={self.covid_risk_profile_id}>'
+
+        
 class Parent(db.Model):
     """A parent user."""
 
@@ -110,23 +127,6 @@ class Pod_Location(db.Model):
     def __repr__(self):
         return f'<Pod_Location pod_location_id={self.pod_location_id} street_address={self.street_address}>'
 
-
-
-class Household(db.Model):
-    """A household, which can be associated with children and parents."""
-
-    __tablename__="households"
-
-    household_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    covid_risk_profile_id = db.Column(db.Integer, db.ForeignKey('covid_risk_profiles.covid_risk_profile_id'))
-    household_join_code = db.Column(db.String)
-
-    child = db.relationship('Child')
-    covid_risk_profile = db.relationship('Covid_Risk_Profile')
-    parent = db.relationship('Parent')
-
-    def __repr__(self):
-        return f'<Household household_id={self.household_id} covid_risk_profile_id={self.covid_risk_profile_id}>'
 
 
 class Covid_Risk_Profile(db.Model):

@@ -1,11 +1,19 @@
 from model import (db, Parent, Household, Pod, Child, Pod_Location, School, 
 Grade, Child_Pod, Parent_Pod, Covid_Risk_Profile, connect_to_db) #Need to fill in here
-
+import string
+import random
 
 def create_household(covid_risk_profile_id=None):
     """Add a new household to the households table and return the household."""
 
-    household = Household(covid_risk_profile_id=covid_risk_profile_id)
+    #Create household join code: 
+    #using random string with the combination of lower and upper case
+    letters = string.ascii_letters
+    household_join_code = ''.join(random.choice(letters) for i in range(8))
+    print("HH join code is:", household_join_code)    
+
+    household = Household(covid_risk_profile_id=covid_risk_profile_id, household_join_code=household_join_code)
+    
     db.session.add(household)
     db.session.commit()
 
@@ -25,7 +33,7 @@ def create_parent(fname, lname, email, password, household_id=None,
 
 
 def create_pod(pod_name=None, max_child_capacity=None, days_per_week=None, 
-            total_hours_per_day=None, hired_teacher=None, 
+            total_hours_per_day=None, paid_teacher=None, 
             same_school_program_only=None, same_school_only=None, 
             same_grade_only=None, outdoors_only=None, periodic_covid_testing=None, 
             covid_risk_profile_id=None, cost_per_hour=None):
@@ -35,7 +43,7 @@ def create_pod(pod_name=None, max_child_capacity=None, days_per_week=None,
             max_child_capacity=max_child_capacity, 
             days_per_week=days_per_week, 
             total_hours_per_day=total_hours_per_day, 
-            hired_teacher=hired_teacher, 
+            paid_teacher=hired_teacher, 
             same_school_program_only=same_school_program_only, 
             same_school_only=same_school_only, 
             same_grade_only=same_grade_only, 
@@ -52,7 +60,7 @@ def create_pod(pod_name=None, max_child_capacity=None, days_per_week=None,
 def create_child(fname, lname, zipcode, school_id, grade_id, household_id, 
                 school_program=None, distance_willing_to_travel=None, 
                 preferred_days_per_week=None, preferred_total_hours_per_day=None, 
-                prefer_hired_teacher=None, prefer_same_school_program_only=None, 
+                prefer_paid_teacher=None, prefer_same_school_program_only=None, 
                 prefer_same_school_only=None, prefer_same_grade_only=None, 
                 prefer_outdoors_only=None, prefer_periodic_covid_testing=None, 
                 max_budget_per_hour=None):
@@ -65,7 +73,7 @@ def create_child(fname, lname, zipcode, school_id, grade_id, household_id,
                 distance_willing_to_travel=distance_willing_to_travel,
                 preferred_days_per_week=preferred_days_per_week,
                 preferred_total_hours_per_day=preferred_total_hours_per_day,
-                prefer_hired_teacher=prefer_hired_teacher,
+                prefer_paid_teacher=prefer_hired_teacher,
                 prefer_same_school_program_only=prefer_same_school_program_only,
                 prefer_same_school_only=prefer_same_school_only,
                 prefer_same_grade_only=prefer_same_grade_only,
@@ -78,8 +86,8 @@ def create_child(fname, lname, zipcode, school_id, grade_id, household_id,
     return child
 
 
-def create.covid_risk_profile():
-    """Add the risk profiles for use in a parent questionnaire form."""
+def create_covid_risk_profiles():
+    """Add the risk profiles for use in a parent questionnaire form about their household."""
 
     covid_values = [
     {
@@ -113,6 +121,44 @@ def create.covid_risk_profile():
         scale_descr = value["scale_description"]
 
         covid_entry = Covid_Risk_Profile(scale_value=scale_value, scale_description=scale_descr)
+        db.session.add(covid_entry)
+        db.session.commit()
+
+
+
+def create_grades():
+    """Add the list of grade levels for use in a child questionnaire form."""
+
+    grades = ["Preschool", "Kindergarten", "1st grade", "2nd grade", "3rd grade", "4th grade", "5th grade", "6th grade", "7th grade", "8th grade", "9th grade", "10th grade", "11th trade", "12th grade"] 
+
+    for grade in grades:
+        grade_name = grade
+        #print("Gr name:", grade_name)
+        gr = Grade(grade_name=grade_name)
+        db.session.add(gr)
+        db.session.commit()
+
+
+def create_schools():
+    """Add the list of schools for use in a child questionnaire form."""
+
+    schools = ["McKinley Elementary School", "Washington Elementary School", "Lincoln Elementary School"] #Replace with greatschools API data
+
+    for school in schools:
+        school_name = school
+        sch = School(school_name=school_name)
+        db.session.add(sch)
+        db.session.commit()
+
+
+def create_pod_location(zipcode, street_address=None, city=None, state=None, day_of_week=None):
+    """Add a new pod location to the pod_locations table and return it."""
+
+    pod_location = Pod_Location(street_address=street_address, city=city, state=state, 
+                                zipcode=zipcode, day_of_week=None)
+    db.session.add(pod_location)
+    db.session.commit()
+
 
 
 def add_parent_to_pod(parent_id, pod_id):
@@ -137,59 +183,20 @@ def get_pod_by_pod_id(pod_id):
     return db.session.query(Pod).filter(Pod.pod_id==pod_id).one()
 
 
-# def populate_schools(): #???????
-#     """Add a new parent to the parents table and return the parent."""
+def get_household_join_code_by_household_id(household_id):
 
-#     school = School(school_name=school_name)
-#     db.session.add(school)
-#     db.session.commit()
-
-#     return school
-
-
-# def populate_grades(): #???????
-#     """Add a new parent to the parents table and return the parent."""
-
-#     grade = Grade(grade_name=grade_name)
-#     db.session.add(grade)
-#     db.session.commit()
-
-#     return grade
-
-
-# def populate_covid_risk_profiles(): #???????
-#     """Add a new parent to the parents table and return the parent."""
-
-#     parent = Parent(fname=fname, lname=lname, email=email, password=password)
-#     db.session.add(parent)
-#     db.session.commit()
-
-#     return parent
-
-
-
-
-
-def create_pod_location(pod_id):
-    """Add a new pod location to the pod_locations table and return it."""
-
-    pod_location = Pod_Location(fname=fname, lname=lname, email=email, 
-                                password=password)
-    db.session.add(parent)
-    db.session.commit()
-
-    return parent
-
+    return db.session.query(Household.household_join_code).filter(Household.household_id==household_id).one()    
 
 
 
 def get_pods_by_zipcode(zipcode):
-    """Get and return pods and podless kids filtered by zipcode entered."""
+    """Get and return pods filtered by zipcode entered by the user."""
 
     filtered_pods = db.session.query(Pod).filter(Pod.zipcode==zipcode).all()
-    #Need to refactor the queryto add the poddless children.
+    #Need to refactor the query to add the poddless children later.
 
     return filtered_pods
+
 
 
 if __name__ == '__main__':
