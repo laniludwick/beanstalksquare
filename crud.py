@@ -95,13 +95,26 @@ def create_pod_location(pod_id, zipcode, street_address=None, city=None, state=N
 
 
 
-def get_all_pods():
+#def get_all_pods():
     """Get and return pods filtered by zipcode entered by the user."""
 
-    pods = db.session.query(Pod).all()
+    #pods = db.session.query(Pod).all()
     #Need to refactor the query to add the poddless children later.
 
-    return pods
+    #return pods
+
+
+def get_filtered_pods(zipcode): #Must use single quotes in SQL and SQLAlchemy
+    """Get and return pods filtered by zipcode entered by the user."""
+
+    #def get_filtered_pods(zipcode, school_name, grade_name)
+    #filtered_pods = db.session.query(Pod).join tables filter(Pod.zipcode==zipcode, school_name, grade_name).all()
+    #Need to refactor the query to add the poddless children later.
+    
+
+    #Returns a tuple of Pod and Pod_Location objects
+    return db.session.query(Pod, Pod_Location).join(Pod_Location).filter(Pod_Location.zipcode==zipcode).all()
+
 
 
 def add_parent_to_pod(parent_id, pod_id):
@@ -120,32 +133,34 @@ def add_child_to_pod(child_id, pod_id):
     db.session.commit()
 
 
-def get_pod_by_pod_id(pod_id):
+def get_pod_details_by_pod_id(pod_id):
     """Get the SQLAlchemy pod object based on the pod_id."""
 
-    return db.session.query(Pod).filter(Pod.pod_id==pod_id).one()
+    #Returns a tuple of Pod and Child objects
+    return db.session.query(Pod, Child).join(Child).filter(Pod.pod_id==pod_id).all()
 
 
 def get_children_by_pod_id(pod_id):
-    """Get the SQLAlchemy pod object based on the pod_id."""
+    """Get the SQLAlchemy child objects based on the associated pod_id."""
 
-    return db.session.query(Child).join(Pod).filter(Pod.pod_id==pod_id).all()
+    #Creates a list 
+    children = db.session.query(Child).join(Child_Pod).filter(Child_Pod.pod_id==pod_id).all()
 
+    #Creates a list of SQLAlchemy objects
+    #children[0].fname = 'Eric'
+    # child = []
+    # for child in children:
+    #     child_name = child.fname+child.lname
+    #     grade = child.grade_name
+    #     school = child.school_name
+    #     zipcode = child.zipcode
+
+    return children
 
 
 def get_household_join_code_by_household_id(household_id):
 
     return db.session.query(Household.household_join_code).filter(Household.household_id==household_id).one()    
-
-
-
-def get_pods_by_zipcode(zipcode):
-    """Get and return pods filtered by zipcode entered by the user."""
-
-    filtered_pods = db.session.query(Pod).filter(Pod.zipcode==zipcode).all()
-    #Need to refactor the query to add the poddless children later.
-
-    return filtered_pods
 
 
 

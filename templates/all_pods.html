@@ -4,6 +4,7 @@
   <h1>All pods </h1>
 {% endblock %}
 
+
 {% block body %}
 
 <table class="table">
@@ -11,23 +12,29 @@
 
 
     <tr> 
-      <th scope="col">Zipcode</th>
+      <th scope="col">Pod name</th>
+      <!--<th scope="col">Zipcode</th> -->
       <th scope="col">Days per week</th>
       <th scope="col">Hours per day</th>
-      <th scope="col">Hired teacher</th>
+      <th scope="col">Paid teacher</th>
+      <th scope="col"></th>
     </tr> 
   </thead>
+  
   <tbody>
-    {% for pod in pods %}
-    <tr><a href="/pods/{{pod.pod_id}}"> </a>
-      <th scope="row">1</th>
-      <td>{{pod.zipcode}}</td>
-      <td>{{pod.days_per_week}}</td>
-      <td>{{pod.total_hours_per_day}}</td>
-      <td>{{pod.hired_teacher}}</td>
-    </tr>
+    {% for pod in filtered_pods %}
+        <!--<th scope="row">1</th> -->
+        <td>{{pod[0].pod_name}}</td>
+        <!--<td>{{pod[1].zipcode}}</td>-->
+        <td>{{pod[0].days_per_week}}</td>
+        <td>{{pod[0].total_hours_per_day}}</td>
+        <td>{{pod[0].paid_teacher}}</td>
+        <td><a href ="/pods/{{pod[0].pod_id}}"><button type="button" class = "pod_details" id=1> View details </button></a>
+      </tr>
     {% endfor %}
-{% endblock %}
+
     
   </tbody>
 </table> 
+{% endblock %} <!--End body block -->
+

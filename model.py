@@ -68,6 +68,7 @@ class Pod(db.Model):
     child_pod = db.relationship('Child_Pod')
     pod_location = db.relationship('Pod_Location')
     covid_risk_profile = db.relationship('Covid_Risk_Profile')
+    children = db.relationship('Child', secondary='children_pods')
 
     def __repr__(self):
         return f'<Pod pod_id={self.pod_id} pod_name={self.pod_name}>'
@@ -102,6 +103,7 @@ class Child(db.Model):
     school = db.relationship('School')
     grade = db.relationship('Grade')
     child_pod = db.relationship('Child_Pod')
+    pods = db.relationship('Pod', secondary='children_pods')
 
     def __repr__(self):
         return f'<Child child_id={self.child_id} fname={self.fname}>'
@@ -207,7 +209,7 @@ class School(db.Model):
 
 
 
-def connect_to_db(flask_app, db_uri='postgresql:///beanstalksquare', echo=True):
+def connect_to_db(flask_app, db_uri='postgresql:///beanstalksquaretestdb', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     flask_app.config['SQLALCHEMY_ECHO'] = echo
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
