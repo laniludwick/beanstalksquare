@@ -10,7 +10,7 @@ def create_household(covid_risk_profile_id=None):
     #using random string with the combination of lower and upper case
     letters = string.ascii_letters
     household_join_code = ''.join(random.choice(letters) for i in range(8))
-    print("HH join code is:", household_join_code)    
+    #print("HH join code is:", household_join_code)    
 
     household = Household(covid_risk_profile_id=covid_risk_profile_id, household_join_code=household_join_code)
     
@@ -20,7 +20,7 @@ def create_household(covid_risk_profile_id=None):
     return household
 
 
-def create_parent(fname, lname, email, password, household_id=None, 
+def create_parent(fname, lname, email, password, household_id, 
                 mobile_number=None):
     """Add a new parent to the parents table and return the parent."""
 
@@ -43,7 +43,7 @@ def create_pod(pod_name=None, max_child_capacity=None, days_per_week=None,
             max_child_capacity=max_child_capacity, 
             days_per_week=days_per_week, 
             total_hours_per_day=total_hours_per_day, 
-            paid_teacher=hired_teacher, 
+            paid_teacher=paid_teacher, 
             same_school_program_only=same_school_program_only, 
             same_school_only=same_school_only, 
             same_grade_only=same_grade_only, 
@@ -73,7 +73,7 @@ def create_child(fname, lname, zipcode, school_id, grade_id, household_id,
                 distance_willing_to_travel=distance_willing_to_travel,
                 preferred_days_per_week=preferred_days_per_week,
                 preferred_total_hours_per_day=preferred_total_hours_per_day,
-                prefer_paid_teacher=prefer_hired_teacher,
+                prefer_paid_teacher=prefer_paid_teacher,
                 prefer_same_school_program_only=prefer_same_school_program_only,
                 prefer_same_school_only=prefer_same_school_only,
                 prefer_same_grade_only=prefer_same_grade_only,
@@ -85,7 +85,71 @@ def create_child(fname, lname, zipcode, school_id, grade_id, household_id,
 
     return child
 
+def create_pod_location(pod_id, zipcode, street_address=None, city=None, state=None, day_of_week=None):
+    """Add a new pod location to the pod_locations table and return it."""
 
+    pod_location = Pod_Location(pod_id=pod_id, street_address=street_address, city=city, state=state, 
+                                zipcode=zipcode, day_of_week=day_of_week)
+    db.session.add(pod_location)
+    db.session.commit()
+
+
+
+def get_all_pods():
+    """Get and return pods filtered by zipcode entered by the user."""
+
+    pods = db.session.query(Pod).all()
+    #Need to refactor the query to add the poddless children later.
+
+    return pods
+
+
+def add_parent_to_pod(parent_id, pod_id):
+    """Add a new parent to the parents_pods table."""
+
+    parent_pod_rel = Parent_Pod(parent_id=parent_id, pod_id=pod_id)
+    db.session.add(parent_pod_rel)
+    db.session.commit()
+
+
+def add_child_to_pod(child_id, pod_id):
+    """Add a new child to the children_pods table."""
+
+    child_pod_rel = Child_Pod(child_id=child_id, pod_id=pod_id)
+    db.session.add(child_pod_rel)
+    db.session.commit()
+
+
+def get_pod_by_pod_id(pod_id):
+    """Get the SQLAlchemy pod object based on the pod_id."""
+
+    return db.session.query(Pod).filter(Pod.pod_id==pod_id).one()
+
+
+def get_children_by_pod_id(pod_id):
+    """Get the SQLAlchemy pod object based on the pod_id."""
+
+    return db.session.query(Child).join(Pod).filter(Pod.pod_id==pod_id).all()
+
+
+
+def get_household_join_code_by_household_id(household_id):
+
+    return db.session.query(Household.household_join_code).filter(Household.household_id==household_id).one()    
+
+
+
+def get_pods_by_zipcode(zipcode):
+    """Get and return pods filtered by zipcode entered by the user."""
+
+    filtered_pods = db.session.query(Pod).filter(Pod.zipcode==zipcode).all()
+    #Need to refactor the query to add the poddless children later.
+
+    return filtered_pods
+
+
+
+#Below are constants:
 def create_covid_risk_profiles():
     """Add the risk profiles for use in a parent questionnaire form about their household."""
 
@@ -142,7 +206,9 @@ def create_grades():
 def create_schools():
     """Add the list of schools for use in a child questionnaire form."""
 
-    schools = ["McKinley Elementary School", "Washington Elementary School", "Lincoln Elementary School"] #Replace with greatschools API data
+    schools = ["McKinley Elementary School", "Washington Elementary School", "Lincoln Elementary School", "Eldorado Elementary School", 
+                "Canyon Elementary School", "Roosevelt Elementary School", "Hoover Elementary School", 
+                "La Mirada Elementary School", "El Modena Elementary School", "Orange Elementary School"] #Replace with greatschools API data
 
     for school in schools:
         school_name = school
@@ -151,51 +217,9 @@ def create_schools():
         db.session.commit()
 
 
-def create_pod_location(zipcode, street_address=None, city=None, state=None, day_of_week=None):
-    """Add a new pod location to the pod_locations table and return it."""
-
-    pod_location = Pod_Location(street_address=street_address, city=city, state=state, 
-                                zipcode=zipcode, day_of_week=None)
-    db.session.add(pod_location)
-    db.session.commit()
 
 
 
-def add_parent_to_pod(parent_id, pod_id):
-    """Add a new parent to the parents_pods table."""
-
-    pod = get_pod_by_pod_id(pod_id)
-    pod.parent_id.append(parent_id)
-    db.session.commit()
-
-
-def add_child_to_pod(child_id, pod_id):
-    """Add a new child to the children_pods table."""
-
-    pod = get_pod_by_pod_id(pod_id)
-    pod.child_id.append(child_id)
-    db.session.commit()
-
-
-def get_pod_by_pod_id(pod_id):
-    """Get the SQLAlchemy pod object based on the pod_id."""
-
-    return db.session.query(Pod).filter(Pod.pod_id==pod_id).one()
-
-
-def get_household_join_code_by_household_id(household_id):
-
-    return db.session.query(Household.household_join_code).filter(Household.household_id==household_id).one()    
-
-
-
-def get_pods_by_zipcode(zipcode):
-    """Get and return pods filtered by zipcode entered by the user."""
-
-    filtered_pods = db.session.query(Pod).filter(Pod.zipcode==zipcode).all()
-    #Need to refactor the query to add the poddless children later.
-
-    return filtered_pods
 
 
 

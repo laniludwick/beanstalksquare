@@ -22,7 +22,7 @@ class Household(db.Model):
     def __repr__(self):
         return f'<Household household_id={self.household_id} covid_risk_profile_id={self.covid_risk_profile_id}>'
 
-        
+
 class Parent(db.Model):
     """A parent user."""
 
@@ -55,7 +55,7 @@ class Pod(db.Model):
     max_child_capacity = db.Column(db.Integer)
     days_per_week = db.Column(db.Integer)
     total_hours_per_day = db.Column(db.Integer)
-    hired_teacher = db.Column(db.Boolean)
+    paid_teacher = db.Column(db.Boolean)
     same_school_program_only = db.Column(db.Boolean)    
     same_school_only = db.Column(db.Boolean)
     same_grade_only = db.Column(db.Boolean)
@@ -90,7 +90,7 @@ class Child(db.Model):
     distance_willing_to_travel = db.Column(db.Integer)
     preferred_days_per_week = db.Column(db.Integer)
     preferred_total_hours_per_day = db.Column(db.Integer)
-    prefer_hired_teacher = db.Column(db.Boolean)
+    prefer_paid_teacher = db.Column(db.Boolean)
     prefer_same_school_program_only = db.Column(db.Boolean)
     prefer_same_school_only = db.Column(db.Boolean)
     prefer_same_grade_only = db.Column(db.Boolean)
@@ -136,7 +136,7 @@ class Covid_Risk_Profile(db.Model):
 
     covid_risk_profile_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     scale_value = db.Column(db.String(50))
-    scale_description = db.Column(db.String(50)) #This is an enum
+    scale_description = db.Column(db.String) #This is an enum
 
     household = db.relationship('Household')
     pod = db.relationship('Pod')
@@ -218,39 +218,39 @@ def connect_to_db(flask_app, db_uri='postgresql:///beanstalksquare', echo=True):
     print('Connected to the db!')
 
 
-def example_data():
-    """Create some sample data."""
+# def example_data():
+#     """Create some sample data."""
 
-    #In case this is run more than once, empty out existing data in the tables.
-    Covid_Risk_Profile.query.delete()
-    Parent.query.delete()
-    Child.query.delete()
-    Child_Pod.query.delete()
-    Parent_Pod.query.delete()
-    School.query.delete()
-    Grade.query.delete()
-    Pod_Location.query.delete()
-    Pod.query.delete()
+#     #In case this is run more than once, empty out existing data in the tables.
+#     Covid_Risk_Profile.query.delete()
+#     Parent.query.delete()
+#     Child.query.delete()
+#     Child_Pod.query.delete()
+#     Parent_Pod.query.delete()
+#     School.query.delete()
+#     Grade.query.delete()
+#     Pod_Location.query.delete()
+#     Pod.query.delete()
 
-    #Add sample data (via SQLAlchemy class instantiation) for all tables above
-    cov = Covid_Risk_Profile(scale_value="Very strict", scale_description="Masks 100% of the time")
-    cov2 = Covid_Risk_Profile(scale_value="Mostly strict", scale_description="Masks 80% of the time")
-    hou = Household(covid_risk_profile_id=1)
-    hou2 = Household(covid_risk_profile_id=2)
-    par = Parent(fname="Fred", lname="Jamesson",household_id=1)
-    par2 = Parent(fname="Frida", lname="Jones",household_id=2)
-    gr = Grade(grade_name="Kindergarten")
-    sch = School(school_name="Eldorado School")
-    kid = Child(fname="Linky", lname="Williams", household_id=2, )
-    kid2 = Child(fname="Alex", lname="Williams", household_id=2)
-    falcon = Pod(pod_name="Falcons", covid_risk_profile_id=1)
-    pokemon = Pod(pod_name="Pokemon", covid_risk_profile_id=2)
-    loc = Pod_Location(street_address="1355 S. Walnut St")
-    cp = Child_Pod(child_id=1, pod_id=1)
-    pp = Parent_Pod(parent_id=2, pod_id=2)
+#     #Add sample data (via SQLAlchemy class instantiation) for all tables above
+#     cov = Covid_Risk_Profile(scale_value="Very strict", scale_description="Masks 100% of the time")
+#     cov2 = Covid_Risk_Profile(scale_value="Mostly strict", scale_description="Masks 80% of the time")
+#     hou = Household(covid_risk_profile_id=1)
+#     hou2 = Household(covid_risk_profile_id=2)
+#     par = Parent(fname="Fred", lname="Jamesson",household_id=1)
+#     par2 = Parent(fname="Frida", lname="Jones",household_id=2)
+#     gr = Grade(grade_name="Kindergarten")
+#     sch = School(school_name="Eldorado School")
+#     kid = Child(fname="Linky", lname="Williams", household_id=2, )
+#     kid2 = Child(fname="Alex", lname="Williams", household_id=2)
+#     falcon = Pod(pod_name="Falcons", covid_risk_profile_id=1)
+#     pokemon = Pod(pod_name="Pokemon", covid_risk_profile_id=2)
+#     loc = Pod_Location(street_address="1355 S. Walnut St")
+#     cp = Child_Pod(child_id=1, pod_id=1)
+#     pp = Parent_Pod(parent_id=2, pod_id=2)
 
-    db.session.add_all([cov, cov2, hou, hou2, par, par2, kid, kid2, falcon, pokemon, gr, sch, loc, cp, pp])
-    db.session.commit()
+#     db.session.add_all([cov, cov2, hou, hou2, par, par2, kid, kid2, falcon, pokemon, gr, sch, loc, cp, pp])
+#     db.session.commit()
 
 
 
