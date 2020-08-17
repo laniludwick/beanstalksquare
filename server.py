@@ -16,14 +16,61 @@ def root():
     return render_template("root.html")
 
 
+TESTDATA = {"cards":
+    [
+    ({
+    "name": "Merge",
+    "skill": "bullet journaling",
+    "imgUrl": "/static/img/merge.jpg"
+    }, 
+    {"mood": "happy"}
+    ),
+
+    ({
+    "name": "Balloonicorn",
+    "skill": "video games",
+    "imgUrl": "/static/img/balloonicorn.jpg"
+    }, 
+    {"mood": "snappy"}
+    ),
+
+    ({
+      "name": "Float",
+      "skill": "baking pretzels",
+      "imgUrl": "/static/img/float.jpg"
+    }, 
+    {"mood": "crappy"}
+    ),
+    
+    ({
+    "name": "Dappy",
+    "skill": "elk riding",
+    "imgUrl": "/static/img/dappy.jpg"
+    }, 
+    {"mood": "frappy"}
+    ),
+    ]
+    }
+
+@app.route("/api/cards")
+def show_all_cards():
+    """Show all pods."""
+    zipcode = request.args.get("zipcode") 
+
+    filtered_pods = crud.get_filtered_pods(zipcode)
+
+    return jsonify(TESTDATA["cards"])
+
 
 @app.route("/api/pods")
 def show_all_pods():
     """Show all pods."""
-    
-    all_pods = crud.get_all_pods()
+    zipcode = request.args.get("zipcode") 
 
-    return jsonify(all_pods)
+    filtered_pods = crud.get_filtered_pods(zipcode)
+
+    return jsonify(filtered_pods)
+
 
 # @app.route("/api/pods")
 # def show_all_pods_by_zip():
@@ -40,13 +87,50 @@ def show_all_pods():
 
 
 
-# @app.route("/api/pods/<pod_id>")
-# def show_pod_details(pod_id):
-#     """Show details of the selected pod."""
+@app.route("/api/pods/<pod_id>")
+def show_pod_details(pod_id):
+    """Show details of the selected pod."""
 
-#     pod = crud.get_pod_details_by_pod_id(pod_id) #Get pod based on click event.
+    pod = crud.get_pod_details_by_pod_id(pod_id) #Get pod based on click event.
 
-#     return render_template("pod_details.html", pod=pod)
+    return render_template("pod_details.html", pod=pod)
+
+
+
+
+@app.route("/login")
+def process_login():
+
+    email = request.args.get("email")
+    password = request.args.get("password")
+
+    #Check if possword matches with the stored user's password:
+    
+    print("email:", email)
+    print("password:",password)
+
+    try: 
+        parent = crud.get_user_by_email(email)
+
+        print("parent:", parent)
+        
+        print("parent.password:", parent.password)
+    
+        return parent
+
+        if password == parent.password:
+            session["logged_in_parent"] = parent.parent_id
+            print("session:", session)
+            flash("Login successful!")
+
+        else: 
+            flash("Sorry, failed login attempt. Please try again.")
+
+    except:
+        flash("Sorry, no user found. Please try again.")
+
+
+    
 
 
 
@@ -55,38 +139,3 @@ def show_all_pods():
 if __name__ == '__main__':
     connect_to_db(app)
     app.run(host='0.0.0.0', debug=True)
-
-
-# @app.route("/login")
-# def process_login():
-
-#     email = request.args.get("email")
-#     password = request.args.get("password")
-
-#     #Check if possword matches with the stored user's password:
-    
-#     print("email:", email)
-#     print("password:",password)
-
-#     try: 
-#         user = crud.get_user_by_email(email)
-
-#         print("user:", user)
-        
-#         print("user.password:", user.password)
-    
-
-#         if password == user.password:
-#             session["logged_in_user"] = user.user_id
-#             print("session:", session)
-#             flash("Login successful!")
-
-#         else: 
-#             flash("Sorry, failed login attempt. Please try again.")
-
-#     except:
-#         flash("Sorry, no user found. Please try again.")
-
-
-#     return redirect("/")
-

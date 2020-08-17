@@ -163,6 +163,11 @@ def get_household_join_code_by_household_id(household_id):
     return db.session.query(Household.household_join_code).filter(Household.household_id==household_id).one()    
 
 
+def get_user_by_email(email):
+
+    return db.session.query(Parent).filter(Parent.email==email).first()
+
+
 
 #Below are constants:
 def create_covid_risk_profiles():
