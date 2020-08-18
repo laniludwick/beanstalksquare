@@ -62,15 +62,38 @@ def show_all_cards():
     return jsonify(TESTDATA["cards"])
 
 
-@app.route("/api/pods")
+@app.route("/api/all_pods")
 def show_all_pods():
     """Show all pods."""
-    zipcode = request.args.get("zipcode") 
+
+    pods = crud.get_all_pods()
+
+    return jsonify(pods)
+
+
+@app.route("/api/pods")
+def show_pods():
+    """Show pods filtered by zipcode."""
+    
+    zipcode = request.args.get("zipcode")
 
     filtered_pods = crud.get_filtered_pods(zipcode)
 
-    return jsonify(filtered_pods)
+    #Turn the SQLAlchemy pod objects into dictioaries before jsonifying them.
+    pods = []
 
+    for pod, pod_location in filtered_pods: 
+        pods.append({
+            "pod_id": pod.pod_id,
+            "pod_name": pod.pod_name,
+            "days_per_week": pod.days_per_week,
+            "total_hours_per_day": pod.total_hours_per_day,
+            "paid_teacher": pod.paid_teacher,
+            "zipcode": pod_location.zipcode
+            }, )
+
+    return jsonify(pods)
+                                  
 
 # @app.route("/api/pods")
 # def show_all_pods_by_zip():
@@ -93,7 +116,17 @@ def show_pod_details(pod_id):
 
     pod = crud.get_pod_details_by_pod_id(pod_id) #Get pod based on click event.
 
-    return render_template("pod_details.html", pod=pod)
+    {
+    "pod_id": pod.pod_id,
+    "pod_name": pod.pod_name,
+    "days_per_week": pod.days_per_week,
+    "total_hours_per_day": pod.total_hours_per_day,
+    "paid_teacher": pod.paid_teacher,
+    "zipcode": pod_location.zipcode
+    }
+
+    return jsonify(pod)
+
 
 
 

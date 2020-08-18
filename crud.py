@@ -95,11 +95,10 @@ def create_pod_location(pod_id, zipcode, street_address=None, city=None, state=N
 
 
 
-#def get_all_pods():
+def get_all_pods():
     """Get and return pods filtered by zipcode entered by the user."""
 
-    #pods = db.session.query(Pod).all()
-    #Need to refactor the query to add the poddless children later.
+    return db.session.query(Pod, Pod_Location).join(Pod_Location).all()
 
     #return pods
 
@@ -137,8 +136,8 @@ def get_pod_details_by_pod_id(pod_id):
     """Get the SQLAlchemy pod object based on the pod_id."""
 
     #Returns a tuple of Pod and Child objects
-    return db.session.query(Pod, Child).join(Child).filter(Pod.pod_id==pod_id).all()
-
+    #return db.session.query(Pod, Child_Pod, Child).join(Child_Pod, Pod.pod_id==Child_Pod.pod_id).join(Child, Child.child_id==Child_Pod.child_id).filter(Pod.pod_id==pod_id).all()
+    return db.session.query(Pod, Child_Pod).join(Child_Pod, Pod.pod_id==Child_Pod.pod_id).filter(Pod.pod_id==pod_id).all()
 
 def get_children_by_pod_id(pod_id):
     """Get the SQLAlchemy child objects based on the associated pod_id."""
