@@ -16,59 +16,6 @@ def root():
     return render_template("root.html")
 
 
-TESTDATA = {"cards":
-    [
-    ({
-    "name": "Merge",
-    "skill": "bullet journaling",
-    "imgUrl": "/static/img/merge.jpg"
-    }, 
-    {"mood": "happy"}
-    ),
-
-    ({
-    "name": "Balloonicorn",
-    "skill": "video games",
-    "imgUrl": "/static/img/balloonicorn.jpg"
-    }, 
-    {"mood": "snappy"}
-    ),
-
-    ({
-      "name": "Float",
-      "skill": "baking pretzels",
-      "imgUrl": "/static/img/float.jpg"
-    }, 
-    {"mood": "crappy"}
-    ),
-    
-    ({
-    "name": "Dappy",
-    "skill": "elk riding",
-    "imgUrl": "/static/img/dappy.jpg"
-    }, 
-    {"mood": "frappy"}
-    ),
-    ]
-    }
-
-@app.route("/api/cards")
-def show_all_cards():
-    """Show all pods."""
-    zipcode = request.args.get("zipcode") 
-
-    filtered_pods = crud.get_filtered_pods(zipcode)
-
-    return jsonify(TESTDATA["cards"])
-
-
-@app.route("/api/all_pods")
-def show_all_pods():
-    """Show all pods."""
-
-    pods = crud.get_all_pods()
-
-    return jsonify(pods)
 
 
 @app.route("/api/pods")
@@ -94,20 +41,6 @@ def show_pods():
 
     return jsonify(pods)
                                   
-
-# @app.route("/api/pods")
-# def show_all_pods_by_zip():
-#     """Show all filtered pods."""
-
-#     zipcode = request.args.get("zipcode") #Get name on form input on homepage.html.
-#     #filter 2  
-#     #filter 3  
-
-#     filtered_pods = crud.get_filtered_pods(zipcode)
-#     #filtered_pods = crud.get_filtered_pods(zipcode, filter 2, filter 3)
-
-#     return jsonify(filtered_pods) 
-
 
 
 @app.route("/api/pods/<pod_id>")

@@ -135,9 +135,10 @@ def add_child_to_pod(child_id, pod_id):
 def get_pod_details_by_pod_id(pod_id):
     """Get the SQLAlchemy pod object based on the pod_id."""
 
-    #Returns a tuple of Pod and Child objects
+    #Returns a tuple of Pod and Child_Pod objects
     #return db.session.query(Pod, Child_Pod, Child).join(Child_Pod, Pod.pod_id==Child_Pod.pod_id).join(Child, Child.child_id==Child_Pod.child_id).filter(Pod.pod_id==pod_id).all()
     return db.session.query(Pod, Child_Pod).join(Child_Pod, Pod.pod_id==Child_Pod.pod_id).filter(Pod.pod_id==pod_id).all()
+
 
 def get_children_by_pod_id(pod_id):
     """Get the SQLAlchemy child objects based on the associated pod_id."""
