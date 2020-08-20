@@ -5,6 +5,7 @@ import crud
 
 
 app = Flask(__name__)
+app.secret_key = "dev"
 #app.secret_key = "dev"
 #app.jinja_env.undefined = StrictUndefined
 
@@ -71,6 +72,22 @@ def show_pod_details(pod_id):
 
 
 
+@app.route("/api/createpod", methods = ["POST"])
+def start_pod():
+    """Create a new pod."""
+
+    pod_name = request.form.get("pod_name")
+    max_child_capacity = request.form.get("max_child_capacity")
+    #password = request.form.get("password")
+
+    
+    pod = crud.create_pod(pod_name, max_child_capacity)
+    flash("Successfully created pod in server route!")
+
+    return redirect("/")
+
+
+
 @app.route("/login")
 def process_login():
 
@@ -103,7 +120,24 @@ def process_login():
         flash("Sorry, no user found. Please try again.")
 
 
-    
+
+@app.route("/users", methods = ["POST"])
+def register_user():
+    """Create a new user."""
+
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+    #If email already exists in the system, block user from re-registering.
+    if crud.get_user_by_email(email): 
+        flash("Sorry, that user already exists. Please try again.")
+
+    #Otherwise, allow user to register for an account with that email address.
+    else:
+        user = crud.create_user(email, password)
+        flash("Successfully registered a new account!")
+
+    return redirect("/")    
 
 
 
