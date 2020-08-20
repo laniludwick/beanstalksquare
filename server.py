@@ -16,6 +16,10 @@ def root():
     return render_template("root.html")
 
 
+# @app.route('/', defaults={'path': ''})
+# @app.route('/<path:path>')
+# def catch_all(path):
+#     return render_template('root.html')
 
 
 @app.route("/api/pods")
@@ -47,20 +51,23 @@ def show_pods():
 def show_pod_details(pod_id):
     """Show details of the selected pod."""
 
-    pod = crud.get_pod_details_by_pod_id(pod_id) #Get pod based on click event.
+    pods = crud.get_pod_details_by_pod_id(pod_id) #Get pod based on click event.
 
-    {
-    "pod_id": pod.pod_id,
-    "pod_name": pod.pod_name,
-    "days_per_week": pod.days_per_week,
-    "total_hours_per_day": pod.total_hours_per_day,
-    "paid_teacher": pod.paid_teacher,
-    "zipcode": pod_location.zipcode
-    }
+    pod_details = []
 
-    return jsonify(pod)
+    for pod, child_pod in pods:
+    
+        pod_details.append({
+            "pod_id": pod.pod_id,
+            "pod_name": pod.pod_name,
+            "days_per_week": pod.days_per_week,
+            "total_hours_per_day": pod.total_hours_per_day,
+            "paid_teacher": pod.paid_teacher,
+            
+            "child_pod_id": child_pod.child_pod_id,
+            },)
 
-
+    return jsonify(pod_details)
 
 
 
