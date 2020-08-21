@@ -76,6 +76,26 @@ def show_pod_details(pod_id):
     return jsonify(pod_details)
 
 
+@app.route("/api/children/<pod_id>")
+def show_children_in_pod(pod_id):
+    """Show details of the selected pod."""
+
+    children = crud.get_children_by_pod_id(pod_id) #Get pod based on click event.
+
+    childrenlist = []
+
+    for child in children:
+    
+        childrenlist.append({
+            "child_id": child.child_id,
+            "zipcode": child.zipcode,
+            "school program": child.school_program,
+            
+            },)
+
+    return jsonify(childrenlist)
+
+
 
 @app.route("/api/createpod", methods = ["POST"])
 def start_pod():
@@ -161,61 +181,27 @@ def process_login():
         print("******Access token:", access_token)
         return jsonify(access_token)
     
-    # try:
 
-    #     parent = crud.get_user_by_email(email)
-    #     print("Parent from crud get user by email:", parent)
-
-    #     if (parent.email != email) or (parent.password != password):  
-    #         return jsonify({"msg": "Bad username or password"})
-
-    #     access_token = create_access_token(identity=parent.email)
-    #     return jsonify(access_token)
-
-
-    # except:
-
-    #     if not request.is_json:
-    #         return jsonify({"msg": "Missing JSON in request"})
-
-    #     elif not email:
-    #         return jsonify({"msg": "Missing username parameter"})
-
-    #     else: 
-    #         if not password:
-    #             return jsonify({"msg": "Missing password parameter"})
-        
-
-
-# try: 
-#         user = customers.get_by_email(email)
-        
-#     # - if a Customer with that email was found, check the provided password
-#     #   against the stored one
-#     # - if they match, store the user's email in the session, flash a success
-#     #   message and redirect the user to the "/melons" route
-#         if password ==user.password:
-#             session["logged_in_customer_email"] = email 
-#             flash("Login successful!")
-#             return redirect("/melons")
-
-#         # - if they don't, flash a failure message and redirect back to "/login"
-#         # - do the same if a Customer with that email doesn't exist
-#         else:
-#             flash("Failed login attempt")
-#             return redirect("/login")
-
-    # except:
-    #     flash("User not found.")
-    #     return redirect("/login")
 
 @app.route('/protected', methods=['GET'])
 @jwt_required
 def protected():
     """Access the identity of the current user with get_jwt_identity."""
-    
+
     current_user = get_jwt_identity()
+    
     return jsonify(logged_in_as=current_user), 200
+
+
+
+@app.route("/api/logout", methods=['POST'])
+def process_logout():
+    """Log the user out of their session."""
+
+    del session["logged_in_customer_email"]
+    flash("Logged out")
+    return redirect("/melons")
+
 
 
 if __name__ == '__main__':
