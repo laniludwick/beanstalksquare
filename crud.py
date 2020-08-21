@@ -20,7 +20,7 @@ def create_household(covid_risk_profile_id=None):
     return household
 
 
-def create_parent(fname, lname, email, password, household_id, 
+def create_parent(fname, lname, email, password, household_id=None, 
                 mobile_number=None):
     """Add a new parent to the parents table and return the parent."""
 
