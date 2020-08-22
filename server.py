@@ -101,18 +101,17 @@ def show_children_in_pod(pod_id):
 def start_pod():
     """Create a new pod."""
 
-    #pod_name = request.form.get("pod_name")
-    #max_child_capacity = request.form.get("max_child_capacity")
-    #password = request.form.get("password")
     data = request.get_json()
+    print("******************data in createpod route:", data)
     pod_name = data["pod_name"]
     max_child_capacity = data["max_child_capacity"]
     days_per_week = data["days_per_week"]
     total_hours_per_day = data["total_hours_per_day"]
-    paid_teacher = data["paid_teacher"]
+    #paid_teacher = data["paid_teacher"]
+    print("****************pod name createpod route:", pod_name)
 
-    pod = crud.create_pod(pod_name, max_child_capacity, days_per_week, total_hours_per_day, paid_teacher)
-        
+    pod = crud.create_pod(pod_name, max_child_capacity, days_per_week, total_hours_per_day)
+    print("***************result from createpod crud:", pod)
     #flash("Successfully created pod in server route!")
 
     return jsonify("Successful post to beanstalksquaretestdb")
