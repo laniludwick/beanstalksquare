@@ -2,6 +2,7 @@ from flask import (Flask, request, flash, session, redirect, render_template,
                     jsonify)
 from model import connect_to_db
 import crud
+#import os
 from flask_jwt_extended import (JWTManager, jwt_required, create_access_token,
                                 get_jwt_identity)
 
@@ -9,6 +10,7 @@ from flask_jwt_extended import (JWTManager, jwt_required, create_access_token,
 
 app = Flask(__name__)
 app.secret_key = "dev"
+#API_KEY = os.environ['GOOGLEMAPS_APIKEY']
 #app.config['JWT_SECRET_KEY'] = 'super-secret'  # Change this!
 jwt = JWTManager(app)
 #app.secret_key = "dev"
@@ -178,7 +180,7 @@ def process_login():
     
         access_token = create_access_token(identity=parent.email)
         print("******Access token:", access_token)
-        return jsonify(access_token)
+        return jsonify({"access_token": access_token})
     
 
 
