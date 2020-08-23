@@ -67,7 +67,7 @@ for _ in range(10):
 
 #Create children in db
 k=1
-for _ in range(10):
+for _ in range(15):
 
     #Faker.seed(0)
     fname = fake.first_name()
@@ -76,6 +76,7 @@ for _ in range(10):
     school_id = k
     grade_id = k
     household_id = k 
+    school_program = Dual Language Immersion 
     distance_willing_to_travel = randrange(1,10)
     preferred_days_per_week = randrange(3,5)
     preferred_total_hours_per_day = randrange(3,6)
@@ -87,7 +88,8 @@ for _ in range(10):
     prefer_periodic_covid_testing = fake.boolean(chance_of_getting_true=50)
     max_budget_per_hour = randrange(0,5)
     
-    new_child = crud.create_child(fname=fname, lname=lname, zipcode=zipcode, school_id=school_id, 
+    if k<12:
+        new_child = crud.create_child(fname=fname, lname=lname, zipcode=zipcode, school_id=school_id, 
                                 grade_id=grade_id, household_id=household_id,
                                 distance_willing_to_travel=distance_willing_to_travel,
                                 preferred_days_per_week=preferred_days_per_week,
@@ -99,11 +101,25 @@ for _ in range(10):
                                 prefer_outdoors_only=prefer_outdoors_only,
                                 prefer_periodic_covid_testing=prefer_periodic_covid_testing,
                                 max_budget_per_hour=max_budget_per_hour)
+    else:
+        new_child = crud.create_child(fname=fname, lname=lname, zipcode='44797', school_id=school_id, 
+                                grade_id='2nd Grade', household_id=household_id,
+                                distance_willing_to_travel=distance_willing_to_travel,
+                                preferred_days_per_week=preferred_days_per_week,
+                                preferred_total_hours_per_day=preferred_total_hours_per_day,
+                                prefer_paid_teacher=prefer_paid_teacher,
+                                prefer_same_school_program_only=prefer_same_school_program_only,
+                                prefer_same_school_only=prefer_same_school_only,
+                                prefer_same_grade_only=prefer_same_grade_only,
+                                prefer_outdoors_only=prefer_outdoors_only,
+                                prefer_periodic_covid_testing=prefer_periodic_covid_testing,
+                                max_budget_per_hour=max_budget_per_hour)
+
     k+=1
 
 #Create pods in db
 m=1
-for _ in range(10):
+for _ in range(500):
 
     pod_name = fake.color_name() + "learning pod"
     max_child_capacity = randrange(2,8)
@@ -143,12 +159,14 @@ for _ in range(10):
 
 # #Add children to pods
 q=1
-for _ in range(10):
+for _ in range(30):
     pod_id=q
     child_id=q
 
-    new_child_pod=crud.add_child_to_pod(pod_id=pod_id, child_id=child_id)
-    q+=1
+    if q<10:
+        new_child_pod=crud.add_child_to_pod(pod_id=pod_id, child_id=child_id)
+    else:
+        new_child_pod=crud.add_child_to_pod(pod_id=1, child_id=child_id)
 
 
 

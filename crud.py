@@ -143,8 +143,9 @@ def get_pod_details_by_pod_id(pod_id):
 def get_children_by_pod_id(pod_id):
     """Get the SQLAlchemy child objects based on the associated pod_id."""
 
-    #Creates a list 
-    children = db.session.query(Child).join(Child_Pod).filter(Child_Pod.pod_id==pod_id).all()
+    children = db.session.query(Child, Child_Pod, Grade, School).join(Child_Pod, Child.child_id==Child_Pod.child_id).join(Pod, Child_Pod.pod_id==Pod.pod_id).join(Grade, Child.grade_id==Grade.grade_id).join(School, Child.school_id==School.school_id).filter(Pod.pod_id==1).all()
+    #Returns a list including one tuple of Child, Child_Pod, Grade, and School objects (so children[0][3].school_name accesses school_name)
+    #return db.session.query(Pod, Child_Pod, Child).join(Child_Pod, Pod.pod_id==Child_Pod.pod_id).join(Child, Child.child_id==Child_Pod.child_id).filter(Pod.pod_id==pod_id).all()
 
     #Creates a list of SQLAlchemy objects
     #children[0].fname = 'Eric'

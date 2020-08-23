@@ -42,6 +42,7 @@ def show_pods():
     pods = []
 
     for pod, pod_location in filtered_pods: 
+        
         pods.append({
             "pod_id": pod.pod_id,
             "pod_name": pod.pod_name,
@@ -65,17 +66,54 @@ def show_pod_details(pod_id):
 
     for pod, child_pod in pods:
     
+        if pod.paid_teacher==True:
+            paid_teacher= "Yes"
+        if pod.paid_teacher==False:
+            paid_teacher= "No"
+
+        if pod.same_school_only==True:
+            same_school_only= "Yes"
+        if pod.same_school_only==False:
+            same_school_only= "No"
+
+        if pod.same_school_program_only==True:
+            same_school_program_only= "Yes"
+        if pod.same_school_program_only==False:
+            same_school_program_only= "No"
+
+        if pod.same_grade_only==True:
+            same_grade_only= "Yes"
+        if pod.same_grade_only==False:
+            same_grade_only= "No"
+
+        if pod.outdoors_only==True:
+            outdoors_only= "Yes"
+        if pod.outdoors_only==False:
+            outdoors_only= "No"
+
+        if pod.periodic_covid_testing==True:
+            periodic_covid_testing= "Yes"
+        if pod.periodic_covid_testing==False:
+            periodic_covid_testing= "No"
+
+
         pod_details.append({
             "pod_id": pod.pod_id,
             "pod_name": pod.pod_name,
             "days_per_week": pod.days_per_week,
             "total_hours_per_day": pod.total_hours_per_day,
-            "paid_teacher": pod.paid_teacher,
-            
+            "paid_teacher": paid_teacher,
+            "same_school_only": same_school_only,
+            "same_school_program_only": same_school_program_only,
+            "same_grade_only": same_grade_only,
+            "outdoors_only": outdoors_only,
+            "periodic_covid_testing": periodic_covid_testing,
+            "cost_per_hour": pod.cost_per_hour,
             "child_pod_id": child_pod.child_pod_id,
             },)
 
     return jsonify(pod_details)
+
 
 
 @app.route("/api/children/<pod_id>")
@@ -83,18 +121,25 @@ def show_children_in_pod(pod_id):
     """Show details of the selected pod."""
 
     children = crud.get_children_by_pod_id(pod_id) #Get pod based on click event.
-
+    #Returns tuples of Child, Child_Pod, Grade, School SQL Alchemy objects
+    #[(<Child child_id=1 fname=Eric>, <Child_Pod child_pod_id=1 child_id=1>, 
+    #<Grade grade_id=1 grade_name=Preschool>, 
+    #<School school_id=1 school_name=McKinley Elementary School>)]
+    print("************children result of crud op:", children)
     childrenlist = []
 
     for child in children:
     
+        print("*************child in children:", child)
         childrenlist.append({
-            "child_id": child.child_id,
-            "zipcode": child.zipcode,
-            "school program": child.school_program,
-            
+            "child_id": child[0].child_id,
+            "zipcode": child[0].zipcode,
+            #"school_program": child[0].school_program,
+            "grade_name": child[2].grade_name,
+            "school_name": child[3].school_name
             },)
 
+    print("************children list:", childrenlist)
     return jsonify(childrenlist)
 
 
@@ -109,10 +154,24 @@ def start_pod():
     max_child_capacity = data["max_child_capacity"]
     days_per_week = data["days_per_week"]
     total_hours_per_day = data["total_hours_per_day"]
-    #paid_teacher = data["paid_teacher"]
+    paid_teacher = data["paid_teacher"]
+    same_grade_only = data["same_grade_only"]
+    same_school_only = data["same_school_only"]
+    same_school_program_only = data["same_school_program_only"]
+    outdoors_only = data["outdoors_only"]
+    periodic_covid_testing = data["periodic_covid_testing"]
+    cost_per_hour = data["cost_per_hour"]
+
+
+
+
     print("****************pod name createpod route:", pod_name)
 
-    pod = crud.create_pod(pod_name, max_child_capacity, days_per_week, total_hours_per_day)
+    pod = crud.create_pod(pod_name, max_child_capacity, days_per_week, 
+                            total_hours_per_day, paid_teacher, same_grade_only, 
+                            same_school_only, same_school_program_only, 
+                            outdoors_only, periodic_covid_testing, 
+                            cost_per_hour)
     print("***************result from createpod crud:", pod)
     #flash("Successfully created pod in server route!")
 
@@ -180,8 +239,9 @@ def process_login():
     
         access_token = create_access_token(identity=parent.email)
         print("******Access token:", access_token)
+        
         return jsonify({"access_token": access_token})
-    
+        
 
 
 @app.route('/protected', methods=['GET'])
