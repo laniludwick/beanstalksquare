@@ -43,6 +43,11 @@ def show_pods():
 
     for pod, pod_location in filtered_pods: 
         
+        if pod.paid_teacher==True:
+            paid_teacher= "Yes"
+        if pod.paid_teacher==False:
+            paid_teacher= "No"
+
         pods.append({
             "pod_id": pod.pod_id,
             "pod_name": pod.pod_name,
