@@ -54,13 +54,17 @@ function GoogleMap(props) {
   //points to the mounted map element ref'd in the DOM. This spot holds the map.
   const googleMapRef = React.useRef(null); 
 
- 
+  const [map, setMap] = React.useState(null)
+  //const [marker, setMarker] = React.useState(null)
+
   
+
+  React.useEffect(() => {
 
     //Load script tags.  
     const googleMapScript = document.createElement('script');
     
-    googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=GOOGLEMAPS_APIKEY&libraries=places`;
+    googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyANBBOatlktyObD1SVk0ZzXGE9vFMZyloc&libraries=places`;
 
     //In body tag of DOM, add script tags.
     document.body.appendChild(googleMapScript);
@@ -68,18 +72,15 @@ function GoogleMap(props) {
     //Call the functions to create map and markers after script tag has loaded.
     googleMapScript.addEventListener('load', () => {
       
-      googleMap = createGoogleMap();
-      console.log("googleMap:", googleMap)
-      marker = createMarker();
-      console.log("Google maps marker:", marker)
+      createGoogleMap();
+       
     }); //Close event listener
 
+  },[]);
 
     const createGoogleMap = () => {
 
-      console.log("googleMapRef:", googleMapRef)
-      console.log("googleMapRef.current:", googleMapRef.current)
-      new google.maps.Map(googleMapRef.current, {
+      setMap(new google.maps.Map(googleMapRef.current, {
 
         zoom:11,
         center: {
@@ -88,11 +89,11 @@ function GoogleMap(props) {
           },
         disableDefaultUI: true,
 
-      }); //Close Map instance
+      })) ; //Close Map instance
   
     }
 
-    const createMarker = () => {
+    const createMarker = (map) => {
 
       new google.maps.Marker({
         position: {
@@ -100,10 +101,16 @@ function GoogleMap(props) {
           lng: -122.202870
           },
         title: 'SF Bay',
-        map: googleMap,
+        map: map,
       });
 
     }
+
+
+  if (map) {
+  
+    createMarker(map);
+  }
 
   return (
     
@@ -299,11 +306,16 @@ function PodDetails(props) {
     console.log("Looking for pod details:", podDetailsAll)
   return ( 
   
-            
+      <div> 
         <table className="table">
           {podDetailsAll} 
         </table> 
   
+        <div width="50%">
+          <MapContainer/>
+        </div>
+
+      </div>
   )
 }
 
@@ -330,9 +342,7 @@ function PodDetailsContainer(props) {
         <ChildrenInPodList />
       </div>
         
-      <div width="50%">
-        <MapContainer/>
-      </div>
+      
       
     </div>
      
