@@ -44,10 +44,10 @@ function GoogleMap(props) {
 
   
 
-  const podAddress= {
-    lat: 37.601773,
-    lng: -122.202870
-  }
+  // const podAddress= {
+  //   lat: 37.601773,
+  //   lng: -122.202870
+  // }
                
   console.log("props in Googlemap component:", props.podDetailsAll.props.street_address)
   //console.log("props in Googlemap component:", props.props.street_address)
@@ -65,6 +65,8 @@ function GoogleMap(props) {
 
   const [map, setMap] = React.useState(null);
   const [marker, setMarker] = React.useState(null);
+  const [latLong, setLatLong] = React.useState(null);
+  
 
   //Hook to load GoogleMaps script and the map itself upon render of component.
   React.useEffect(() => {
@@ -81,74 +83,86 @@ function GoogleMap(props) {
     googleMapScript.addEventListener('load', () => {
       
       code_address(address);
-      createGoogleMap();
-       
-    
-    
-
 
     }); //Close event listener
-  },[]); //Close useEffect
+  },[]); //Close useEffect hook that calls the geocoder function
 
 
-  function code_address(address) {
-    
-      const geocoder = new google.maps.Geocoder();
+  
+  //Hook to create/instantiate the map itself if geocode is available 
+  React.useEffect (() => {
 
-      geocoder.geocode({'address':address}, function (results, status) {
-      
-        if (status == google.maps.GeocoderStatus.OK) {
-          const latitude = results[0].geometry.location.lat();
-          const longitude = results[0].geometry.location.lng();
-          alert("Geocode successful:", lat, lng, status);
-        }
-        
-        else {
-          alert("Geocode was not successful, here's the status:", status);
-        }
-      }); //Close unnamed function and geocode function
-    
-    
-    } //Close code_address function
+    if (latLong) {
+        createGoogleMap();
+      }
 
-  const podAddress = {
-    lat: latitude,
-    lng: longitude,
-  };
+  },[]); //Close useEffect hook that calls geocoder function
+  
 
-  //Define function that creates the map itself
-  const createGoogleMap = () => {
-
-    setMap(new google.maps.Map(googleMapRef.current, {
-
-      zoom:11,
-      center: podAddress,
-      disableDefaultUI: true,
-
-    })) ; //Close Map instance
-
-  }
-  console.log("google map state:", map)
-  //Define function that adds markers to the map
-  const createMarker = (map) => {
-
-    new google.maps.Marker({
-      position: podAddress,
-      title: 'Pod location',
-      map: map,
-    });
-
-  }
-
-  //Hook to create markers for GoogleMap
-  //React.useEffect(() => {
+  //Hook to create markers for GoogleMap if the map itself is available  
+  React.useEffect (() => {
     
     if (map) {
   
     createMarker(map);
     //setMarker(createMarker(map));
     }
-  //}, []);
+  },[]);
+
+
+  
+
+  //Define function to convert address into geocode address
+  function code_address(address) {
+
+    const geocoder = new google.maps.Geocoder();
+    address = "142 Channing Rd, Burlingame, CA 94010";
+    console.log("address post geocode constructor:", address);
+    
+    geocoder.geocode({'address':address}, function (results, status) {
+    console.log("address post .geocode method:", address);
+      
+    if (status === google.maps.GeocoderStatus.OK) {
+      setLatLong(results[0].geometry.location);
+      console.log("latLong, status, results, address:", latLong, status, results, address);
+      alert("Geocode successful:", latLong, status);
+    }
+    
+    else {
+      alert("Geocode was not successful, here's the status:", status);
+    } //Close else
+    }); //Close unnamed function and geocode function
+  } //Close code_address function
+
+
+
+  //Define function that creates/instantiates the map itself
+  const createGoogleMap = () => {
+
+    setMap(new google.maps.Map(googleMapRef.current, {
+
+      zoom:11,
+      center: latLong,
+      disableDefaultUI: true,
+
+    })) ; //Close Map instance
+
+  }
+  console.log("google map state:", map)
+  
+
+  //Define function that adds markers to the map
+  const createMarker = (map) => {
+
+    new google.maps.Marker({
+      position: latLong,
+      title: 'Pod location',
+      map: map,
+    });
+
+  }
+
+
 
   
 
