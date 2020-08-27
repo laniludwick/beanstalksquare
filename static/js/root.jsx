@@ -5,10 +5,6 @@ const Prompt =  ReactRouterDOM.Prompt;
 const Switch = ReactRouterDOM.Switch;
 const Redirect = ReactRouterDOM.Redirect;
 
-//import os
-
-//process.env.GOOGLEMAPS_APIKEY
-
 //import Button from 'react-bootstrap/Button' OR;
 //const { Badge, Button, Col, Container, Form, FormControl, ListGroup, Navbar, Row, Table } = ReactBootstrap;
 //import 'bootstrap/dist/css/bootstrap.min.css';
@@ -46,19 +42,31 @@ function Child (props) {
 
 function GoogleMap(props) {
 
-  // const sfBayCoords = {
-  //   lat: 37.601773,
-  //   lng: -122.202870
-  // };
+  
+
+  const podAddress= {
+    lat: 37.601773,
+    lng: -122.202870
+  }
+               
+  console.log("props in Googlemap component:", props.podDetailsAll.props.street_address)
+  //console.log("props in Googlemap component:", props.props.street_address)
+  //console.log("props in map component:", props.props.podDetailsAll.street_address)
+  const address = props.podDetailsAll.props.street_address + ", " + 
+                  props.podDetailsAll.props.city + ", " + 
+                  props.podDetailsAll.props.state + " " + 
+                  props.podDetailsAll.props.zipcode;
+
+  console.log("concatenated address:", address)
+
 
   //points to the mounted map element ref'd in the DOM. This spot holds the map.
   const googleMapRef = React.useRef(null); 
 
-  const [map, setMap] = React.useState(null)
-  //const [marker, setMarker] = React.useState(null)
+  const [map, setMap] = React.useState(null);
+  const [marker, setMarker] = React.useState(null);
 
-  
-
+  //Hook to load GoogleMaps script and the map itself upon render of component.
   React.useEffect(() => {
 
     //Load script tags.  
@@ -72,52 +80,83 @@ function GoogleMap(props) {
     //Call the functions to create map and markers after script tag has loaded.
     googleMapScript.addEventListener('load', () => {
       
+      code_address(address);
       createGoogleMap();
        
+    
+    
+
+
     }); //Close event listener
-
-  },[]);
-
-    const createGoogleMap = () => {
-
-      setMap(new google.maps.Map(googleMapRef.current, {
-
-        zoom:11,
-        center: {
-          lat: 37.601773,
-          lng: -122.202870
-          },
-        disableDefaultUI: true,
-
-      })) ; //Close Map instance
-  
-    }
-
-    const createMarker = (map) => {
-
-      new google.maps.Marker({
-        position: {
-          lat: 37.601773,
-          lng: -122.202870
-          },
-        title: 'SF Bay',
-        map: map,
-      });
-
-    }
+  },[]); //Close useEffect
 
 
-  if (map) {
-  
-    createMarker(map);
+  function code_address(address) {
+    
+      const geocoder = new google.maps.Geocoder();
+
+      geocoder.geocode({'address':address}, function (results, status) {
+      
+        if (status == google.maps.GeocoderStatus.OK) {
+          const latitude = results[0].geometry.location.lat();
+          const longitude = results[0].geometry.location.lng();
+          alert("Geocode successful:", lat, lng, status);
+        }
+        
+        else {
+          alert("Geocode was not successful, here's the status:", status);
+        }
+      }); //Close unnamed function and geocode function
+    
+    
+    } //Close code_address function
+
+  const podAddress = {
+    lat: latitude,
+    lng: longitude,
+  };
+
+  //Define function that creates the map itself
+  const createGoogleMap = () => {
+
+    setMap(new google.maps.Map(googleMapRef.current, {
+
+      zoom:11,
+      center: podAddress,
+      disableDefaultUI: true,
+
+    })) ; //Close Map instance
+
+  }
+  console.log("google map state:", map)
+  //Define function that adds markers to the map
+  const createMarker = (map) => {
+
+    new google.maps.Marker({
+      position: podAddress,
+      title: 'Pod location',
+      map: map,
+    });
+
   }
 
+  //Hook to create markers for GoogleMap
+  //React.useEffect(() => {
+    
+    if (map) {
+  
+    createMarker(map);
+    //setMarker(createMarker(map));
+    }
+  //}, []);
+
+  
+
+  //Render map
   return (
     
     <div id="google-map" ref={googleMapRef} style={{width: '400px', height: '300px'}}>
-
     </div>
-
     
     );
 }
@@ -126,11 +165,11 @@ function GoogleMap(props) {
 
 function MapContainer(props) {
 
+  console.log("props in Mapcontainer component:", props)
   return ( 
     <div className="map">
     This is the map view of search results!
-      <GoogleMap podList={props.podList}/>
-    
+      <GoogleMap podDetailsAll={props.podDetailsAll} />    
     </div>
   )
 }
@@ -254,6 +293,13 @@ function PodDetailsAll (props) {
             <th className="pod-table-title" scope="row">Cost Per Hour</th>
             <td>{props.cost_per_hour}</td>
           </tr>
+
+          <tr>
+            <th className="pod-table-title" scope="row">Location</th>
+            <td>{props.street_address},
+                <br/>
+                {props.city}, {props.state}, {props.zipcode}</td>
+          </tr>
   </tbody>  
   );
 }
@@ -285,6 +331,9 @@ function PodDetails(props) {
                                     key={pod.pod_id}
                                     pod_id={pod.pod_id}
                                     pod_name={pod.pod_name}
+                                    street_address={pod.street_address}                                    
+                                    city={pod.city} 
+                                    state={pod.state}
                                     zipcode={pod.zipcode}
                                     max_child_capacity={pod.max_child_capacity}
                                     days_per_week={pod.days_per_week}
@@ -312,7 +361,7 @@ function PodDetails(props) {
         </table> 
   
         <div width="50%">
-          <MapContainer/>
+        {podDetailsAll? <MapContainer podDetailsAll={podDetailsAll}/> : null}
         </div>
 
       </div>

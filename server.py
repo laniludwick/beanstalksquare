@@ -53,7 +53,7 @@ def show_pods():
             "pod_name": pod.pod_name,
             "days_per_week": pod.days_per_week,
             "total_hours_per_day": pod.total_hours_per_day,
-            "paid_teacher": pod.paid_teacher,
+            "paid_teacher": paid_teacher,
             "zipcode": pod_location.zipcode
             }, )
 
@@ -69,7 +69,7 @@ def show_pod_details(pod_id):
 
     pod_details = []
 
-    for pod, child_pod in pods:
+    for pod, pod_location in pods:
     
         if pod.paid_teacher==True:
             paid_teacher= "Yes"
@@ -105,6 +105,7 @@ def show_pod_details(pod_id):
         pod_details.append({
             "pod_id": pod.pod_id,
             "pod_name": pod.pod_name,
+            "max_child_capacity": pod.max_child_capacity,
             "days_per_week": pod.days_per_week,
             "total_hours_per_day": pod.total_hours_per_day,
             "paid_teacher": paid_teacher,
@@ -114,7 +115,10 @@ def show_pod_details(pod_id):
             "outdoors_only": outdoors_only,
             "periodic_covid_testing": periodic_covid_testing,
             "cost_per_hour": pod.cost_per_hour,
-            "child_pod_id": child_pod.child_pod_id,
+            "street_address": pod_location.street_address,
+            "city": pod_location.city, 
+            "state": pod_location.state, 
+            "zipcode": pod_location.zipcode, 
             },)
 
     return jsonify(pod_details)
