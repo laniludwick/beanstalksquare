@@ -41,13 +41,6 @@ function Child (props) {
 
 
 function GoogleMap(props) {
-
-  
-
-  // const podAddress= {
-  //   lat: 37.601773,
-  //   lng: -122.202870
-  // }
                
   console.log("props in Googlemap component:", props.podDetailsAll.props.street_address)
   //console.log("props in Googlemap component:", props.props.street_address)
@@ -65,8 +58,9 @@ function GoogleMap(props) {
 
   const [map, setMap] = React.useState(null);
   const [marker, setMarker] = React.useState(null);
-  const [latLong, setLatLong] = React.useState(null);
-  
+  const [latitude, setLatitude] = React.useState(0);
+  const [longitude, setLongitude] = React.useState(0);
+
 
   //Hook to load GoogleMaps script and the map itself upon render of component.
   React.useEffect(() => {
@@ -79,25 +73,17 @@ function GoogleMap(props) {
     //In body tag of DOM, add script tags.
     document.body.appendChild(googleMapScript);
 
-    //Call the functions to create map and markers after script tag has loaded.
-    googleMapScript.addEventListener('load', () => {
+    //Call the function to create map and geocode after script tag has loaded.
+    googleMapScript.addEventListener('load', () => {    
+      
+      createGoogleMap();
       
       code_address(address);
-
+      
+      
     }); //Close event listener
-  },[]); //Close useEffect hook that calls the geocoder function
+  }, [longitude]); //Close useEffect hook that calls the create map and geocode functions
 
-
-  
-  //Hook to create/instantiate the map itself if geocode is available 
-  React.useEffect (() => {
-
-    if (latLong) {
-        createGoogleMap();
-      }
-
-  },[]); //Close useEffect hook that calls geocoder function
-  
 
   //Hook to create markers for GoogleMap if the map itself is available  
   React.useEffect (() => {
@@ -107,10 +93,8 @@ function GoogleMap(props) {
     createMarker(map);
     //setMarker(createMarker(map));
     }
-  },[]);
+  },[longitude]);
 
-
-  
 
   //Define function to convert address into geocode address
   function code_address(address) {
@@ -120,14 +104,22 @@ function GoogleMap(props) {
     console.log("address post geocode constructor:", address);
     
     geocoder.geocode({'address':address}, function (results, status) {
-    console.log("address post .geocode method:", address);
-      
+    console.log("address and results post .geocode method:", address, results);
+ 
     if (status === google.maps.GeocoderStatus.OK) {
-      setLatLong(results[0].geometry.location);
-      console.log("latLong, status, results, address:", latLong, status, results, address);
-      alert("Geocode successful:", latLong, status);
+      
+      const lat_data = results[0].geometry.location.lat();
+      const lng_data = results[0].geometry.location.lng();
+      console.log("lat_data, lng_data, status, results, address:", lat_data, lng_data, status, results, address);
+      alert("Geocode successful:", lat_data, lng_data, status);
+      
+      if (lat_data && lng_data) {
+        setLatitude(lat_data);
+        setLongitude(lng_data);
+        console.log("just set latitude:", latitude);
+        console.log("just set longitude:", longitude);
+      }
     }
-    
     else {
       alert("Geocode was not successful, here's the status:", status);
     } //Close else
@@ -142,30 +134,31 @@ function GoogleMap(props) {
     setMap(new google.maps.Map(googleMapRef.current, {
 
       zoom:11,
-      center: latLong,
+      center: { lat: latitude,
+                lng: longitude,},
       disableDefaultUI: true,
 
     })) ; //Close Map instance
-
+    console.log("google map state in create map, latitude, longitude:", map, latitude, longitude);
   }
-  console.log("google map state:", map)
+  console.log("google map state after create map closes, latitude, longitude:", map, latitude, longitude);
   
 
   //Define function that adds markers to the map
   const createMarker = (map) => {
 
     new google.maps.Marker({
-      position: latLong,
+      position: { lat: latitude,
+                  lng: longitude,},
       title: 'Pod location',
       map: map,
     });
 
+    console.log("map, marker:", map, latitude, longitude);  
   }
 
-
-
   
-
+  console.log("lat, long states:", latitude, longitude);
   //Render map
   return (
     
