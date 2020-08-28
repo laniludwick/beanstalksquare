@@ -6,6 +6,13 @@ import crud
 from flask_jwt_extended import (JWTManager, jwt_required, create_access_token,
                                 get_jwt_identity)
 
+from twilio.rest import Client 
+import os
+
+account_sid = os.environ["ACCOUNT_SID"]
+auth_token = os.environ["AUTH_TOKEN"]
+to_phone_number = os.environ["TO_PHONE_NUMBER"]
+
 
 
 app = Flask(__name__)
@@ -264,20 +271,42 @@ def protected():
 
 
 
-@app.route("/api/logout", methods=['POST'])
-def process_logout():
-    """Log the user out of their session."""
+# @app.route("/api/logout", methods=['POST'])
+# def process_logout():
+#     """Log the user out of their session."""
 
-    del session["logged_in_customer_email"]
-    flash("Logged out")
-    return redirect("/melons")
+#     del session["logged_in_customer_email"]
+#     flash("Logged out")
+#     return redirect("/melons")
+
+
+
+@app.route("/api/send_stock_sms", methods=['POST'])
+def send_stock_sms_to_pod_organizer():
+
+    sender = request.get_json()
+
+    parents = crud.get_parents_by_pod_id(pod_id)
+
+
+    client = Client(account_sid, auth_token)
+
+    message = client.messages \
+                    .create(
+                         body="A parent with email " + sender + " is interested.",
+                         messaging_service_sid='MG8b0587e27f85f4b05d7525a5833f89db',
+                         to=to_phone_number
+                     )
+
+    print("message.sid:", message.sid)
+    return jsonify({"message.sid": message.sid})
+
 
 
 
 if __name__ == '__main__':
     connect_to_db(app)
     app.run(host='0.0.0.0', debug=True)
-
 
 
 

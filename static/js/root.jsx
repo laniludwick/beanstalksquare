@@ -9,12 +9,48 @@ const Redirect = ReactRouterDOM.Redirect;
 //const { Badge, Button, Col, Container, Form, FormControl, ListGroup, Navbar, Row, Table } = ReactBootstrap;
 //import 'bootstrap/dist/css/bootstrap.min.css';
 
+
+
+
+
 function ContactPodOrganizerButton() {
+
+  const history = ReactRouterDOM.useHistory(); 
+  const {podId} = ReactRouterDOM.useParams();
+  
+  
+
+  const contactPodOrganizer = () => {
+    
+    const useremail = localStorage.getItem("useremail");
+    console.log("in contact pod organizer function, useremail:", useremail);
+
+    fetch("/api/send_stock_sms", {
+
+      method: 'POST', 
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(useremail),
+    })//Close fetch
+
+    .then(response => response.json())
+    .then(data => {
+      
+      if (data) {
+        alert("Message successfully sent to the pod organizer.")
+        
+        history.push(`/poddetails/${podId}`);
+      }
+    }); //Close .then
+  }
+
 
   function handleSubmit(event) {
     
-    alert ("You clicked the 'cotact this pod's organizer button")
-    props.createPod();
+    alert ("You clicked the 'contact this pod's organizer button")
+    contactPodOrganizer();
+
   }
 
   return ( 
@@ -940,6 +976,8 @@ function LogInForm(props) {
       console.log("Result of .then data:", data);
       if (data.access_token){
         localStorage.setItem("user", data.access_token);
+        localStorage.setItem("useremail", logInData["loginemail"]);
+        console.log("***************set item useremail:", logInData["loginemail"]);
         alert("You are now logged in!");
         console.log("***************props in loginform function post-response:", props);
         props.setLoggedInStatus("True");
