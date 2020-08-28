@@ -23,9 +23,12 @@ function ContactPodOrganizerButton() {
   const contactPodOrganizer = () => {
     
     const useremail = localStorage.getItem("useremail");
+    
     console.log("in contact pod organizer function, useremail:", useremail);
+    console.log("json.stringify useremail:", JSON.stringify(useremail));
 
-    fetch("/api/send_stock_sms", {
+    alert ("Right before fetch")
+    fetch(`/api/send_stock_sms/${podId}`, {
 
       method: 'POST', 
       headers: {
@@ -978,6 +981,7 @@ function LogInForm(props) {
         localStorage.setItem("user", data.access_token);
         localStorage.setItem("useremail", logInData["loginemail"]);
         console.log("***************set item useremail:", logInData["loginemail"]);
+        console.log("***************get item useremail:", localStorage.getItem("useremail"));
         alert("You are now logged in!");
         console.log("***************props in loginform function post-response:", props);
         props.setLoggedInStatus("True");

@@ -281,25 +281,50 @@ def protected():
 
 
 
-@app.route("/api/send_stock_sms", methods=['POST'])
-def send_stock_sms_to_pod_organizer():
+@app.route("/api/send_stock_sms/<pod_id>", methods=['POST'])
+def send_stock_sms_to_pod_organizer(pod_id):
 
+    print("pod_id in sms api route:", pod_id)
     sender = request.get_json()
+    
+    if sender:
+        print("**************data from json:", sender)
+    else:
+        print("**************data from json seems to be nonexistent.")
 
-    parents = crud.get_parents_by_pod_id(pod_id)
+    pod_organizers = crud.get_parents_by_pod_id(pod_id)
+    print(pod_organizers)
 
+    pod_organizers_list = []
+    pod_organizers_mobiles = []
+
+    for parent, parent_pod in pod_organizers:
+
+        pod_organizers_list.append({
+
+            "parent_name": parent.fname+parent.lname,
+            "parent_email": parent.email,
+            "parent_mobile": parent.mobile_number,
+            
+            })
+
+        pod_organizers_mobiles.append(parent.mobile_number)
+        print("parent mobile:", parent.mobile_number)
+        print("pod organizers mobiles list:", pod_organizers_mobiles)
 
     client = Client(account_sid, auth_token)
 
     message = client.messages \
                     .create(
-                         body="A parent with email " + sender + " is interested.",
+                         body="A parent with email address " + sender + " is interested in this pod.",
                          messaging_service_sid='MG8b0587e27f85f4b05d7525a5833f89db',
-                         to=to_phone_number
+                         to=pod_organizers_mobiles,
                      )
 
     print("message.sid:", message.sid)
-    return jsonify({"message.sid": message.sid})
+    return jsonify({"message.sid": message.sid,
+                    "pod_organizers_list": pod_organizers_list},)
+        
 
 
 
