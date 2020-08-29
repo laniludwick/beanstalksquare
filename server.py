@@ -285,28 +285,26 @@ def protected():
 def send_stock_sms_to_pod_organizer(pod_id):
 
     print("pod_id in sms api route:", pod_id)
-    sender = request.get_json()
+    data = request.get_json()
+
+    name = data["name"]
+    phone = data["phone"]
+    email = data["email"]
+    message = data["message"]
+  
     
-    if sender:
-        print("**************data from json:", sender)
+    if data:
+        print("**************data from json:", data)
     else:
         print("**************data from json seems to be nonexistent.")
 
+
     pod_organizers = crud.get_parents_by_pod_id(pod_id)
     print(pod_organizers)
-
-    pod_organizers_list = []
+    
     pod_organizers_mobiles = []
 
     for parent, parent_pod in pod_organizers:
-
-        pod_organizers_list.append({
-
-            "parent_name": parent.fname+parent.lname,
-            "parent_email": parent.email,
-            "parent_mobile": parent.mobile_number,
-            
-            })
 
         pod_organizers_mobiles.append(parent.mobile_number)
         print("parent mobile:", parent.mobile_number)
@@ -316,14 +314,14 @@ def send_stock_sms_to_pod_organizer(pod_id):
 
     message = client.messages \
                     .create(
-                         body="A parent with email address " + sender + " is interested in this pod.",
+                         body="A parent is interested to learn more about this pod. Please respond at your earliest convenience." + name + ", " + phone + ", " + email + ". Their message is: " + message + ". ",
                          messaging_service_sid='MG8b0587e27f85f4b05d7525a5833f89db',
                          to=pod_organizers_mobiles,
                      )
 
     print("message.sid:", message.sid)
     return jsonify({"message.sid": message.sid,
-                    "pod_organizers_list": pod_organizers_list},)
+                    "pod_organizers_mobiles": pod_organizers_mobiles},)
         
 
 

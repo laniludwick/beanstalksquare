@@ -10,58 +10,98 @@ const Redirect = ReactRouterDOM.Redirect;
 //import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-
-
-
-function ContactPodOrganizerButton() {
-
-  const history = ReactRouterDOM.useHistory(); 
+function ContactPodOrganizer() {
+  
   const {podId} = ReactRouterDOM.useParams();
-  
-  
+  const history = ReactRouterDOM.useHistory();
+  const [userInputSms, setUserInputSms] = React.useReducer(
+    (state, newState) => ({...state, ...newState}),
 
-  const contactPodOrganizer = () => {
+    {
+    name: "",
+    phone: "",
+    email: "",
+    message: "",
+    }
+  );
+
+  const handleChange = evt => {
+    const name = evt.target.name;
+    const newValue = evt.target.value;
+    setUserInputSms({[name]: newValue});
+    
+    
+  }
+
+  const contactPodOrganizer = (e) => {
+    
+    e.preventDefault();
+    console.log("This is inside the contactPodOrganizer arrow function!");
     
     const useremail = localStorage.getItem("useremail");
-    
-    console.log("in contact pod organizer function, useremail:", useremail);
-    console.log("json.stringify useremail:", JSON.stringify(useremail));
 
-    alert ("Right before fetch")
+    const textData = {"name": userInputSms.name, 
+                        "phone": userInputSms.phone,
+                        "email": userInputSms.email,
+                        "message": userInputSms.message,
+                        }
+
+                
+    console.log("Text data from form:", textData);
+    console.log("Stringified text data:", JSON.stringify(textData));
+
     fetch(`/api/send_stock_sms/${podId}`, {
-
       method: 'POST', 
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(useremail),
+      body: JSON.stringify(textData),
     })//Close fetch
 
     .then(response => response.json())
     .then(data => {
-      
-      if (data) {
-        alert("Message successfully sent to the pod organizer.")
-        
-        history.push(`/poddetails/${podId}`);
-      }
+      console.log("Result of .then data:", data);
+      alert("You successfully sent a message to the pod organizer!")
+      //setIsLoggedIn("True")
+      history.push("/");
     }); //Close .then
-  }
 
-
-  function handleSubmit(event) {
-    
-    alert ("You clicked the 'contact this pod's organizer button")
-    contactPodOrganizer();
 
   }
 
   return ( 
-     <form onSubmit={handleSubmit} >
-      <input type="submit" value="Contact Pod Organizer" /> 
-    </form>
-    ); 
-} 
+   
+    <div>
+     
+     <br/>
+     <label>Your name </label>
+     <br/>
+     <input type="text" name="name" value={userInputSms.name} onChange={handleChange}/>
+      <br/>
+
+      <label> Phone number</label>
+      <br/>
+      <input type="text" value={userInputSms.phone} name="phone" onChange={handleChange} />
+      <br/>
+
+      <label> Email</label>
+      <br/>
+      <input type="text" value={userInputSms.email} name="email" onChange={handleChange} />
+      <br/>
+
+      <label> Message</label>
+      <br/>
+      <input type="textarea" value={userInputSms.message} name="message" onChange={handleChange} rows={5}/>
+      <br/>
+
+      <br/>
+      <button onClick={contactPodOrganizer}> Send message </button>
+    </div>
+
+  );
+}
+
+
 
 
 function Child (props) {
@@ -424,7 +464,7 @@ function PodDetailsContainer(props) {
       <br/>
       
       <div>
-        <ContactPodOrganizerButton />
+        <Link to="/contactpodorganizer" className="btn btn-primary">Contact Pod Parent </Link> 
       </div>
       <br/>
       <div width="50%">
@@ -437,28 +477,12 @@ function PodDetailsContainer(props) {
         <ChildrenInPodList />
       </div>
         
-      
-      
     </div>
      
   )
 }
 
 
-
-function StartAPodButton(props) {
-
-  function handleSubmit(event) {        
-    //event.preventDefault();
-    alert ("You clicked the 'start a pod' button in the UI")  
-  }
-
-  return ( 
-    <div>
-      <Link to="/createpod" className="btn btn-primary">Start a pod</Link>
-    </div>
-    ); 
-  } 
 
 
 function CreatePod() {
@@ -537,8 +561,6 @@ function CreatePod() {
 
   return (
     <div>
-     
-     
      <br/>
      <label>Pod Name </label>
      <br/>
@@ -611,9 +633,6 @@ function Pod(props) {
 
   console.log("data in for isLoggedIn in Pod component:", props.isLoggedIn);
   const podDetailsLink = `/poddetails/${props.pod_id}`;
-
-  function handleClick(event) {
-  }
 
   return (
     <tr>
@@ -1076,6 +1095,10 @@ function GlobalNavigationBar(props) {
 
         <Route path="/createpod">
         <CreatePod /> 
+        </Route>
+
+        <Route path ="/contactpodorganizer">
+        <ContactPodOrganizer />
         </Route>
 
         <Route path="/podlist/:zipcode">
