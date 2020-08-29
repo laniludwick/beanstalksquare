@@ -13,6 +13,7 @@ const Redirect = ReactRouterDOM.Redirect;
 function ContactPodOrganizer() {
   
   const {podId} = ReactRouterDOM.useParams();
+  console.log("podID from use params {podId} and podId:", {podId}, podId);
   const history = ReactRouterDOM.useHistory();
   const [userInputSms, setUserInputSms] = React.useReducer(
     (state, newState) => ({...state, ...newState}),
@@ -179,7 +180,7 @@ function GoogleMap(props) {
   function code_address(address) {
 
     const geocoder = new google.maps.Geocoder();
-    address = "142 Channing Rd, Burlingame, CA 94010";
+    //address = "142 Channing Rd, Burlingame, CA 94010";
     console.log("address post geocode constructor:", address);
     
     geocoder.geocode({'address':address}, function (results, status) {
@@ -458,13 +459,16 @@ function PodDetails(props) {
 
 function PodDetailsContainer(props) {
 
+  const {podId} = ReactRouterDOM.useParams();
+  const contact_pod_organizers_link = `/contactpodorganizer/${podId}`
+
   return (
     <div>
       <br/>
       <br/>
       
       <div>
-        <Link to="/contactpodorganizer" className="btn btn-primary">Contact Pod Parent </Link> 
+        <Link to={contact_pod_organizers_link} className="btn btn-primary">Contact Pod Parent </Link> 
       </div>
       <br/>
       <div width="50%">
@@ -1097,7 +1101,7 @@ function GlobalNavigationBar(props) {
         <CreatePod /> 
         </Route>
 
-        <Route path ="/contactpodorganizer">
+        <Route path ="/contactpodorganizer/:podId">
         <ContactPodOrganizer />
         </Route>
 
