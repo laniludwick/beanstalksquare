@@ -652,8 +652,8 @@ function Pod(props) {
       <td>{props.days_per_week}</td>
       <td>{props.total_hours_per_day}</td>
       <td>{props.paid_teacher}</td>
-      <td><Link to={podDetailsLink}> View details</Link></td>
-     {/* {props.isLoggedIn==="True"? <td><Link to={podDetailsLink}> View details</Link></td>: null}*/}
+      {/*<td><Link to={podDetailsLink}> View details</Link></td>*/}
+     {props.isLoggedIn==="True"? <td><Link to={podDetailsLink}> View details</Link></td>: <td>View details</td>}
     </tr>
   );
 }
@@ -683,7 +683,7 @@ function PodList(props) {
                                 days_per_week={pod.days_per_week}
                                 total_hours_per_day={pod.total_hours_per_day}
                                 paid_teacher={pod.paid_teacher}
-                                
+                                isLoggedIn={props.isLoggedIn}
                                 />
       console.log("pod component:", podComponent);
       podComponentsList.push(podComponent);
@@ -1126,11 +1126,11 @@ function GlobalNavigationBar(props) {
         </Route>
 
         <Route path="/podlist/:zipcode">
-        <PodList />
+        <PodList isLoggedIn={props.isLoggedIn}/>
         </Route>
 
         <Route path="/poddetails/:podId">
-        <PodDetailsContainer /> 
+        <PodDetailsContainer isLoggedIn={props.isLoggedIn}/> 
         </Route>
 
 
