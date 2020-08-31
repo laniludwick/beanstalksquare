@@ -657,7 +657,7 @@ function PodList(props) {
   console.log("data in for isLoggedIn in PodList component:", props.isLoggedIn);
   const [podList, setPodList] = React.useState([]);
 
-  let data = location.state.dataResult;
+  let data = location.state.data
   //const data = props.data;
 
   React.useEffect(() => {
