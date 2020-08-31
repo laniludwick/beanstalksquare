@@ -27,11 +27,10 @@ function ContactPodOrganizer() {
   );
 
   const handleChange = evt => {
+
     const name = evt.target.name;
     const newValue = evt.target.value;
     setUserInputSms({[name]: newValue});
-    
-    
   }
 
   const contactPodOrganizer = (e) => {
@@ -64,7 +63,7 @@ function ContactPodOrganizer() {
       console.log("Result of .then data:", data);
       alert("You successfully sent a message to the pod organizer!")
       //setIsLoggedIn("True")
-      history.push("/");
+      history.push(`/poddetails/${podId}`);
     }); //Close .then
 
 
@@ -654,10 +653,12 @@ function Pod(props) {
 
 function PodList(props) {
   
+  let location = ReactRouterDOM.useLocation();
   console.log("data in for isLoggedIn in PodList component:", props.isLoggedIn);
   const [podList, setPodList] = React.useState([]);
 
-  const data = props.data;
+  let data = location.state.dataResult;
+  //const data = props.data;
 
   React.useEffect(() => {
 
@@ -719,26 +720,40 @@ function PodSearch(props) {
   const [zipcode, setZipcode] = React.useState("");
   const history = ReactRouterDOM.useHistory(); //Not needed
   const [dataResult, setDataResult] = React.useState(null);
+  
+
+  
 
   const getPodList = (zipcode) => {
     
-    fetch(`/api/pods?zipcode=${zipcode}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-
-    .then(response => response.json())
-
-    .then(data => {
     
-      console.log("data:", data);
-      setDataResult(data);
-      console.log("dataresult:", dataResult);
-    }) //Close .then
+      fetch(`/api/pods?zipcode=${zipcode}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+
+      .then(response => response.json())
+
+      .then(data => {
+      
+        console.log("data:", data);
+        
+        setDataResult(data);
+        console.log("dataresult:", dataResult);
+          
+
+        if (dataResult) {
+        history.push({
+          pathname: `/podlist/${zipcode}`,
+          state: {data: dataResult},
+        });
+        }
+        }) //Close .then
   } //Close getPodList
 
+ 
 
   function handleChange(event) {
     setZipcode(event.target.value);
@@ -764,11 +779,8 @@ function PodSearch(props) {
           <input type="text" value={zipcode} name="zipcode" onChange={handleChange} />
           <input type="submit" value="search" /> 
       </form>
-      {dataResult? <PodList data={dataResult}/> : null}
-     {/* <Redirect to={{
-        pathname: `/podlist?zipcode=${zipcode}`,
-        state: {data=dataResult},
-      }} />*/}
+    {/* {dataResult? <PodList data={dataResult}/> : null} */}
+     
     
     </div>
     ); //Close return of HTML in PodSearch function.
@@ -1106,7 +1118,7 @@ function GlobalNavigationBar(props) {
         </Route>
 
         <Route path="/podlist/:zipcode">
-        <PodList /> 
+        <PodList />
         </Route>
 
         <Route path="/poddetails/:podId">
