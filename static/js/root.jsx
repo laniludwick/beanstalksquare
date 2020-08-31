@@ -108,6 +108,7 @@ function Child (props) {
 
   return (
     <tr>
+      <td>{props.full_name}</td>
       <td>{props.zipcode}</td>
       <td>{props.grade_name}</td>
       <td>{props.school_program}</td>
@@ -284,8 +285,13 @@ function ChildrenInPodList(props) {
 
         for (const child of data) {
 
+          const full_name = child.fname+" "+child.lname;
+          
+          console.log("child's full name:", full_name);
+
           const childElement = <Child 
                                     key={child.child_id}
+                                    full_name={full_name}
                                     zipcode={child.zipcode}
                                     grade_name={child.grade_name}
                                     school_program={child.school_program}
@@ -293,8 +299,9 @@ function ChildrenInPodList(props) {
                                     />
         console.log("Child component:", childElement);
         childComponentsList.push(childElement);
-        setChildrenInPod(childComponentsList);  
+         
         }
+        setChildrenInPod(childComponentsList); 
       });
       }, [])
 
@@ -305,6 +312,7 @@ function ChildrenInPodList(props) {
         <table className="podchildren">
         <thead>
           <tr> 
+            <th scope="col">Name</th>
             <th scope="col">Zipcode</th>
             <th scope="col">Grade name</th>
             <th scope="col">School program</th>

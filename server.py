@@ -149,8 +149,10 @@ def show_children_in_pod(pod_id):
         print("*************child in children:", child)
         childrenlist.append({
             "child_id": child[0].child_id,
+            "fname": child[0].fname,
+            "lname": child[0].lname,
             "zipcode": child[0].zipcode,
-            #"school_program": child[0].school_program,
+            "school_program": child[0].school_program,
             "grade_name": child[2].grade_name,
             "school_name": child[3].school_name
             },)
