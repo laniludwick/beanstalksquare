@@ -156,13 +156,22 @@ function GoogleMap(props) {
     //Call the function to create map and geocode after script tag has loaded.
     googleMapScript.addEventListener('load', () => {    
       
-      createGoogleMap();
-      
       code_address(address);
       
       
     }); //Close event listener
-  }, [longitude]); //Close useEffect hook that calls the create map and geocode functions
+  }, [latitude, longitude]); //Close useEffect hook that calls the create map and geocode functions
+
+
+  //Hook to create map
+  React.useEffect (() => {
+    
+    if (latitude !==0 && longitude !==0) {
+  
+    createGoogleMap();
+    //setMarker(createMarker(map));
+    }
+  },[latitude, longitude]);
 
 
   //Hook to create markers for GoogleMap if the map itself is available  
@@ -173,7 +182,7 @@ function GoogleMap(props) {
     createMarker(map);
     //setMarker(createMarker(map));
     }
-  },[longitude]);
+  },[map]);
 
 
   //Define function to convert address into geocode address
@@ -191,7 +200,7 @@ function GoogleMap(props) {
       const lat_data = results[0].geometry.location.lat();
       const lng_data = results[0].geometry.location.lng();
       console.log("lat_data, lng_data, status, results, address:", lat_data, lng_data, status, results, address);
-      alert("Geocode successful:", lat_data, lng_data, status);
+      //alert("Geocode successful:", lat_data, lng_data, status);
       
       if (lat_data && lng_data) {
         setLatitude(lat_data);
@@ -661,19 +670,46 @@ function Pod(props) {
 
 function PodList(props) {
   
-  let location = ReactRouterDOM.useLocation();
+  //let location = ReactRouterDOM.useLocation();
+  
+
   console.log("data in for isLoggedIn in PodList component:", props.isLoggedIn);
   const [podList, setPodList] = React.useState([]);
-
-  let data = location.state.data
+  const [dataResult, setDataResult] = React.useState([]);
+  const {zipcode} = ReactRouterDOM.useParams();
+  //let data = location.state.data
   //const data = props.data;
+
+
+  React.useEffect(() => {
+    
+      fetch(`/api/pods?zipcode=${zipcode}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+
+      .then(response => response.json())
+
+      .then(data => {
+      
+        console.log("data:", data);
+        
+        setDataResult(data);
+        console.log("dataresult:", dataResult);
+  
+        }) //Close .then
+  }, []); //Close useEffect
+
+
 
   React.useEffect(() => {
 
-    console.log("data in for loop in pod list:", data);
+    //console.log("data in for loop in pod list:", data);
     const podComponentsList = [];
 
-    for (let pod of data) {
+    for (let pod of dataResult) {
       
       console.log("pod:", pod);
       const podComponent = <Pod key={pod.pod_id}
@@ -693,7 +729,7 @@ function PodList(props) {
   
 
   setPodList(podComponentsList);
-  }, []);
+  }, [dataResult]);
 
   return ( 
     <div>
@@ -727,41 +763,7 @@ function PodSearch(props) {
 
   const [zipcode, setZipcode] = React.useState("");
   const history = ReactRouterDOM.useHistory(); //Not needed
-  const [dataResult, setDataResult] = React.useState(null);
   
-
-  
-
-  const getPodList = (zipcode) => {
-    
-    
-      fetch(`/api/pods?zipcode=${zipcode}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      })
-
-      .then(response => response.json())
-
-      .then(data => {
-      
-        console.log("data:", data);
-        
-        setDataResult(data);
-        console.log("dataresult:", dataResult);
-          
-
-        if (dataResult) {
-        history.push({
-          pathname: `/podlist/${zipcode}`,
-          state: {data: dataResult},
-        });
-        }
-        }) //Close .then
-  } //Close getPodList
-
- 
 
   function handleChange(event) {
     setZipcode(event.target.value);
@@ -769,12 +771,12 @@ function PodSearch(props) {
 
   function handleSubmit(event) {
     
+
     //alert (`We're looking in zipcode: `+ zipcode);
     event.preventDefault();
     //Want to redirect to route.
 
-    getPodList(zipcode);
-    //history.push("/podlist/:zipcode"); 
+    history.push(`/podlist/${zipcode}`); 
   }
 
   return ( 
