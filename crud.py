@@ -1,4 +1,4 @@
-from model import (db, Parent, Household, Pod, Child, Pod_Location, School, 
+from model import (db, Parent, Household, Pod, Child, Teacher, Pod_Location, School, 
 Grade, Child_Pod, Parent_Pod, Covid_Risk_Profile, connect_to_db) #Need to fill in here
 import string
 import random
@@ -59,7 +59,7 @@ def create_pod(pod_name=None, max_child_capacity=None, days_per_week=None,
 
 
 def create_child(fname, lname, zipcode, school_id, grade_id, household_id, 
-                school_program=None, distance_willing_to_travel=None, 
+                gender=None, school_program=None, distance_willing_to_travel=None, 
                 preferred_days_per_week=None, preferred_total_hours_per_day=None, 
                 prefer_paid_teacher=None, prefer_same_school_program_only=None, 
                 prefer_same_school_only=None, prefer_same_grade_only=None, 
@@ -67,7 +67,7 @@ def create_child(fname, lname, zipcode, school_id, grade_id, household_id,
                 max_budget_per_hour=None):
     """Add a new child to the children table and return the child."""
 
-    child = Child(fname=fname, lname=lname,
+    child = Child(fname=fname, lname=lname, gender=gender,
                 zipcode=zipcode, school_id=school_id,
                 school_program=school_program, grade_id=grade_id,
                 household_id=household_id, 
@@ -86,10 +86,32 @@ def create_child(fname, lname, zipcode, school_id, grade_id, household_id,
 
     return child
 
-def create_pod_location(pod_id, zipcode, street_address=None, city=None, state=None, day_of_week=None):
+
+def create_teacher(fname, lname, email, password, zipcode, bio, 
+    mobile_number=None, days_of_week=None,teaching_experience_in_hours=None,
+    pay_rate_per_hour=None, pod_id=None, img_url=None,covid_risk_profile_id=None):
+    """Add a new teacher to the teachers table and return the teacher."""
+
+    teacher = Teacher(fname=fname, lname=lname, email=email, password=password,
+        zipcode=zipcode, bio=bio, mobile_number=mobile_number,
+        days_of_week=days_of_week,
+        teaching_experience_in_hours=teaching_experience_in_hours,
+        pay_rate_per_hour=pay_rate_per_hour, 
+        pod_id=pod_id,img_url=img_url,
+        covid_risk_profile_id=covid_risk_profile_id)
+
+    db.session.add(teacher)
+    db.session.commit()
+
+    return teacher
+
+
+def create_pod_location(pod_id, zipcode, street_address=None, city=None, 
+    state=None, day_of_week=None):
     """Add a new pod location to the pod_locations table and return it."""
 
-    pod_location = Pod_Location(pod_id=pod_id, street_address=street_address, city=city, state=state, 
+    pod_location = Pod_Location(pod_id=pod_id, street_address=street_address, 
+                                city=city, state=state, 
                                 zipcode=zipcode, day_of_week=day_of_week)
     db.session.add(pod_location)
     db.session.commit()

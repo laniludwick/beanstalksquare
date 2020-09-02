@@ -18,10 +18,12 @@ import random
 fake = Faker()
 
 
+
 os.system('dropdb beanstalksquare') #Run the string as a command in a subshell 
 os.system('createdb beanstalksquare') #Run the string as a command in a subshell 
 
 model.connect_to_db(server.app) #import app from server.py file.
+model.db.drop_all() #Drops all existing tables, import from model.py file.
 model.db.create_all() #Creates all tables, import from model.py file.
 
 
@@ -33,7 +35,7 @@ crud.create_schools()
 
 #Create households in db:
 i=1
-for _ in range(10):
+for _ in range(20):
 
     if i<6:
         new_household = crud.create_household(covid_risk_profile_id=i)
@@ -48,7 +50,7 @@ for _ in range(10):
 
 #Create parents in db:
 j=1
-for _ in range(10):
+for _ in range(20):
 
     #Faker.seed(0)
     fname = fake.first_name()
@@ -64,19 +66,26 @@ for _ in range(10):
     j+=1
 
 
+eric = crud.create_parent(fname="Eric", lname="Anderson", email="eric.anderson@gmail.com", password="asdf", household_id=11, mobile_number="917-538-4741")
+
+marcy = crud.create_parent(fname="Marcy", lname="Anderson", email="marcy.anderson@gmail.com", password="asdf", household_id=11, mobile_number="917-538-4741")
+
+jessica = crud.create_parent(fname="Jessica", lname="Martinez", email="jessica.martinez@gmail.com", password="asdf", household_id=12, mobile_number="917-538-4741",)
+
 
 #Create children in db
 k=1
-for _ in range(15):
+for _ in range(20):
 
     #Faker.seed(0)
     fname = fake.first_name()
     lname = fake.last_name()
     zipcode = fake.zipcode()
-    school_id = k
-    grade_id = k
+    
+    school_id = 1
+    grade_id = 3
     household_id = k 
-    school_program = Dual Language Immersion 
+    school_program = "Dual Language Immersion" 
     distance_willing_to_travel = randrange(1,10)
     preferred_days_per_week = randrange(3,5)
     preferred_total_hours_per_day = randrange(3,6)
@@ -89,7 +98,7 @@ for _ in range(15):
     max_budget_per_hour = randrange(0,5)
     
     if k<12:
-        new_child = crud.create_child(fname=fname, lname=lname, zipcode=zipcode, school_id=school_id, 
+        new_child = crud.create_child(fname=fname, lname=lname, zipcode=zipcode, gender="Female", school_id=school_id, 
                                 grade_id=grade_id, household_id=household_id,
                                 distance_willing_to_travel=distance_willing_to_travel,
                                 preferred_days_per_week=preferred_days_per_week,
@@ -102,8 +111,8 @@ for _ in range(15):
                                 prefer_periodic_covid_testing=prefer_periodic_covid_testing,
                                 max_budget_per_hour=max_budget_per_hour)
     else:
-        new_child = crud.create_child(fname=fname, lname=lname, zipcode='44797', school_id=school_id, 
-                                grade_id='2nd Grade', household_id=household_id,
+        new_child = crud.create_child(fname=fname, lname=lname, zipcode='94010', gender="Male", school_id=school_id, 
+                                grade_id=3, household_id=household_id,
                                 distance_willing_to_travel=distance_willing_to_travel,
                                 preferred_days_per_week=preferred_days_per_week,
                                 preferred_total_hours_per_day=preferred_total_hours_per_day,
@@ -117,11 +126,24 @@ for _ in range(15):
 
     k+=1
 
+jackson = crud.create_child(fname="Jackson", lname="Daniels", gender="Male",
+    zipcode="94010", school_id=1,school_program="Spanish immersion",
+    grade_id=3, household_id=1)
+
+emily = crud.create_child(fname="Emily", lname="Sanders", gender="Female",
+    zipcode="94010", school_id=1, school_program="Spanish immersion", 
+    grade_id=3, household_id=2)
+
+zahara = crud.create_child(fname="Zahara", lname="Gupta", gender="Female", 
+    zipcode="94010", school_id=1,school_program="Spanish immersion",
+    grade_id=3, household_id=3)
+
+
 #Create pods in db
 m=1
-for _ in range(500):
+for _ in range(20):
 
-    pod_name = fake.color_name() + "learning pod"
+    pod_name = fake.color_name() + " learning pod"
     max_child_capacity = randrange(2,8)
     days_per_week = randrange(3,5)
     total_hours_per_day = randrange(3,6)
@@ -147,6 +169,45 @@ for _ in range(500):
     m+=1
 
 
+new_pod1 = crud.create_pod(pod_name="Dragons", max_child_capacity=5, days_per_week=5, total_hours_per_day=5,
+    paid_teacher=True, same_school_program_only=True,same_school_only=True,
+    same_grade_only=False,outdoors_only=False, periodic_covid_testing=False,
+    covid_risk_profile_id=2, cost_per_hour=2)
+
+new_pod2 = crud.create_pod(pod_name="Shooting stars", max_child_capacity=5,
+    days_per_week=5, total_hours_per_day=6,paid_teacher=False, 
+    same_school_program_only=True,same_school_only=True, same_grade_only=True,
+    outdoors_only=True, periodic_covid_testing=False,covid_risk_profile_id=1, cost_per_hour=0)
+
+new_pod3 = crud.create_pod(pod_name="Aguilas", max_child_capacity=5,
+    days_per_week=5, total_hours_per_day=7,paid_teacher=True,
+    same_school_program_only=True,same_school_only=True, same_grade_only=True,
+    outdoors_only=False, periodic_covid_testing=True,
+    covid_risk_profile_id=2, cost_per_hour=2)
+
+new_pod4 = crud.create_pod(pod_name="Explorers", max_child_capacity=5,
+    days_per_week=5, total_hours_per_day=5,
+    paid_teacher=True, same_school_program_only=True,
+    same_school_only=True, same_grade_only=False,
+    outdoors_only=False, periodic_covid_testing=False,
+    covid_risk_profile_id=3, cost_per_hour=3)
+
+
+
+#Create teachers in db
+tonya = crud.create_teacher(fname="Tonya", lname="Kramer", email="tonya.lopez@gmail.com", password="asdf", mobile_number="917-538-4741", zipcode="94010",
+    bio="I'm a positive and energetic 28-year-old college graduate. Ever since I was in high school I have been tutoring children and even my peers in all subjects.",
+    days_of_week="Mon-Fri", teaching_experience_in_hours="900",pay_rate_per_hour=25,covid_risk_profile_id=2,img_url="/static/img/teacher1.jpg",)
+
+nadine = crud.create_teacher(fname="Nadine", lname="Cruz",email="nadine.cruz@gmail.com", password="asdf", mobile_number="917-538-4741", pod_id=21, zipcode="94010",
+    bio="I minored in Spanish in college. During college, I also tutored student-athletes averaging no less than a B+ on all assignments and course levels. I am fluent in Spanish reading, writing, and speaking. I know how to work with all skill levels and have the patience and energy needed to be an effective teacher.",
+                            days_of_week="Mon-Fri",teaching_experience_in_hours="500",pay_rate_per_hour=15,covid_risk_profile_id=2,img_url="/static/img/teacher2.jpg",)
+
+jasmine = crud.create_teacher(fname="Jasmine", lname="Jones", email="jasmine.jones@gmail.com", password="asdf", mobile_number="917-538-4741", zipcode="94010",
+    bio="I have a masters in education and have nannied and tutored students after school for the past year. I am very organized and punctual and make sure to plan the prior day for the next day's lessons.",
+    days_of_week="Mon-Fri",teaching_experience_in_hours="800",pay_rate_per_hour=20,covid_risk_profile_id=3,img_url="/static/img/teacher3.jpg",)
+
+
 #Add parents to pods
 r=1
 for _ in range(10):
@@ -156,10 +217,15 @@ for _ in range(10):
     new_parent_pod=crud.add_parent_to_pod(pod_id=pp_pod_id, parent_id=pp_parent_id)
     r+=1
 
+parent1 = new_parent_pod=crud.add_parent_to_pod(pod_id=21, parent_id=21)
+parent2 = new_parent_pod=crud.add_parent_to_pod(pod_id=21, parent_id=22)
+parent3 = new_parent_pod=crud.add_parent_to_pod(pod_id=21, parent_id=23)
+
+
 
 # #Add children to pods
 q=1
-for _ in range(30):
+for _ in range(20):
     pod_id=q
     child_id=q
 
@@ -169,6 +235,9 @@ for _ in range(30):
         new_child_pod=crud.add_child_to_pod(pod_id=1, child_id=child_id)
 
 
+kid1 = new_child_pod=crud.add_child_to_pod(pod_id=21, child_id=21)
+kid2 = new_child_pod=crud.add_child_to_pod(pod_id=21, child_id=22)
+kid3 = new_child_pod=crud.add_child_to_pod(pod_id=21, child_id=23)
 
 
 #Create pod locations in db
@@ -189,7 +258,25 @@ for _ in range(10):
     
     n+=1
 
+new_pod_location1 = crud.create_pod_location(pod_id=21,
+    street_address="142 Channing Rd",
+    city="Burlingame", state="CA", zipcode="94010",
+    day_of_week = "Mon-Fri")
 
+new_pod_location1 = crud.create_pod_location(pod_id=22,
+    street_address="100 Paloma Rd",
+    city="Burlingame", state="CA", zipcode="94010",
+    day_of_week = "Mon-Fri")
+
+new_pod_location1 = crud.create_pod_location(pod_id=23,
+    street_address="150 Howard Ave",
+    city="Burlingame", state="CA", zipcode="94010",
+    day_of_week = "Mon-Fri")
+
+new_pod_location1 = crud.create_pod_location(pod_id=24,
+    street_address="320 Cabrillo Lane",
+    city="Burlingame", state="CA", zipcode="94010",
+    day_of_week = "Mon-Fri")
 
 # for _ in range(10):
 #     email = f'{i}@gmail.com'

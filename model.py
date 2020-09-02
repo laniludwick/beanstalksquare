@@ -36,6 +36,7 @@ class Parent(db.Model):
     password = db.Column(db.String(50))
     mobile_number = db.Column(db.String(50))
     household_id = db.Column(db.Integer, db.ForeignKey('households.household_id'))
+    img_url = db.Column(db.String(50), nullable=True)
 
     household = db.relationship('Household')
     parent_pod = db.relationship('Parent_Pod')
@@ -85,6 +86,7 @@ class Child(db.Model):
 
     fname = db.Column(db.String(50))
     lname = db.Column(db.String(50))
+    gender = db.Column(db.String(50), nullable=True)
     household_id = db.Column(db.Integer, db.ForeignKey('households.household_id'))
     zipcode = db.Column(db.Integer)
     school_id = db.Column(db.Integer, db.ForeignKey('schools.school_id'))
@@ -112,28 +114,28 @@ class Child(db.Model):
 
 
 class Teacher(db.Model):
-    """A teacher, which can be associated with a pod."""
+    """A teacher, which can be associated with a pod."""
 
-    __tablename__="teachers"
+    __tablename__="teachers"
 
-    teacher_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    teacher_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
 
-    pod_id = db.Column(db.Integer, db.ForeignKey('pods.pod_id'))
-    fname = db.Column(db.String(50))
-    lname = db.Column(db.String(50))
-    email = db.Column(db.String(50))
-    password = db.Column(db.String(50))
-    mobile_number = db.Column(db.String(50))
-    img_url = db.Column(db.String(50))
-    zipcode = db.Column(db.String(50))
-    days_of_week = db.Column(db.String(50))
-    bio = db.Column(db.String(50))
-    pay_rate_per_hour = db.Column(db.Float)
-    teaching_experience_in_hours = db.Column(db.Integer)
-    covid_risk_profile_id = db.Column(db.Integer, db.ForeignKey('covid_risk_profiles.covid_risk_profile_id'))
+    pod_id = db.Column(db.Integer, db.ForeignKey('pods.pod_id'))
+    fname = db.Column(db.String(50))
+    lname = db.Column(db.String(50))
+    email = db.Column(db.String(50))
+    password = db.Column(db.String(50))
+    mobile_number = db.Column(db.String(50), nullable=True)
+    img_url = db.Column(db.String(50), nullable=True)
+    zipcode = db.Column(db.String(50))
+    days_of_week = db.Column(db.String(50), nullable=True)
+    bio = db.Column(db.String)
+    pay_rate_per_hour = db.Column(db.Float)
+    teaching_experience_in_hours = db.Column(db.Integer)
+    covid_risk_profile_id = db.Column(db.Integer, db.ForeignKey('covid_risk_profiles.covid_risk_profile_id'))
 
-    covid_risk_profile = db.relationship('Covid_Risk_Profile')
-    pod = db.relationship('Pod')
+    covid_risk_profile = db.relationship('Covid_Risk_Profile')
+    pod = db.relationship('Pod')
 
 
 class Pod_Location(db.Model):
@@ -235,7 +237,7 @@ class School(db.Model):
 
 
 
-def connect_to_db(flask_app, db_uri='postgresql:///beanstalksquaretestdb', echo=True):
+def connect_to_db(flask_app, db_uri='postgresql:///beanstalksquare', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     flask_app.config['SQLALCHEMY_ECHO'] = echo
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
