@@ -881,7 +881,6 @@ function PodSearch(props) {
       </form>
     {/* {dataResult? <PodList data={dataResult}/> : null} */}
      
-    
     </div>
     ); //Close return of HTML in PodSearch function.
   } //Close the entire PodSearch function.
@@ -990,11 +989,13 @@ function TeacherSignUpForm() {
     lname: "",
     email: "",
     password: "",
+    zipcode: "",
+    bio: "",
     
     }
   );
 
-  const [fileSelect, setFileSelect] = React.useState(null); 
+  const [uploadedImage, setUploadedImage] = React.useState(null); 
 
   const handleChange = evt => {
     const name = evt.target.name;
@@ -1009,8 +1010,8 @@ function TeacherSignUpForm() {
   const handleFileChange = evt => {
 
     const file = evt.target.files[0];
-    setFileSelect(file);
-    console.log("fileSelect", fileSelect);
+    setUploadedImage(file);
+    console.log("fileSelect", uploadedImage);
   }
 
   const makeSignUp = (e) => {
@@ -1022,18 +1023,21 @@ function TeacherSignUpForm() {
                         "lname": userInputSignUp.lname,
                         "signupemail": userInputSignUp.signupemail,
                         "signuppassword": userInputSignUp.signuppassword,
+                        "zipcode": userInputSignUp.zipcode,
+                        "bio": userInputSignUp.teacher_bio,
                         }
 
+    const photoData = {"profile_pic": "howdy"}
                 
     console.log("SignUp data from form:", signUpData);
     console.log("Stringified sign up data:", JSON.stringify(signUpData));
 
-    fetch('/api/signup_parent', {
+    fetch('/api/signup_teacher', {
       method: 'POST', 
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(signUpData),
+      body: JSON.stringify([signUpData, photoData]),
     })//Close fetch
 
     .then(response => response.json())
@@ -1043,26 +1047,28 @@ function TeacherSignUpForm() {
       //setIsLoggedIn("True")
       history.push("/");
     }); //Close .then
+    
+  } //Close makeSignUp function
+
+  
 
 
-  }
+
+  // const makeImgUpload = (e) => {
+
+  //   e.preventDefault();
+  //   console.log("This is inside the makeImgUpload arrow function!");
+
+  //   fetch('/api/signup_teacher', {
+  //     method: 'POST', 
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(signUpData),
+  //   })//Close fetch
 
 
-  const makeImgUpload = (e) => {
-
-    e.preventDefault();
-    console.log("This is inside the makeImgUpload arrow function!");
-
-    fetch('/api/signup_parent', {
-      method: 'POST', 
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(signUpData),
-    })//Close fetch
-
-
-  }
+  
 
   return ( 
    
@@ -1089,6 +1095,10 @@ function TeacherSignUpForm() {
       <input type="text" value={userInputSignUp.signuppassword} name="signuppassword" onChange={handleChange} />
       <br/>
 
+      <label> Zipcode</label>
+      <br/>
+      <input type="text" value={userInputSignUp.zipcode} name="zipcode" onChange={handleChange} />
+      <br/>
 
       <label> Bio</label>
       <br/>
@@ -1097,16 +1107,38 @@ function TeacherSignUpForm() {
 
       <label> Profile Photo</label>
       <br/>
-      <input type="file" onChange={handleFileChange} />
+      
+      <input type="file" id="opener" onChange={handleFileChange} />
       <br/>
+      
 
       <br/>
-      <button onClick={makeSignUp; makeImgUpload}> Complete Sign Up </button>
+      <button onClick={makeSignUp}> Complete Sign Up </button>
     </div>
 
   );
 }
 
+{/*function ProfilePhotoUpload() {
+
+  const uploadWidget = () => {
+    cloudinary.openUploadWidget('#opener',{ 
+      cloudName: 'beanstalksquare', uploadPreset: 'preset' 
+      }, 
+      (error, result) => { });   
+  }
+
+  return ( 
+    <div class="profile-pic-upload">
+      <label> Profile Photo</label>
+      <br/>
+      
+      <input type="file" id="opener" onChange={handleFileChange} />
+      <br/>
+      )
+
+}
+*/}
 
 function ParentSignUpForm() {
   

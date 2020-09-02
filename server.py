@@ -295,10 +295,13 @@ def signup_teacher():
     """Create a new user."""
 
     data = request.get_json()
-    fname = data["fname"]
-    lname = data["lname"]
-    email = data["signupemail"]
-    password = data["signuppassword"]
+    fname = data[0]["fname"]
+    lname = data[0]["lname"]
+    email = data[0]["signupemail"]
+    password = data[0]["signuppassword"]
+    zipcode = data[0]["zipcode"]
+    bio = data[0]["bio"]
+    img_url = data[1]["profile_pic"]
 
     #If email already exists in the system, block user from re-registering.
     #if crud.get_user_by_email(email): 
@@ -306,7 +309,7 @@ def signup_teacher():
 
     #Otherwise, allow user to register for an account with that email address.
     #else:
-    user = crud.create_teacher(fname, lname, email, password)
+    user = crud.create_teacher(fname, lname, email, password, zipcode, bio, img_url)
     
     #filename = request.files.get('image_upload')
     #if filename:
