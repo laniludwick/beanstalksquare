@@ -18,8 +18,8 @@ import random
 fake = Faker()
 
 
-os.system('dropdb beanstalksquaretestdb') #Run the string as a command in a subshell 
-os.system('createdb beanstalksquaretestdb') #Run the string as a command in a subshell 
+os.system('dropdb beanstalksquare') #Run the string as a command in a subshell 
+os.system('createdb beanstalksquare') #Run the string as a command in a subshell 
 
 model.connect_to_db(server.app) #import app from server.py file.
 model.db.create_all() #Creates all tables, import from model.py file.

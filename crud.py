@@ -38,6 +38,7 @@ def create_pod(pod_name=None, max_child_capacity=None, days_per_week=None,
             same_grade_only=None, outdoors_only=None, periodic_covid_testing=None, 
             covid_risk_profile_id=None, cost_per_hour=None):
     """Add a new pod to the pods table and return the pod."""
+    #Need to add covid_risk_profile description into UI
 
     pod = Pod(pod_name=pod_name, 
             max_child_capacity=max_child_capacity, 

@@ -166,6 +166,8 @@ def show_children_in_pod(pod_id):
 def start_pod():
     """Create a new pod."""
 
+
+
     data = request.get_json()
     print("******************data in createpod route:", data)
     pod_name = data["pod_name"]
@@ -181,7 +183,35 @@ def start_pod():
     cost_per_hour = data["cost_per_hour"]
 
 
+    if data["paid_teacher"]=="":
+        paid_teacher="No" 
+    else:
+        paid_teacher="Yes"
+    
+    if data["same_grade_only"]=="":
+        same_grade_only="No" 
+    else:
+        same_grade_only="Yes"
+    
+    if data["same_school_only"]=="":
+        same_school_only="No" 
+    else:
+        same_school_only="Yes"
+        
+    if data["same_school_program_only"]=="":
+        same_school_program_only="No" 
+    else:
+        same_school_program_only="Yes"
 
+    if data["outdoors_only"]=="":
+        outdoors_only="No" 
+    else:
+        outdoors_only="Yes"
+
+    if data["periodic_covid_testing"]=="":
+        periodic_covid_testing="No" 
+    else:
+        periodic_covid_testing="Yes"
 
     print("****************pod name createpod route:", pod_name)
 

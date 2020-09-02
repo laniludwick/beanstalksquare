@@ -69,6 +69,8 @@ class Pod(db.Model):
     pod_location = db.relationship('Pod_Location')
     covid_risk_profile = db.relationship('Covid_Risk_Profile')
     children = db.relationship('Child', secondary='children_pods')
+    parents = db.relationship('Parent', secondary='parents_pods')
+    teacher = db.relationship('Teacher')
 
     def __repr__(self):
         return f'<Pod pod_id={self.pod_id} pod_name={self.pod_name}>'
@@ -108,6 +110,30 @@ class Child(db.Model):
     def __repr__(self):
         return f'<Child child_id={self.child_id} fname={self.fname}>'
 
+
+class Teacher(db.Model):
+    """A teacher, which can be associated with a pod."""
+
+    __tablename__="teachers"
+
+    teacher_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+
+    pod_id = db.Column(db.Integer, db.ForeignKey('pods.pod_id'))
+    fname = db.Column(db.String(50))
+    lname = db.Column(db.String(50))
+    email = db.Column(db.String(50))
+    password = db.Column(db.String(50))
+    mobile_number = db.Column(db.String(50))
+    img_url = db.Column(db.String(50))
+    zipcode = db.Column(db.String(50))
+    days_of_week = db.Column(db.String(50))
+    bio = db.Column(db.String(50))
+    pay_rate_per_hour = db.Column(db.Float)
+    teaching_experience_in_hours = db.Column(db.Integer)
+    covid_risk_profile_id = db.Column(db.Integer, db.ForeignKey('covid_risk_profiles.covid_risk_profile_id'))
+
+    covid_risk_profile = db.relationship('Covid_Risk_Profile')
+    pod = db.relationship('Pod')
 
 
 class Pod_Location(db.Model):
