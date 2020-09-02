@@ -196,6 +196,14 @@ def get_parents_by_pod_id(pod_id):
     return parents
 
 
+def get_filtered_teachers(zipcode): #Must use single quotes in SQL and SQLAlchemy
+    """Get and return teachers filtered by zipcode entered by the user."""
+
+    #Returns a teacher object
+
+    return db.session.query(Teacher).filter(Teacher.zipcode==zipcode).all()
+
+
 
 def get_household_join_code_by_household_id(household_id):
 

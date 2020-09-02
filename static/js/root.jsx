@@ -8,6 +8,7 @@ const Redirect = ReactRouterDOM.Redirect;
 //import Button from 'react-bootstrap/Button' OR;
 //const { Badge, Button, Col, Container, Form, FormControl, ListGroup, Navbar, Row, Table } = ReactBootstrap;
 //import 'bootstrap/dist/css/bootstrap.min.css';
+//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
 function ContactPodOrganizer() {
@@ -102,21 +103,6 @@ function ContactPodOrganizer() {
 }
 
 
-
-
-function Child (props) {
-
-  return (
-    <tr>
-      <td>{props.full_name}</td>
-      <td>{props.zipcode}</td>
-      <td>{props.grade_name}</td>
-      <td>{props.school_program}</td>
-      <td>{props.school_name}</td>
-      
-    </tr>
-  );
-}
 
 
 
@@ -272,6 +258,103 @@ function MapContainer(props) {
 
 
 
+function Teacher (props) {
+
+  return (
+    <tr>
+      <td>{props.full_name}</td>
+      <td>{props.zipcode}</td>
+      <td>{props.grade_name}</td>
+      <td>{props.school_program}</td>
+      <td>{props.school_name}</td>
+      
+    </tr>
+  );
+}
+
+
+
+function TeachersInPodList(props) {
+
+  const [teachersInPod, setTeachersInPod] = React.useState(null);
+  const {podId} = ReactRouterDOM.useParams();
+
+  React.useEffect(() => {
+    
+      console.log("Beg of useEffect in TeachersInPodList");
+      fetch(`/api/teachers/${podId}`, {
+        method: 'GET',
+      }) //Close fetch
+
+      .then(response => response.json())
+
+      .then(data => { 
+        //use parsed result
+        console.log("teachers in pod data response:", data);
+       
+        const teacherComponentsList = [];
+
+        for (const teacher of data) {
+
+          const full_name = teacher.fname+" "+teacher.lname;
+          
+          console.log("teacher's full name:", full_name);
+
+          const teacherElement = <Teacher 
+                                    key={teacher.teacher_id}
+                                    full_name={full_name}
+                                    zipcode={teacher.zipcode}
+                                    
+                                    />
+        console.log("Teacher component:", teacherElement);
+        teacherComponentsList.push(teacherElement);
+         
+        }
+        setTeachersInPod(teacherComponentsList); 
+      });
+      }, [])
+
+  console.log("Looking for teachers list:", teachersInPod);
+  
+  return ( 
+  
+        <table className="podteachers">
+        <thead>
+          <tr> 
+            <th scope="col">Name</th>
+            <th scope="col">Zipcode</th>
+            <th scope="col">Grade name</th>
+            <th scope="col">School program</th>
+            <th scope="col">School name</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+        {teachersInPod}
+        </tbody>
+      </table> 
+  
+  )
+}
+
+
+
+function Child (props) {
+
+  return (
+    <tr>
+      <td>{props.full_name}</td>
+      <td>{props.gender}</td>
+      <td>{props.zipcode}</td>
+      <td>{props.grade_name}</td>
+      <td>{props.school_program}</td>
+      <td>{props.school_name}</td>
+      
+    </tr>
+  );
+}
+
+
 function ChildrenInPodList(props) {
 
   const [childrenInPod, setChildrenInPod] = React.useState(null);
@@ -301,6 +384,7 @@ function ChildrenInPodList(props) {
           const childElement = <Child 
                                     key={child.child_id}
                                     full_name={full_name}
+                                    gender={child.gender}
                                     zipcode={child.zipcode}
                                     grade_name={child.grade_name}
                                     school_program={child.school_program}
@@ -322,6 +406,7 @@ function ChildrenInPodList(props) {
         <thead>
           <tr> 
             <th scope="col">Name</th>
+            <th scope="col">Gender</th>
             <th scope="col">Zipcode</th>
             <th scope="col">Grade name</th>
             <th scope="col">School program</th>
@@ -496,7 +581,12 @@ function PodDetailsContainer(props) {
         <br/>
         <ChildrenInPodList />
       </div>
-        
+
+       <div width="50%">
+        <br/>
+        <br/>
+        <TeachersInPodList />
+      </div>
     </div>
      
   )
@@ -889,8 +979,136 @@ function HomeContainer() {
 }
 
 
+function TeacherSignUpForm() {
+  
+  const history = ReactRouterDOM.useHistory();
+  const [userInputSignUp, setUserInputSignUp] = React.useReducer(
+    (state, newState) => ({...state, ...newState}),
 
-function SignUpForm() {
+    {
+    fname: "",
+    lname: "",
+    email: "",
+    password: "",
+    
+    }
+  );
+
+  const [fileSelect, setFileSelect] = React.useState(null); 
+
+  const handleChange = evt => {
+    const name = evt.target.name;
+    const newValue = evt.target.value;
+    setUserInputSignUp({[name]: newValue});
+    
+    console.log("name:", name);
+    console.log("newValue:", newValue);
+    console.log("userInputSignUp:", userInputSignUp);
+  }
+
+  const handleFileChange = evt => {
+
+    const file = evt.target.files[0];
+    setFileSelect(file);
+    console.log("fileSelect", fileSelect);
+  }
+
+  const makeSignUp = (e) => {
+    
+    e.preventDefault();
+    console.log("This is inside the makeSignUp arrow function!");
+    
+    const signUpData = {"fname": userInputSignUp.fname, 
+                        "lname": userInputSignUp.lname,
+                        "signupemail": userInputSignUp.signupemail,
+                        "signuppassword": userInputSignUp.signuppassword,
+                        }
+
+                
+    console.log("SignUp data from form:", signUpData);
+    console.log("Stringified sign up data:", JSON.stringify(signUpData));
+
+    fetch('/api/signup_parent', {
+      method: 'POST', 
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(signUpData),
+    })//Close fetch
+
+    .then(response => response.json())
+    .then(data => {
+      console.log("Result of .then data:", data);
+      alert("You successfully signed up!")
+      //setIsLoggedIn("True")
+      history.push("/");
+    }); //Close .then
+
+
+  }
+
+
+  const makeImgUpload = (e) => {
+
+    e.preventDefault();
+    console.log("This is inside the makeImgUpload arrow function!");
+
+    fetch('/api/signup_parent', {
+      method: 'POST', 
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(signUpData),
+    })//Close fetch
+
+
+  }
+
+  return ( 
+   
+    <div>
+     
+     <br/>
+     <label>Teacher First name </label>
+     <br/>
+     <input type="text" name="fname" value={userInputSignUp.fname} onChange={handleChange}/>
+      <br/>
+
+      <label> Last name</label>
+      <br/>
+      <input type="text" value={userInputSignUp.lname} name="lname" onChange={handleChange} />
+      <br/>
+
+      <label> Email</label>
+      <br/>
+      <input type="text" value={userInputSignUp.signupemail} name="signupemail" onChange={handleChange} />
+      <br/>
+
+      <label> Password</label>
+      <br/>
+      <input type="text" value={userInputSignUp.signuppassword} name="signuppassword" onChange={handleChange} />
+      <br/>
+
+
+      <label> Bio</label>
+      <br/>
+      <input type="text" value={userInputSignUp.teacher_bio} name="teacher_bio" onChange={handleChange} />
+      <br/>
+
+      <label> Profile Photo</label>
+      <br/>
+      <input type="file" onChange={handleFileChange} />
+      <br/>
+
+      <br/>
+      <button onClick={makeSignUp; makeImgUpload}> Complete Sign Up </button>
+    </div>
+
+  );
+}
+
+
+function ParentSignUpForm() {
   
   const history = ReactRouterDOM.useHistory();
   const [userInputSignUp, setUserInputSignUp] = React.useReducer(
@@ -981,6 +1199,8 @@ function SignUpForm() {
 }
 
 
+
+
 function LogInForm(props) {
 
   const [loginemail, setLoginEmail] = React.useState("");
@@ -1069,6 +1289,22 @@ function LogInForm(props) {
 
 
 
+function SignUpParties () {
+
+  return (
+  <div>
+  
+    <div>
+      <Link key={1} to="/signup_parent" className="btn btn-primary" > I'm a parent </Link>
+    </div>
+
+    <div>
+      <Link key={2} to="/signup_teacher" className="btn btn-primary" >I'm a teacher </Link> 
+    </div>
+  </div>
+  )
+}
+
 function GlobalNavigationBar(props) {
   console.log("props in Global nav:******", props)
   
@@ -1104,8 +1340,16 @@ function GlobalNavigationBar(props) {
         <Route exact path="/podlist" component={PodList}>
         </Route>  
 
-        <Route path="/signup" component={SignUpForm}>
+        <Route path="/signup" component={SignUpParties}>
         </Route>  
+
+        <Route path="/signup_parent">
+         <ParentSignUpForm />
+        </Route>  
+
+        <Route path="/signup_teacher" component={TeacherSignUpForm}>
+        </Route> 
+
 
         <Route path="/dashboard">
           <HomeContainer />

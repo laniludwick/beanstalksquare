@@ -9,11 +9,24 @@ from flask_jwt_extended import (JWTManager, jwt_required, create_access_token,
 from twilio.rest import Client 
 import os
 
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+cloud_name = os.environ["beanstalksquare"]
+cloudinary_api_key = os.environ["cloudinary_api_key"]
+cloudinary_api_secret = os.environ["cloudinary_api_secret"]
+
 account_sid = os.environ["ACCOUNT_SID"]
 auth_token = os.environ["AUTH_TOKEN"]
 to_phone_number = os.environ["TO_PHONE_NUMBER"]
 
 
+cloudinary.config(
+    cloud_name = cloud_name,
+    api_key = cloudinary_api_key,
+    api_secret = cloudinary_api_secret
+    )
 
 app = Flask(__name__)
 app.secret_key = "dev"
@@ -134,7 +147,7 @@ def show_pod_details(pod_id):
 
 @app.route("/api/children/<pod_id>")
 def show_children_in_pod(pod_id):
-    """Show details of the selected pod."""
+    """Show child details of the selected pod."""
 
     children = crud.get_children_by_pod_id(pod_id) #Get pod based on click event.
     #Returns tuples of Child, Child_Pod, Grade, School SQL Alchemy objects
@@ -151,6 +164,7 @@ def show_children_in_pod(pod_id):
             "child_id": child[0].child_id,
             "fname": child[0].fname,
             "lname": child[0].lname,
+            "gender": child[0].gender,
             "zipcode": child[0].zipcode,
             "school_program": child[0].school_program,
             "grade_name": child[2].grade_name,
@@ -159,6 +173,33 @@ def show_children_in_pod(pod_id):
 
     print("************children list:", childrenlist)
     return jsonify(childrenlist)
+
+
+
+@app.route("/api/teachers/<pod_id>")
+def show_teachers_in_pod(pod_id):
+    """Show teacher details of the selected pod."""
+
+    teachers = crud.get_teachers_by_pod_id(pod_id) #Get pod based on click event.
+    #Returns teacher SQL Alchemy objects
+    #[<Child child_id=1 fname=Eric>] 
+    
+    print("************teachers result of crud op:", teachers)
+    teacherslist = []
+
+    for teacher in teachers:
+    
+        print("*************teacher in teachers:", teacher)
+        teacherslist.append({
+            "teacher_id": teacher[0].teacher_id,
+            "fname": teacher[0].fname,
+            "lname": teacher[0].lname,
+            "zipcode": teacher[0].zipcode,
+            
+            },)
+
+    print("************teachers list:", teacherslist)
+    return jsonify(teacherslist)
 
 
 
@@ -246,6 +287,34 @@ def signup_parent():
     user = crud.create_parent(fname, lname, email, password)
     
     return jsonify("Successfully registered a new parent!")
+
+
+
+@app.route("/api/signup_teacher", methods = ["POST"])
+def signup_teacher():
+    """Create a new user."""
+
+    data = request.get_json()
+    fname = data["fname"]
+    lname = data["lname"]
+    email = data["signupemail"]
+    password = data["signuppassword"]
+
+    #If email already exists in the system, block user from re-registering.
+    #if crud.get_user_by_email(email): 
+    #    return jsonify("Sorry, that user already exists. Please try again.")
+
+    #Otherwise, allow user to register for an account with that email address.
+    #else:
+    user = crud.create_teacher(fname, lname, email, password)
+    
+    #filename = request.files.get('image_upload')
+    #if filename:
+    #   response.cloudinary.uploader.upload(filename)
+    #image = response.['secure_url']
+
+
+    return jsonify("Successfully registered a new teacher!")
 
 
 

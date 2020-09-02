@@ -208,6 +208,8 @@ jasmine = crud.create_teacher(fname="Jasmine", lname="Jones", email="jasmine.jon
     days_of_week="Mon-Fri",teaching_experience_in_hours="800",pay_rate_per_hour=20,covid_risk_profile_id=3,img_url="/static/img/teacher3.jpg",)
 
 
+
+
 #Add parents to pods
 r=1
 for _ in range(10):
