@@ -191,11 +191,10 @@ def show_teachers_in_pod(pod_id):
     
         print("*************teacher in teachers:", teacher)
         teacherslist.append({
-            "teacher_id": teacher[0].teacher_id,
-            "fname": teacher[0].fname,
-            "lname": teacher[0].lname,
-            "zipcode": teacher[0].zipcode,
-            
+            "teacher_id": teacher.teacher_id,
+            "bio": teacher.bio,
+            "teaching_experience_in_hours": teacher.teaching_experience_in_hours,
+            "pay_rate_per_hour": teacher.pay_rate_per_hour
             },)
 
     print("************teachers list:", teacherslist)
@@ -305,31 +304,31 @@ def signup_teacher():
     return jsonify("Successfully registered a new teacher!")
 
 
-# @app.route("/api/profile_pic_teacher", methods = ["POST"])
-# def signup_teacher():
-#     """Create a new user."""
+@app.route("/api/profile_pic_teacher", methods = ["POST"])
+def upload_profile_pic_teacher():
+    """Uplaod a profile pic to Cloudinary file storage and return response."""
 
-#     data = request.get_json()
+    data = request.get_json()
     
-#     image = data["profile_pic"]
-#     print("data image:", image)
+    image = data["profile_pic"]
+    print("data image:", image)
 
-#     if image:
-#         response.cloudinary.uploader.upload(image)
-#         print("response:", response)
-#         print("response for image upload:", response.cloudinary.uploader.upload(image))
+    if image:
+        response.cloudinary.uploader.upload(image)
+        print("response:", response)
+        print("response for image upload:", response.cloudinary.uploader.upload(image))
 
-#     img_url = response['secure_url'] 
+    img_url = response['secure_url'] 
 
 
-#     #filename = request.files.get('image_upload')
-#     #if filename:
-#     #   response.cloudinary.uploader.upload(filename)
-#     #image = response.['secure_url']
+    #filename = request.files.get('image_upload')
+    #if filename:
+    #   response.cloudinary.uploader.upload(filename)
+    #image = response.['secure_url']
 
-#     user = crud.update_teacher(img_url)
+    user = crud.update_teacher(img_url)
     
-#     return jsonify("Successfully added a teacher's profile pic!")
+    return jsonify("Successfully added a teacher's profile pic!")
 
 
 @app.route("/api/profile_teacher", methods = ["POST"])

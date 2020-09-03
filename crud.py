@@ -220,6 +220,14 @@ def get_parents_by_pod_id(pod_id):
     return parents
 
 
+def get_teachers_by_pod_id(pod_id):
+    """Get the SQLAlchemy teacher object based on the associated pod_id."""
+
+    teachers = db.session.query(Teacher).filter(Teacher.pod_id==pod_id).all()
+
+    return teachers
+
+
 def get_filtered_teachers(zipcode): #Must use single quotes in SQL and SQLAlchemy
     """Get and return teachers filtered by zipcode entered by the user."""
 

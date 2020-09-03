@@ -262,11 +262,10 @@ function Teacher (props) {
 
   return (
     <tr>
-      <td>{props.full_name}</td>
-      <td>{props.zipcode}</td>
-      <td>{props.grade_name}</td>
-      <td>{props.school_program}</td>
-      <td>{props.school_name}</td>
+      
+      <td>{props.bio}</td>
+      <td>{props.teaching_experience_in_hours}</td>
+      <td>{props.pay_rate_per_hour}</td>
       
     </tr>
   );
@@ -296,15 +295,15 @@ function TeachersInPodList(props) {
 
         for (const teacher of data) {
 
-          const full_name = teacher.fname+" "+teacher.lname;
+          const full_name = teacher.fname +" "+ teacher.lname;
           
           console.log("teacher's full name:", full_name);
 
           const teacherElement = <Teacher 
                                     key={teacher.teacher_id}
-                                    full_name={full_name}
-                                    zipcode={teacher.zipcode}
-                                    
+                                    bio={teacher.bio}
+                                    teaching_experience_in_hours={teacher.teaching_experience_in_hours}
+                                    pay_rate_per_hour={teacher.pay_rate_per_hour}
                                     />
         console.log("Teacher component:", teacherElement);
         teacherComponentsList.push(teacherElement);
@@ -321,11 +320,10 @@ function TeachersInPodList(props) {
         <table className="podteachers">
         <thead>
           <tr> 
-            <th scope="col">Name</th>
-            <th scope="col">Zipcode</th>
-            <th scope="col">Grade name</th>
-            <th scope="col">School program</th>
-            <th scope="col">School name</th>
+          
+            <th scope="col">Bio</th>
+            <th scope="col">Teaching experience (total hours)</th>
+            <th scope="col">Pay rate per hour</th>
             
           </tr>
         </thead>
@@ -962,6 +960,15 @@ function HomeContainer() {
       <div><Homepage />
       </div>
       
+      <div className="btn-group btn-group-toggle" data-toggle="buttons">
+        <label className="btn btn-secondary active">
+          <input type="radio" name="options" id="option1" autoComplete="off" defaultChecked/> FIND STUDENTS
+        </label>
+        <label className="btn btn-secondary">
+          <input type="radio" name="options" id="option2" autoComplete="off"/> FIND TEACHERS
+        </label>
+      </div>
+      
       <div>
         <PodSearch  /> 
       </div>
@@ -978,101 +985,80 @@ function HomeContainer() {
 }
 
 
-{/*
-TeacherProfilePic() {
 
-  // const makeImgUpload = (e) => {
-
-  //   e.preventDefault();
-  //   console.log("This is inside the makeImgUpload arrow function!");
-
-  //   fetch('/api/signup_teacher', {
-  //     method: 'POST', 
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify(signUpData),
-  //   })//Close fetch
-
+function TeacherProfilePic() {
   
   const history = ReactRouterDOM.useHistory();
 
-  const [uploadedImage, setUploadedImage] = React.useState(null); 
+  const [selectedFile, setSelectedFile] = React.useState(null); 
+
 
   const handleFileChange = evt => {
 
     const file = evt.target.files[0];
-    setUploadedImage(file);
-
-    console.log("fileSelect", uploadedImage);
-  }
-
-  const makeImageUpload = (e) => {
+    console.log("fileSelect, file in handlefilechange:", selectedFile, file);
+    setSelectedFile(file);
     
-    e.preventDefault();
-    console.log("This is inside the makeImageUpload arrow function!");
-    
-    const photoData = {"profile_pic": uploadedImage}
-    
-    console.log("uploadedImage in makesignup function": uploadedImage)
-    console.log("SignUp data from form:", signUpData);
-    console.log("Stringified sign up data:", JSON.stringify(signUpData));
+    }
 
-    fetch('/api/signup_teacher', {
+  
+  // React.useEffect(() => {
+    
+  //     setSelectedFile(file);
+  //     console.log("fileSelect, file:", selectedFile, file);
+  //   }, selectedFile);
+
+  const handleFileUpload = (evt) => {
+    
+    evt.preventDefault();
+    console.log("This is inside the handleFileUpload arrow function!");
+    
+    const formData= new FormData();
+
+    console.log("Form data:", formData);
+
+    formData.append('profile_pic', selectedFile)
+
+    console.log("selectedFile:": selectedFile)
+    console.log("Stringified selected File data:", JSON.stringify(formData));
+
+    fetch('/api/profile_pic_teacher', {
       method: 'POST', 
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify([signUpData, photoData]),
+      body: JSON.stringify(formData),
     })//Close fetch
 
     .then(response => response.json())
     .then(data => {
       console.log("Result of .then data:", data);
-      alert("You successfully signed up!")
-      //setIsLoggedIn("True")
+      alert("You successfully added a teacher profile pic!")
+      
       history.push("/");
     }); //Close .then
     
-  } //Close makeSignUp function
+  } //Close handleFileUpload function
 
 
   return ( 
    
     <div>
-     
-     <br/>
-     <TeacherProfilePic />
-     <br/>
-     <br/>
-     
-    <label> Zipcode</label>
-    <br/>
-    <input type="text" value={userInputSignUp.zipcode} name="zipcode" onChange={handleChange} />
-    <br/>
 
-    <label> Bio</label>
-    <br/>
-    <input type="text" value={userInputSignUp.teacher_bio} name="teacher_bio" onChange={handleChange} />
-    <br/>
+      <label> Profile Photo</label>
+      <input type="file" id="opener" name="profile-pic" onChange={handleFileChange} />
+      <br/>
 
-    <label> Profile Photo</label>
-    <br/>
-    
-    <input type="file" id="opener" name="teacher-profile-pic" onChange={handleFileChange} />
-    <br/>
-    
-
-    <br/>
-
-    <button onClick={makeSignUp}> Complete Sign Up </button>
+      <button onClick={handleFileUpload}> Upload profile photo </button>
+      <br/>
+      <br/>
     </div>
 
   );
 }
-}
 
-*/}
+
+
 
 
 function TeacherProfileForm() {
@@ -1146,7 +1132,9 @@ function TeacherProfileForm() {
     <div>
      
      <br/>
-     {/*<TeacherProfilePic />*/}
+     
+     <TeacherProfilePic />
+     
      <br/>
      <br/>
 
@@ -1176,7 +1164,7 @@ function TeacherProfileForm() {
     <br/>
     <br/>
 
-    <button onClick={makeProfile}> Complete Profile </button>
+    <button onClick={makeProfile}> Update Profile </button>
     </div>
 
   );
@@ -1271,7 +1259,7 @@ function TeacherSignUpForm() {
 
       <br/>
 
-      <button onClick={makeSignUp}> Complete Sign Up </button>
+      <button onClick={makeSignUp}> Sign Up </button>
     </div>
 
   );
