@@ -734,9 +734,6 @@ function CreatePod() {
 }
 
 
-
-
-
 function Pod(props) {
 
   console.log("data in for isLoggedIn in Pod component:", props.isLoggedIn);
@@ -756,18 +753,98 @@ function Pod(props) {
 }
 
 
+function TeacherList(props) {
+  
+  //let location = ReactRouterDOM.useLocation();
+  console.log("data in for isLoggedIn in TeacherList component:", props.isLoggedIn);
+  const [teacherList, setTeacherList] = React.useState([]);
+  const [dataResult, setDataResult] = React.useState([]);
+  const {zipcode} = ReactRouterDOM.useParams();
+  //let data = location.state.data
+  //const data = props.data;
+
+  React.useEffect(() => {
+    
+      fetch(`/api/teachers?zipcode=${zipcode}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+
+      .then(response => response.json())
+
+      .then(data => {
+      
+        console.log("data:", data);
+        
+        setDataResult(data);
+        console.log("dataresult:", dataResult);
+  
+        }) //Close .then
+  }, []); //Close useEffect
+
+  React.useEffect(() => {
+
+    //console.log("data in for loop in pod list:", data);
+    const teacherComponentsList = [];
+
+    for (let teacher of dataResult) {
+      
+      console.log("teacher:", teacher);
+      const teacherComponent = <Teacher key={teacher.teacher_id}
+                                teacher_id={teacher.teacher_id}
+                                teacher_name={teacher.teacher_name}
+                                zipcode={teacher.zipcode}
+                                days_of_week={teacher.days_of_week}
+                                teaching_experience_in_hours={teacher.teaching_experience_in_hours}
+                                pay_rate_per_hour={teacher.pay_rate_per_hour}
+                                isLoggedIn={props.isLoggedIn}
+                                />
+      console.log("teacher component:", teacherComponent);
+      teacherComponentsList.push(teacherComponent);
+      console.log("teacher components list:", teacherComponentsList);
+      
+  }; //Close for loop
+  
+  setTeacherList(teacherComponentsList);
+  }, [dataResult]);
+
+  return ( 
+    <div>
+      <br/>
+      <br/>
+      <table className="table">
+        <thead>
+          <tr> 
+            <th scope="col">Teacher name</th>
+            <th scope="col">Zipcode</th>
+            <th scope="col">Preferred Days of week</th>
+            <th scope="col">Teaching Experience (in hours)</th>
+            <th scope="col">Hourly Pay Rate</th>
+            <th scope="col">Details</th>
+           {/* {props.isLoggedIn==="True"? <th scope="col">Details</th> : null}*/}
+          </tr> 
+              
+        </thead>
+        <tbody>
+        {teacherList}
+        </tbody>
+      </table> 
+    </div>
+  );
+} //Close the entire Pod list
+
+
 function PodList(props) {
   
   //let location = ReactRouterDOM.useLocation();
-  
-
   console.log("data in for isLoggedIn in PodList component:", props.isLoggedIn);
   const [podList, setPodList] = React.useState([]);
   const [dataResult, setDataResult] = React.useState([]);
   const {zipcode} = ReactRouterDOM.useParams();
   //let data = location.state.data
   //const data = props.data;
-
 
   React.useEffect(() => {
     
@@ -789,8 +866,6 @@ function PodList(props) {
   
         }) //Close .then
   }, []); //Close useEffect
-
-
 
   React.useEffect(() => {
 
@@ -815,7 +890,6 @@ function PodList(props) {
       
   }; //Close for loop
   
-
   setPodList(podComponentsList);
   }, [dataResult]);
 
@@ -842,8 +916,6 @@ function PodList(props) {
       </table> 
     </div>
   );
-      
-  
 } //Close the entire Pod list
 
 
@@ -851,19 +923,15 @@ function PodSearch(props) {
 
   const [zipcode, setZipcode] = React.useState("");
   const history = ReactRouterDOM.useHistory(); //Not needed
-  
 
   function handleChange(event) {
     setZipcode(event.target.value);
   }
 
   function handleSubmit(event) {
-    
-
     //alert (`We're looking in zipcode: `+ zipcode);
     event.preventDefault();
     //Want to redirect to route.
-
     history.push(`/podlist/${zipcode}`); 
   }
 
@@ -884,7 +952,6 @@ function PodSearch(props) {
   } //Close the entire PodSearch function.
     
     
-
 
 function Benefits() {
 
@@ -992,55 +1059,46 @@ function TeacherProfilePic() {
 
   const [selectedFile, setSelectedFile] = React.useState(null); 
 
-
   const handleFileChange = evt => {
 
     const file = evt.target.files[0];
-    console.log("fileSelect, file in handlefilechange:", selectedFile, file);
+    console.log("selectedFile, file in handlefilechange:", selectedFile, file);
     setSelectedFile(file);
     
     }
-
-  
-  // React.useEffect(() => {
-    
-  //     setSelectedFile(file);
-  //     console.log("fileSelect, file:", selectedFile, file);
-  //   }, selectedFile);
 
   const handleFileUpload = (evt) => {
     
     evt.preventDefault();
     console.log("This is inside the handleFileUpload arrow function!");
     
-    const formData= new FormData();
-
+    const formData = new FormData();
     console.log("Form data:", formData);
-
-    formData.append('profile_pic', selectedFile)
-
-    console.log("selectedFile:": selectedFile)
-    console.log("Stringified selected File data:", JSON.stringify(formData));
+    console.log("selectedFile:", {"hi": selectedFile});
+    formData.append('file', selectedFile);
+    
+    //console.log("Stringified selected File data:", JSON.stringify(formData));
 
     fetch('/api/profile_pic_teacher', {
       method: 'POST', 
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData),
+      body: formData,
+      
     })//Close fetch
-
+       
     .then(response => response.json())
     .then(data => {
       console.log("Result of .then data:", data);
-      alert("You successfully added a teacher profile pic!")
-      
-      history.push("/");
+      alert("You received a response, but need to read it.")
     }); //Close .then
+    // .catch(err => 
+    //   console.log("Error caught:", err)
+    // ); //Close catch  
+
+    //history.push("/");
     
   } //Close handleFileUpload function
 
-
+  
   return ( 
    
     <div>
@@ -1554,6 +1612,10 @@ function GlobalNavigationBar(props) {
         </Route>
 
         <Route path="/podlist/:zipcode">
+        <PodList isLoggedIn={props.isLoggedIn}/>
+        </Route>
+
+        <Route path="/teacherlist/:zipcode">
         <PodList isLoggedIn={props.isLoggedIn}/>
         </Route>
 

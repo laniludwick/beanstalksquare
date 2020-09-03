@@ -80,6 +80,31 @@ def show_pods():
     return jsonify(pods)
                                   
 
+@app.route("/api/teachers")
+def show_teachers():
+    """Show teachers filtered by zipcode."""
+    
+    zipcode = request.args.get("zipcode")
+
+    filtered_teachers = crud.get_filtered_teachers(zipcode)
+
+    #Turn the SQLAlchemy pod objects into dictioaries before jsonifying them.
+    teachers = []
+
+    for teacher in filtered_teachers: 
+
+        teachers.append({
+            "teacher_id": teacher.teacher_id,
+            "fname": teacher.fname,
+            "lname": teacher.lname,
+            "bio": teacher.bio,
+            "teaching_experience_in_hours": teacher.teaching_experience_in_hours,
+            "pay_rate_per_hour": teacher.pay_rate_per_hour
+            },)
+
+
+    return jsonify(teachers)
+
 
 @app.route("/api/pods/<pod_id>")
 def show_pod_details(pod_id):
@@ -308,27 +333,32 @@ def signup_teacher():
 def upload_profile_pic_teacher():
     """Uplaod a profile pic to Cloudinary file storage and return response."""
 
-    data = request.get_json()
+    if 'file' not in request.files:
+        print("key not in request.files")
+
+    file = request.files.get('file')
+    print("file:", file)
+
+    if file.filename == '':
+        print("no selected file")
+
+    if file and allowed_file(file.filename):
+
+        result = cloudinary.uploader.upload(file)
+        print("result:", result)
+        print("result for image upload:", cloudinary.uploader.upload(file))
+
+        img_url = result['secure_url'] 
+        print("img url:", img_url)
+
+        #filename = request.files.get('image_upload')
+
+        user = crud.update_teacher(img_url)
     
-    image = data["profile_pic"]
-    print("data image:", image)
+        return jsonify("Successfully added a teacher's profile pic!")
 
-    if image:
-        response.cloudinary.uploader.upload(image)
-        print("response:", response)
-        print("response for image upload:", response.cloudinary.uploader.upload(image))
-
-    img_url = response['secure_url'] 
-
-
-    #filename = request.files.get('image_upload')
-    #if filename:
-    #   response.cloudinary.uploader.upload(filename)
-    #image = response.['secure_url']
-
-    user = crud.update_teacher(img_url)
-    
-    return jsonify("Successfully added a teacher's profile pic!")
+    else:
+        return jsonify("Issue extracting image from json?")
 
 
 @app.route("/api/profile_teacher", methods = ["POST"])
