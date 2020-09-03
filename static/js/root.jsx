@@ -978,57 +978,43 @@ function HomeContainer() {
 }
 
 
-function TeacherSignUpForm() {
+{/*
+TeacherProfilePic() {
+
+  // const makeImgUpload = (e) => {
+
+  //   e.preventDefault();
+  //   console.log("This is inside the makeImgUpload arrow function!");
+
+  //   fetch('/api/signup_teacher', {
+  //     method: 'POST', 
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(signUpData),
+  //   })//Close fetch
+
   
   const history = ReactRouterDOM.useHistory();
-  const [userInputSignUp, setUserInputSignUp] = React.useReducer(
-    (state, newState) => ({...state, ...newState}),
-
-    {
-    fname: "",
-    lname: "",
-    email: "",
-    password: "",
-    zipcode: "",
-    bio: "",
-    
-    }
-  );
 
   const [uploadedImage, setUploadedImage] = React.useState(null); 
-
-  const handleChange = evt => {
-    const name = evt.target.name;
-    const newValue = evt.target.value;
-    setUserInputSignUp({[name]: newValue});
-    
-    console.log("name:", name);
-    console.log("newValue:", newValue);
-    console.log("userInputSignUp:", userInputSignUp);
-  }
 
   const handleFileChange = evt => {
 
     const file = evt.target.files[0];
     setUploadedImage(file);
+
     console.log("fileSelect", uploadedImage);
   }
 
-  const makeSignUp = (e) => {
+  const makeImageUpload = (e) => {
     
     e.preventDefault();
-    console.log("This is inside the makeSignUp arrow function!");
+    console.log("This is inside the makeImageUpload arrow function!");
     
-    const signUpData = {"fname": userInputSignUp.fname, 
-                        "lname": userInputSignUp.lname,
-                        "signupemail": userInputSignUp.signupemail,
-                        "signuppassword": userInputSignUp.signuppassword,
-                        "zipcode": userInputSignUp.zipcode,
-                        "bio": userInputSignUp.teacher_bio,
-                        }
-
-    const photoData = {"profile_pic": "howdy"}
-                
+    const photoData = {"profile_pic": uploadedImage}
+    
+    console.log("uploadedImage in makesignup function": uploadedImage)
     console.log("SignUp data from form:", signUpData);
     console.log("Stringified sign up data:", JSON.stringify(signUpData));
 
@@ -1050,25 +1036,213 @@ function TeacherSignUpForm() {
     
   } //Close makeSignUp function
 
+
+  return ( 
+   
+    <div>
+     
+     <br/>
+     <TeacherProfilePic />
+     <br/>
+     <br/>
+     
+    <label> Zipcode</label>
+    <br/>
+    <input type="text" value={userInputSignUp.zipcode} name="zipcode" onChange={handleChange} />
+    <br/>
+
+    <label> Bio</label>
+    <br/>
+    <input type="text" value={userInputSignUp.teacher_bio} name="teacher_bio" onChange={handleChange} />
+    <br/>
+
+    <label> Profile Photo</label>
+    <br/>
+    
+    <input type="file" id="opener" name="teacher-profile-pic" onChange={handleFileChange} />
+    <br/>
+    
+
+    <br/>
+
+    <button onClick={makeSignUp}> Complete Sign Up </button>
+    </div>
+
+  );
+}
+}
+
+*/}
+
+
+function TeacherProfileForm() {
   
+  const history = ReactRouterDOM.useHistory();
+  
+  const user_email = localStorage.getItem("user_email");
 
+  const [userInputProfile, setUserInputProfile] = React.useReducer(
+    (state, newState) => ({...state, ...newState}),
 
+    { 
+    bio: "",
+    zipcode: "",
+    days_of_week: "",
+    teaching_experience_in_hours: "",
+    pay_rate_per_hour: "",
+    
+    //covid_risk_profile: "",
+    }
+  );
 
-  // const makeImgUpload = (e) => {
+  const handleChange = evt => {
+    const name = evt.target.name;
+    const newValue = evt.target.value;
+    setUserInputProfile({[name]: newValue});
+    
+    console.log("name:", name);
+    console.log("newValue:", newValue);
+    console.log("userInputProfile:", userInputProfile);
+  }
 
-  //   e.preventDefault();
-  //   console.log("This is inside the makeImgUpload arrow function!");
+  const makeProfile = (e) => {
+    
+    e.preventDefault();
+    console.log("This is inside the makeProfile arrow function!");
+    
+    const profileData = {
+                        "bio": userInputProfile.teacher_bio,
+                        "zipcode": userInputProfile.zipcode,
+                        "days_of_week": userInputProfile.days_of_week,
+                        "teaching_experience_in_hours": userInputProfile.teaching_experience_in_hours,
+                        "pay_rate_per_hour": userInputProfile.pay_rate_per_hour,
+                        "user_email": user_email,
+                        }
+    
+    console.log("profile data from form:", profileData);
+    console.log("Stringified profile data:", JSON.stringify(profileData));
 
-  //   fetch('/api/signup_teacher', {
-  //     method: 'POST', 
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify(signUpData),
-  //   })//Close fetch
+    fetch('/api/profile_teacher', {
+      method: 'POST', 
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(profileData),
+    })//Close fetch
 
+    .then(response => response.json())
+    .then(data => {
+      console.log("Result of .then data:", data);
+      alert("You successfully added to your profile!")
+      //setIsLoggedIn("True")
+      history.push("/");
+    }); //Close .then
+    
+  } //Close makeProfile function
 
   
+  return ( 
+   
+    <div>
+     
+     <br/>
+     {/*<TeacherProfilePic />*/}
+     <br/>
+     <br/>
+
+    <label> Bio</label>
+    <br/>
+    <input type="text" value={userInputProfile.teacher_bio} name="teacher_bio" onChange={handleChange} />
+    <br/>
+
+    <label> Zipcode</label>
+    <br/>
+    <input type="text" value={userInputProfile.zipcode} name="zipcode" onChange={handleChange} />
+    <br/>
+
+    <label> Preferred Days of Week</label>
+    <br/>
+    <input type="text" value={userInputProfile.days_of_week} name="days_of_week" onChange={handleChange} />
+    <br/>
+
+    <label> Teaching experience (total number of hours)</label>
+    <br/>
+    <input type="text" value={userInputProfile.teaching_experience_in_hours} name="teaching_experience_in_hours" onChange={handleChange} />
+    <br/>
+
+    <label> Pay Rate per Hour</label>
+    <br/>
+    <input type="text" value={userInputProfile.pay_rate_per_hour} name="pay_rate_per_hour" onChange={handleChange} />
+    <br/>
+    <br/>
+
+    <button onClick={makeProfile}> Complete Profile </button>
+    </div>
+
+  );
+}
+
+
+
+function TeacherSignUpForm() {
+  
+  const history = ReactRouterDOM.useHistory();
+  const [userInputSignUp, setUserInputSignUp] = React.useReducer(
+    (state, newState) => ({...state, ...newState}),
+
+    {
+    fname: "",
+    lname: "",
+    email: "",
+    password: "",
+    
+    }
+  );
+
+  const handleChange = evt => {
+    const name = evt.target.name;
+    const newValue = evt.target.value;
+    setUserInputSignUp({[name]: newValue});
+    
+    console.log("name:", name);
+    console.log("newValue:", newValue);
+    console.log("userInputSignUp:", userInputSignUp);
+  }
+
+  const makeSignUp = (e) => {
+    
+    e.preventDefault();
+    console.log("This is inside the makeSignUp arrow function!");
+    
+    const signUpData = {"fname": userInputSignUp.fname, 
+                        "lname": userInputSignUp.lname,
+                        "signupemail": userInputSignUp.signupemail,
+                        "signuppassword": userInputSignUp.signuppassword,      
+                        }
+
+    console.log("SignUp data from form:", signUpData);
+    console.log("Stringified sign up data:", JSON.stringify(signUpData));
+
+    localStorage.setItem("user_email", userInputSignUp.signupemail);
+
+    fetch('/api/signup_teacher', {
+      method: 'POST', 
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(signUpData),
+    })//Close fetch
+
+    .then(response => response.json())
+    .then(data => {
+      console.log("Result of .then data:", data);
+      alert("You successfully signed up!")
+      //setIsLoggedIn("True")
+      history.push("/profile_teacher");
+    }); //Close .then
+    
+  } //Close makeSignUp function
+
 
   return ( 
    
@@ -1095,24 +1269,8 @@ function TeacherSignUpForm() {
       <input type="text" value={userInputSignUp.signuppassword} name="signuppassword" onChange={handleChange} />
       <br/>
 
-      <label> Zipcode</label>
-      <br/>
-      <input type="text" value={userInputSignUp.zipcode} name="zipcode" onChange={handleChange} />
       <br/>
 
-      <label> Bio</label>
-      <br/>
-      <input type="text" value={userInputSignUp.teacher_bio} name="teacher_bio" onChange={handleChange} />
-      <br/>
-
-      <label> Profile Photo</label>
-      <br/>
-      
-      <input type="file" id="opener" onChange={handleFileChange} />
-      <br/>
-      
-
-      <br/>
       <button onClick={makeSignUp}> Complete Sign Up </button>
     </div>
 
@@ -1381,6 +1539,10 @@ function GlobalNavigationBar(props) {
 
         <Route path="/signup_teacher" component={TeacherSignUpForm}>
         </Route> 
+
+        <Route path="/profile_teacher" component={TeacherProfileForm}>
+        </Route>
+
 
 
         <Route path="/dashboard">

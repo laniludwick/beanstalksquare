@@ -87,7 +87,7 @@ def create_child(fname, lname, zipcode, school_id, grade_id, household_id,
     return child
 
 
-def create_teacher(fname, lname, email, password, zipcode, bio, 
+def create_teacher(fname, lname, email, password, zipcode=None, bio=None, 
     mobile_number=None, days_of_week=None,teaching_experience_in_hours=None,
     pay_rate_per_hour=None, pod_id=None, img_url=None,covid_risk_profile_id=None):
     """Add a new teacher to the teachers table and return the teacher."""
@@ -102,6 +102,30 @@ def create_teacher(fname, lname, email, password, zipcode, bio,
 
     db.session.add(teacher)
     db.session.commit()
+
+    return teacher
+
+
+def update_teacher(email, zipcode=None, bio=None, 
+    mobile_number=None, days_of_week=None,teaching_experience_in_hours=None,
+    pay_rate_per_hour=None, pod_id=None, img_url=None, covid_risk_profile_id=None):
+    """Update teacher info on the teachers table and return the teacher."""
+
+    teacher = db.session.query(Teacher).filter(Teacher.email==email).one()
+
+
+    teacher.zipcode=zipcode 
+    teacher.bio=bio 
+    teacher.mobile_number=mobile_number
+    teacher.days_of_week=days_of_week
+    teacher.teaching_experience_in_hours=teaching_experience_in_hours
+    teacher.pay_rate_per_hour=pay_rate_per_hour
+    teacher.img_url=img_url
+    teacher.pod_id=pod_id
+    teacher.covid_risk_profile_id=covid_risk_profile_id
+
+    db.session.commit()
+    #db.session.flush()
 
     return teacher
 

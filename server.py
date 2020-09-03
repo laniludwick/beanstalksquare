@@ -295,29 +295,61 @@ def signup_teacher():
     """Create a new user."""
 
     data = request.get_json()
-    fname = data[0]["fname"]
-    lname = data[0]["lname"]
-    email = data[0]["signupemail"]
-    password = data[0]["signuppassword"]
-    zipcode = data[0]["zipcode"]
-    bio = data[0]["bio"]
-    img_url = data[1]["profile_pic"]
-
-    #If email already exists in the system, block user from re-registering.
-    #if crud.get_user_by_email(email): 
-    #    return jsonify("Sorry, that user already exists. Please try again.")
-
-    #Otherwise, allow user to register for an account with that email address.
-    #else:
-    user = crud.create_teacher(fname, lname, email, password, zipcode, bio, img_url)
+    fname = data["fname"]
+    lname = data["lname"]
+    email = data["signupemail"]
+    password = data["signuppassword"]
     
-    #filename = request.files.get('image_upload')
-    #if filename:
-    #   response.cloudinary.uploader.upload(filename)
-    #image = response.['secure_url']
-
-
+    user = crud.create_teacher(fname, lname, email, password)
+    
     return jsonify("Successfully registered a new teacher!")
+
+
+# @app.route("/api/profile_pic_teacher", methods = ["POST"])
+# def signup_teacher():
+#     """Create a new user."""
+
+#     data = request.get_json()
+    
+#     image = data["profile_pic"]
+#     print("data image:", image)
+
+#     if image:
+#         response.cloudinary.uploader.upload(image)
+#         print("response:", response)
+#         print("response for image upload:", response.cloudinary.uploader.upload(image))
+
+#     img_url = response['secure_url'] 
+
+
+#     #filename = request.files.get('image_upload')
+#     #if filename:
+#     #   response.cloudinary.uploader.upload(filename)
+#     #image = response.['secure_url']
+
+#     user = crud.update_teacher(img_url)
+    
+#     return jsonify("Successfully added a teacher's profile pic!")
+
+
+@app.route("/api/profile_teacher", methods = ["POST"])
+def create_profile_teacher():
+    """Create a new profile for a teacher."""
+
+    data = request.get_json()
+    
+    email = data["user_email"] 
+    bio = data["bio"]
+    zipcode = data["zipcode"]
+    days_of_week = data["days_of_week"]
+    teaching_experience_in_hours = data["teaching_experience_in_hours"]
+    pay_rate_per_hour = data["pay_rate_per_hour"]
+
+    
+    #Need to update teacher!!!!!!
+    user = crud.update_teacher(email, zipcode, bio, days_of_week, teaching_experience_in_hours, pay_rate_per_hour)
+    
+    return jsonify("Successfully created a teacher profile!")
 
 
 
