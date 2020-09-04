@@ -1261,34 +1261,69 @@ function Homepage() {
 
 function HomeContainer() {
 
+  const [linkStatus, setLinkStatus] = React.useState("find_students");
+
+
+
+//   var clickStudents = document.getElementsByClassName("contactme")[0];
+
+//   contact.addEventListener("click", function() {
+//     document.getElementById('download').style.display='none';
+//     document.getElementByID('skype').style.display='none';
+// }
+
+//   var clickTeachers = document.getElementsByClassName("contactme")[0];
+
+//   contact.addEventListener("click", function() {
+//     document.getElementById('download').style.display='none';
+//     document.getElementByID('skype').style.display='none';
+// }
+  
+  const clickStudents = () => {
+
+    setLinkStatus("find_students");
+    document.getElementById('option1').style="text-decoration: underline; bold;";
+    document.getElementById('option2').style="text-decoration: none";  
+  }
+
+  const clickTeachers = () => {
+
+    setLinkStatus("find_teachers");
+    document.getElementById('option2').style="text-decoration: underline; bold;";
+    document.getElementById('option1').style="text-decoration: none"; 
+  }
+
+
+
   return (
     <div>
-
       
-      <div><Homepage />
-      </div>
+      <div><Homepage /></div>
       
       <div className="btn-group btn-group-toggle" data-toggle="buttons">
-        <label className="btn btn-secondary active">
-          <input type="radio" name="options" id="option1" autoComplete="off" defaultChecked/> FIND STUDENTS
-        </label>
-        <label className="btn btn-secondary">
-          <input type="radio" name="options" id="option2" autoComplete="off"/> FIND TEACHERS
-        </label>
-      </div>
       
-      <div>
-        <PodSearch  /> 
-        <TeacherSearch />
-      </div>
+        <div className="search-toggle">
+        
+          <Link name="options" className="find-students" id="option1" onClick={clickStudents}> Find Students </Link>
+            
+          <Link name="options" className="find-teachers" id="option2" onClick={clickTeachers}> Find Teachers</Link>
+            
+        </div>
+
+        <div>
+          {linkStatus=="find_students"? <PodSearch  /> : <TeacherSearch />}
+        </div>
       
+      </div>
+      <br/>
+      
+      <br/>
       <div>
-      <br/>
-      <br/>
         <Benefits />
       </div>
-        <br/>
-        <br/>
+      <br/>
+      <br/>
+    
     </div>
   )
 }

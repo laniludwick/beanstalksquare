@@ -398,8 +398,6 @@ def upload_profile_pic_teacher():
         img_url = result['secure_url'] 
         print("img url:", img_url)
 
-        #filename = request.files.get('image_upload')
-
         user = crud.update_teacher(email=email, img_url=img_url)
     
         return jsonify("Successfully added a teacher's profile pic!")
