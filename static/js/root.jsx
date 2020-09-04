@@ -11,6 +11,100 @@ const Redirect = ReactRouterDOM.Redirect;
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
+
+function ContactTeacher() {
+  
+  const {teacherId} = ReactRouterDOM.useParams();
+  console.log("teacherID from use params {teacherId} and teacherId:", {teacherId}, teacherId);
+  const history = ReactRouterDOM.useHistory();
+  const [userInputSms, setUserInputSms] = React.useReducer(
+    (state, newState) => ({...state, ...newState}),
+
+    {
+    name: "",
+    phone: "",
+    email: "",
+    message: "",
+    }
+  );
+
+  const handleChange = evt => {
+
+    const name = evt.target.name;
+    const newValue = evt.target.value;
+    setUserInputSms({[name]: newValue});
+  }
+
+  const contactTeacher = (e) => {
+    
+    e.preventDefault();
+    console.log("This is inside the contactTeacher arrow function!");
+    
+    const useremail = localStorage.getItem("useremail");
+
+    const textData = {"name": userInputSms.name, 
+                        "phone": userInputSms.phone,
+                        "email": userInputSms.email,
+                        "message": userInputSms.message,
+                        }
+
+                
+    console.log("Text data from contact teacher form:", textData);
+    console.log("Stringified text data:", JSON.stringify(textData));
+
+    fetch(`/api/send_stock_sms/${teacherId}`, {
+      method: 'POST', 
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(textData),
+    })//Close fetch
+
+    .then(response => response.json())
+    .then(data => {
+      console.log("Result of .then data:", data);
+      alert("You successfully sent a message to a teacher!")
+      //setIsLoggedIn("True")
+      history.push(`/teacherdetails/${teacherId}`);
+    }); //Close .then
+
+
+  }
+
+  return ( 
+   
+    <div>
+     
+     <br/>
+     <label>Your name </label>
+     <br/>
+     <input type="text" name="name" value={userInputSms.name} onChange={handleChange}/>
+      <br/>
+
+      <label> Phone number</label>
+      <br/>
+      <input type="text" value={userInputSms.phone} name="phone" onChange={handleChange} />
+      <br/>
+
+      <label> Email</label>
+      <br/>
+      <input type="text" value={userInputSms.email} name="email" onChange={handleChange} />
+      <br/>
+
+      <label> Message</label>
+      <br/>
+      <input type="textarea" value={userInputSms.message} name="message" onChange={handleChange} rows={5}/>
+      <br/>
+
+      <br/>
+      <button onClick={contactTeacher}> Send message </button>
+    </div>
+
+  );
+}
+
+
+
 function ContactPodOrganizer() {
   
   const {podId} = ReactRouterDOM.useParams();
@@ -103,7 +197,101 @@ function ContactPodOrganizer() {
 }
 
 
+function TeacherDetails(props) {
 
+  const [singleTeacherDetails, setSingleTeacherDetails] = React.useState(null);
+  const {teacherId} = ReactRouterDOM.useParams();
+  const contact_teacher_link = `/contactteacher/${teacherId}`
+
+
+  React.useEffect(() => {
+    
+      console.log("Beg of getTeacherDetails");
+      fetch(`/api/teachers/${teacherId}`, {
+        method: 'GET',
+      }) //Close fetch
+
+      .then(response => response.json())
+
+      .then(data => { 
+        //use parsed result
+        console.log("data in teacher details response:", data);
+       
+        const teacherComponentsList = [];
+
+        for (const teacher of data) {
+
+          const teacherDetailsElement = <TeacherDetails 
+                                    key={teacher.teacher_id}
+                                    teacher_id={teacher.teacher_id}
+                                    bio={teacher.bio}
+                                    email={teacher.email}
+                                    mobile_number={teacher.mobile_number}
+                                    teacher_name={full_name}
+                                    zipcode={teacher.zipcode}
+                                    pod_id={teacher.pod_id}
+                                    img_url={teacher.img_url}
+                                    days_of_week={teacher.days_of_week}
+                                    teaching_experience_in_hours={teacher.teaching_experience_in_hours}
+                                    pay_rate_per_hour={teacher.pay_rate_per_hour}
+                                    isLoggedIn={props.isLoggedIn}
+                                    />
+        console.log("teacher details component:", teacherDetailsElement);
+        setSingleTeacherDetails(teacherDetailsElement);  
+        }
+      });
+      }, [])
+
+    console.log("Looking for pod details:", podDetailsAll)
+
+  return ( 
+  
+      <div> 
+        <Link to={contact_teacher_link} className="btn btn-primary">Contact Teacher </Link> 
+
+        <table className="table">
+          <tbody>
+            
+            <tr> 
+              <th className="teacher-table-title" scope="row">Teacher name</th>
+              <td>{props.teacher_name}</td>
+            </tr>
+
+            <tr>
+              <th className="teacher-table-title" scope="row">Bio</th>
+              <td>{props.bio}</td>
+            </tr>
+
+            <tr>
+              <th className="teacher-table-title" scope="row">Email</th>
+              <td>{props.email}</td>
+            </tr>
+            
+            <tr>
+              <th className="teacher-table-title" scope="row">Zipcode</th>
+              <td>{props.zipcode}</td>
+            </tr>
+            
+            <tr>
+              <th className="teacher-table-title" scope="row">Preferred days of week</th>
+              <td>{props.days_of_week}</td>
+            </tr>
+            
+            <tr>
+              <th className="teacher-table-title" scope="row">Teaching experience (in hours)</th>
+              <td>{props.teaching_experience_in_hours}</td>
+            </tr>
+
+            <tr>
+              <th className="teacher-table-title" scope="row">Rate (per hour)</th>
+              <td>{props.pay_rate_per_hour}</td>
+            </tr>
+
+          </tbody>  
+        </table> 
+      </div>
+  )
+}
 
 
 function GoogleMap(props) {
@@ -258,7 +446,7 @@ function MapContainer(props) {
 
 
 
-function Teacher (props) {
+function TeachersInPod (props) {
 
   return (
     <tr>
@@ -299,7 +487,7 @@ function TeachersInPodList(props) {
           
           console.log("teacher's full name:", full_name);
 
-          const teacherElement = <Teacher 
+          const teacherElement = <TeachersInPod 
                                     key={teacher.teacher_id}
                                     bio={teacher.bio}
                                     teaching_experience_in_hours={teacher.teaching_experience_in_hours}
@@ -585,11 +773,9 @@ function PodDetailsContainer(props) {
         <br/>
         <TeachersInPodList />
       </div>
-    </div>
-     
+    </div>    
   )
 }
-
 
 
 
@@ -612,11 +798,8 @@ function CreatePod() {
     outdoors_only: "",
     periodic_covid_testing: "",
     cost_per_hour: "",
-    
     }
   );
-
-  
 
   const handleChange = evt => {
     const name = evt.target.name;
@@ -627,7 +810,6 @@ function CreatePod() {
     console.log("newValue:", newValue);
     console.log("userInputPod:", userInputPod);
   }
-
 
   const makePod = (e) => {
     
@@ -645,7 +827,6 @@ function CreatePod() {
                 "outdoors_only": userInputPod.outdoors_only,
                 "periodic_covid_testing": userInputPod.periodic_covid_testing,
                 "cost_per_hour": userInputPod.cost_per_hour}
-
                 
     console.log("Pod data from form:", pod);
     console.log("Stringified pod:", JSON.stringify(pod));
@@ -663,8 +844,6 @@ function CreatePod() {
       console.log("Result of .then data response for create pod:", data);
       history.push('/')
     }); //Close .then
-
-
   }
 
   return (
@@ -675,13 +854,11 @@ function CreatePod() {
      <input type="text" name="pod_name" value={userInputPod.pod_name} onChange={handleChange}/>
       <br/>
 
-      
       <label> Maximum number of students </label>
       <br/>
       <input type="text" value={userInputPod.max_child_capacity} name="max_child_capacity" onChange={handleChange} />
       <br/>
     
-
       <label> Number of days per week</label>
       <br/>
       <input type="number" value={userInputPod.days_per_week} name="days_per_week" onChange={handleChange} />
@@ -730,7 +907,25 @@ function CreatePod() {
       <button onClick={makePod}> Complete Pod Creation </button>
     </div>
      );
+}
 
+
+function Teacher(props) {
+
+  console.log("data in for isLoggedIn in Teacher component:", props.isLoggedIn);
+  const teacherDetailsLink = `/teacherdetails/${props.teacher_id}`;
+
+  return (
+    <tr>
+      <td>{props.teacher_name}</td>
+      <td>{props.zipcode}</td>
+      <td>{props.days_of_week}</td>
+      <td>{props.teaching_experience_in_hours}</td>
+      <td>{props.pay_rate_per_hour}</td>
+      {/*<td><Link to={podDetailsLink}> View details</Link></td>*/}
+     {props.isLoggedIn==="True"? <td><Link to={teacherDetailsLink}> View details</Link></td>: <td>View details</td>}
+    </tr>
+  );
 }
 
 
@@ -791,11 +986,18 @@ function TeacherList(props) {
 
     for (let teacher of dataResult) {
       
+      const full_name = teacher.fname+" "+teacher.lname;
+
       console.log("teacher:", teacher);
       const teacherComponent = <Teacher key={teacher.teacher_id}
                                 teacher_id={teacher.teacher_id}
-                                teacher_name={teacher.teacher_name}
+                                bio={teacher.bio}
+                                email={teacher.email}
+                                mobile_number={teacher.mobile_number}
+                                teacher_name={full_name}
                                 zipcode={teacher.zipcode}
+                                pod_id={teacher.pod_id}
+                                img_url={teacher.img_url}
                                 days_of_week={teacher.days_of_week}
                                 teaching_experience_in_hours={teacher.teaching_experience_in_hours}
                                 pay_rate_per_hour={teacher.pay_rate_per_hour}
@@ -940,7 +1142,7 @@ function PodSearch(props) {
        <form onSubmit={handleSubmit} >
        
         <br/> 
-           <label>Find Students</label>
+           {/*<label>Find Students</label> */}
         <br/>
           <input type="text" value={zipcode} name="zipcode" onChange={handleChange} />
           <input type="submit" value="search" /> 
@@ -951,7 +1153,40 @@ function PodSearch(props) {
     ); //Close return of HTML in PodSearch function.
   } //Close the entire PodSearch function.
     
+
+function TeacherSearch(props) {
+
+  const [zipcode, setZipcode] = React.useState("");
+  const history = ReactRouterDOM.useHistory(); //Not needed
+
+  function handleChange(event) {
+    setZipcode(event.target.value);
+  }
+
+  function handleSubmit(event) {
+    //alert (`We're looking in zipcode: `+ zipcode);
+    event.preventDefault();
+    //Want to redirect to route.
+    history.push(`/teacherlist/${zipcode}`); 
+  }
+
+  return ( 
+     <div>
+       <form onSubmit={handleSubmit} >
+       
+        <br/> 
+           {/*<label>Find Students</label> */}
+        <br/>
+          <input type="text" value={zipcode} name="zipcode" onChange={handleChange} />
+          <input type="submit" value="search" /> 
+      </form>
+    {/* {dataResult? <PodList data={dataResult}/> : null} */}
+     
+    </div>
+    ); //Close return of HTML in PodSearch function.
+  } //Close the entire PodSearch function.
     
+
 
 function Benefits() {
 
@@ -1038,6 +1273,7 @@ function HomeContainer() {
       
       <div>
         <PodSearch  /> 
+        <TeacherSearch />
       </div>
       
       <div>
@@ -1611,18 +1847,25 @@ function GlobalNavigationBar(props) {
         <ContactPodOrganizer />
         </Route>
 
+        <Route path ="/contactteacher/:teacherId">
+        <ContactTeacher />
+        </Route>
+
         <Route path="/podlist/:zipcode">
         <PodList isLoggedIn={props.isLoggedIn}/>
         </Route>
 
         <Route path="/teacherlist/:zipcode">
-        <PodList isLoggedIn={props.isLoggedIn}/>
+        <TeacherList isLoggedIn={props.isLoggedIn}/>
         </Route>
 
         <Route path="/poddetails/:podId">
         <PodDetailsContainer isLoggedIn={props.isLoggedIn}/> 
         </Route>
 
+        <Route path="/teacherdetails/:teacherId">
+        <TeacherDetails isLoggedIn={props.isLoggedIn}/> 
+        </Route>
 
         <Route path="/">
           <HomeContainer />

@@ -95,9 +95,15 @@ def show_teachers():
 
         teachers.append({
             "teacher_id": teacher.teacher_id,
+            "zipcode": teacher.zipcode,
             "fname": teacher.fname,
             "lname": teacher.lname,
+            "email": teacher.email,
+            "mobile_number": teacher.mobile_number,
+            "pod_id": teacher.pod_id,
+            "img_url": teacher.img_url,
             "bio": teacher.bio,
+            "days_of_week": teacher.days_of_week,
             "teaching_experience_in_hours": teacher.teaching_experience_in_hours,
             "pay_rate_per_hour": teacher.pay_rate_per_hour
             },)
@@ -490,6 +496,42 @@ def send_stock_sms_to_pod_organizer(pod_id):
         
 
 
+@app.route("/api/send_stock_sms/<teacher_id>", methods=['POST'])
+def send_stock_sms_to_teacher(teacher_id):
+
+    print("teacher_id in sms api route:", teacher_id)
+    data = request.get_json()
+
+    name = data["name"]
+    phone = data["phone"]
+    email = data["email"]
+    message = data["message"]
+  
+    
+    if data:
+        print("**************data from json:", data)
+    else:
+        print("**************data from json seems to be nonexistent.")
+
+
+    teacher = crud.get_teacher_by_teacher_id(teacher_id)
+    print("teacher:", teacher)
+    
+    teacher_mobile = teacher.mobile_number
+    print("teacher mobile:", teacher.mobile_number)
+
+    client = Client(account_sid, auth_token)
+
+    message = client.messages \
+                    .create(
+                         body="A parent is interested to learn more about you. Please respond at your earliest convenience. \n \n Contact info: \n" + name + ", \n" + phone + ", \n" + email + ". \n Message: \n \" "+message +"\"",
+                         messaging_service_sid='MG8b0587e27f85f4b05d7525a5833f89db',
+                         to=teacher_mobile,
+                     )
+
+    print("message.sid:", message.sid)
+    return jsonify({"message.sid": message.sid,
+                    "teacher_mobile": teacher_mobile},)
 
 
 if __name__ == '__main__':
