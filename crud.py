@@ -106,13 +106,13 @@ def create_teacher(fname, lname, email, password, zipcode=None, bio=None,
     return teacher
 
 
-def update_teacher(email, zipcode=None, bio=None, 
+def update_teacher(email=None, zipcode=None, bio=None, 
     mobile_number=None, days_of_week=None,teaching_experience_in_hours=None,
     pay_rate_per_hour=None, pod_id=None, img_url=None, covid_risk_profile_id=None):
     """Update teacher info on the teachers table and return the teacher."""
 
+    print("email, image url:", email, img_url)
     teacher = db.session.query(Teacher).filter(Teacher.email==email).one()
-
 
     teacher.zipcode=zipcode 
     teacher.bio=bio 
@@ -184,6 +184,14 @@ def get_pod_details_by_pod_id(pod_id):
 
     #Returns a tuple of Pod and Pod_Location objects
     return db.session.query(Pod, Pod_Location).join(Child_Pod, Pod.pod_id==Child_Pod.pod_id).join(Pod_Location, Pod.pod_id==Pod_Location.pod_id).filter(Pod.pod_id==pod_id).all()
+
+
+def get_teacher_details_by_teacher_id(teacher_id):
+    """Get the SQLAlchemy teacher object based on the teacher_id."""
+
+    #Returns a Teacher object
+    return db.session.query(Teacher).filter(Teacher.teacher_id==teacher_id).one()
+
 
 
 def get_children_by_pod_id(pod_id):

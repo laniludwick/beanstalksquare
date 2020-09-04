@@ -197,9 +197,13 @@ function ContactPodOrganizer() {
 }
 
 
+
+
+      
+
 function TeacherDetails(props) {
 
-  const [singleTeacherDetails, setSingleTeacherDetails] = React.useState(null);
+  const [teacherDetailsAll, setTeacherDetails] = React.useState(null);
   const {teacherId} = ReactRouterDOM.useParams();
   const contact_teacher_link = `/contactteacher/${teacherId}`
 
@@ -221,7 +225,9 @@ function TeacherDetails(props) {
 
         for (const teacher of data) {
 
-          const teacherDetailsElement = <TeacherDetails 
+          const full_name = teacher.fname+" "+teacher.lname;
+
+          const teacherDetailsElement = <TeacherDetailsAll 
                                     key={teacher.teacher_id}
                                     teacher_id={teacher.teacher_id}
                                     bio={teacher.bio}
@@ -237,12 +243,12 @@ function TeacherDetails(props) {
                                     isLoggedIn={props.isLoggedIn}
                                     />
         console.log("teacher details component:", teacherDetailsElement);
-        setSingleTeacherDetails(teacherDetailsElement);  
+        setTeacherDetailsAll(teacherDetailsElement);  
         }
       });
       }, [])
 
-    console.log("Looking for pod details:", podDetailsAll)
+    console.log("Looking for teacher details:", teacherDetailsAll);
 
   return ( 
   
@@ -269,7 +275,7 @@ function TeacherDetails(props) {
             
             <tr>
               <th className="teacher-table-title" scope="row">Zipcode</th>
-              <td>{props.zipcode}</td>
+              <td>{teacherDetailsAll[0].zipcode}</td>
             </tr>
             
             <tr>
@@ -1294,13 +1300,14 @@ function TeacherProfilePic() {
   const history = ReactRouterDOM.useHistory();
 
   const [selectedFile, setSelectedFile] = React.useState(null); 
+  const user_email = localStorage.getItem("user_email");
 
   const handleFileChange = evt => {
 
     const file = evt.target.files[0];
-    console.log("selectedFile, file in handlefilechange:", selectedFile, file);
-    setSelectedFile(file);
     
+    setSelectedFile(file);
+    console.log("selectedFile, file in handlefilechange:", selectedFile, file);
     }
 
   const handleFileUpload = (evt) => {
@@ -1310,8 +1317,10 @@ function TeacherProfilePic() {
     
     const formData = new FormData();
     console.log("Form data:", formData);
+    console.log("selectedFile:", selectedFile)
     console.log("selectedFile:", {"hi": selectedFile});
     formData.append('file', selectedFile);
+    formData.append('email', user_email);
     
     //console.log("Stringified selected File data:", JSON.stringify(formData));
 
@@ -1866,6 +1875,7 @@ function GlobalNavigationBar(props) {
         <Route path="/teacherdetails/:teacherId">
         <TeacherDetails isLoggedIn={props.isLoggedIn}/> 
         </Route>
+
 
         <Route path="/">
           <HomeContainer />

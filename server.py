@@ -21,6 +21,11 @@ account_sid = os.environ["ACCOUNT_SID"]
 auth_token = os.environ["AUTH_TOKEN"]
 to_phone_number = os.environ["TO_PHONE_NUMBER"]
 
+UPLOAD_FOLDER = '/path/to/the/uploads'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
+
+
 
 cloudinary.config(
     cloud_name = cloud_name,
@@ -35,6 +40,7 @@ app.secret_key = "dev"
 jwt = JWTManager(app)
 #app.secret_key = "dev"
 #app.jinja_env.undefined = StrictUndefined
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 @app.route("/")
@@ -173,6 +179,35 @@ def show_pod_details(pod_id):
             },)
 
     return jsonify(pod_details)
+
+
+@app.route("/api/teachers/<teacher_id>")
+def show_teacher_details(teacher_id):
+    """Show details of the selected teacher."""
+
+    teacher = crud.get_teacher_details_by_teacher_id(teacher_id) #Get teacher based on click event.
+    print("teacher for teacher details:", teacher)
+    teacher_details = []
+
+
+    teacher_details.append({
+        
+        "teacher_id": teacher.teacher_id,
+        "zipcode": teacher.zipcode,
+        "fname": teacher.fname,
+        "lname": teacher.lname,
+        "email": teacher.email,
+        "mobile_number": teacher.mobile_number,
+        "pod_id": teacher.pod_id,
+        "img_url": teacher.img_url,
+        "bio": teacher.bio,
+        "days_of_week": teacher.days_of_week,
+        "teaching_experience_in_hours": teacher.teaching_experience_in_hours,
+        "pay_rate_per_hour": teacher.pay_rate_per_hour
+        },)
+
+    print("teacher details for teacher details:", teacher_details)
+    return jsonify(teacher_details)
 
 
 
@@ -335,6 +370,11 @@ def signup_teacher():
     return jsonify("Successfully registered a new teacher!")
 
 
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
 @app.route("/api/profile_pic_teacher", methods = ["POST"])
 def upload_profile_pic_teacher():
     """Uplaod a profile pic to Cloudinary file storage and return response."""
@@ -345,6 +385,8 @@ def upload_profile_pic_teacher():
     file = request.files.get('file')
     print("file:", file)
 
+    email = request.form.get('email')
+
     if file.filename == '':
         print("no selected file")
 
@@ -352,14 +394,13 @@ def upload_profile_pic_teacher():
 
         result = cloudinary.uploader.upload(file)
         print("result:", result)
-        print("result for image upload:", cloudinary.uploader.upload(file))
 
         img_url = result['secure_url'] 
         print("img url:", img_url)
 
         #filename = request.files.get('image_upload')
 
-        user = crud.update_teacher(img_url)
+        user = crud.update_teacher(email=email, img_url=img_url)
     
         return jsonify("Successfully added a teacher's profile pic!")
 

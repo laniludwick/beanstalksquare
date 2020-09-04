@@ -126,7 +126,7 @@ class Teacher(db.Model):
     email = db.Column(db.String(50))
     password = db.Column(db.String(50))
     mobile_number = db.Column(db.String(50), nullable=True)
-    img_url = db.Column(db.String(50), nullable=True)
+    img_url = db.Column(db.String, nullable=True)
     zipcode = db.Column(db.String(50))
     days_of_week = db.Column(db.String(50), nullable=True)
     bio = db.Column(db.String)
