@@ -185,26 +185,30 @@ def show_pod_details(pod_id):
 def show_teacher_details(teacher_id):
     """Show details of the selected teacher."""
 
-    teacher = crud.get_teacher_details_by_teacher_id(teacher_id) #Get teacher based on click event.
-    print("teacher for teacher details:", teacher)
+    print("**************teacher for teacher details page before crud function in route")
+    teacher_results = crud.get_teacher_details_by_teacher_id(teacher_id) #Get teacher based on click event.
+    
+
     teacher_details = []
+    print("teacher for teacher details page after crud function:", teacher_results)
 
+    for teacher in teacher_results:
 
-    teacher_details.append({
-        
-        "teacher_id": teacher.teacher_id,
-        "zipcode": teacher.zipcode,
-        "fname": teacher.fname,
-        "lname": teacher.lname,
-        "email": teacher.email,
-        "mobile_number": teacher.mobile_number,
-        "pod_id": teacher.pod_id,
-        "img_url": teacher.img_url,
-        "bio": teacher.bio,
-        "days_of_week": teacher.days_of_week,
-        "teaching_experience_in_hours": teacher.teaching_experience_in_hours,
-        "pay_rate_per_hour": teacher.pay_rate_per_hour
-        },)
+        teacher_details.append({
+            
+            "teacher_id": teacher.teacher_id,
+            "zipcode": teacher.zipcode,
+            "fname": teacher.fname,
+            "lname": teacher.lname,
+            "email": teacher.email,
+            "mobile_number": teacher.mobile_number,
+            "pod_id": teacher.pod_id,
+            "img_url": teacher.img_url,
+            "bio": teacher.bio,
+            "days_of_week": teacher.days_of_week,
+            "teaching_experience_in_hours": teacher.teaching_experience_in_hours,
+            "pay_rate_per_hour": teacher.pay_rate_per_hour
+            },)
 
     print("teacher details for teacher details:", teacher_details)
     return jsonify(teacher_details)
@@ -242,10 +246,10 @@ def show_children_in_pod(pod_id):
 
 
 
-@app.route("/api/teachers/<pod_id>")
+@app.route("/api/teachersinpod/<pod_id>")
 def show_teachers_in_pod(pod_id):
     """Show teacher details of the selected pod."""
-
+    print("************teachers in pod route right before crud op")
     teachers = crud.get_teachers_by_pod_id(pod_id) #Get pod based on click event.
     #Returns teacher SQL Alchemy objects
     #[<Child child_id=1 fname=Eric>] 
@@ -258,6 +262,7 @@ def show_teachers_in_pod(pod_id):
         print("*************teacher in teachers:", teacher)
         teacherslist.append({
             "teacher_id": teacher.teacher_id,
+            "img_url": teacher.img_url,
             "bio": teacher.bio,
             "teaching_experience_in_hours": teacher.teaching_experience_in_hours,
             "pay_rate_per_hour": teacher.pay_rate_per_hour
@@ -491,7 +496,7 @@ def protected():
 
 
 
-@app.route("/api/send_stock_sms/<pod_id>", methods=['POST'])
+@app.route("/api/send_stock_sms_pod/<pod_id>", methods=['POST'])
 def send_stock_sms_to_pod_organizer(pod_id):
 
     print("pod_id in sms api route:", pod_id)
@@ -535,7 +540,7 @@ def send_stock_sms_to_pod_organizer(pod_id):
         
 
 
-@app.route("/api/send_stock_sms/<teacher_id>", methods=['POST'])
+@app.route("/api/send_stock_sms_teacher/<teacher_id>", methods=['POST'])
 def send_stock_sms_to_teacher(teacher_id):
 
     print("teacher_id in sms api route:", teacher_id)
@@ -553,11 +558,11 @@ def send_stock_sms_to_teacher(teacher_id):
         print("**************data from json seems to be nonexistent.")
 
 
-    teacher = crud.get_teacher_by_teacher_id(teacher_id)
+    teacher = crud.get_teacher_by_teacher_id(teacher_id=teacher_id)
     print("teacher:", teacher)
     
     teacher_mobile = teacher.mobile_number
-    print("teacher mobile:", teacher.mobile_number)
+    print("***********teacher mobile:", teacher.mobile_number)
 
     client = Client(account_sid, auth_token)
 
@@ -568,7 +573,7 @@ def send_stock_sms_to_teacher(teacher_id):
                          to=teacher_mobile,
                      )
 
-    print("message.sid:", message.sid)
+    print("teacher message.sid:", message.sid)
     return jsonify({"message.sid": message.sid,
                     "teacher_mobile": teacher_mobile},)
 

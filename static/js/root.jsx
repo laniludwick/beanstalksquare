@@ -52,7 +52,7 @@ function ContactTeacher() {
     console.log("Text data from contact teacher form:", textData);
     console.log("Stringified text data:", JSON.stringify(textData));
 
-    fetch(`/api/send_stock_sms/${teacherId}`, {
+    fetch(`/api/send_stock_sms_teacher/${teacherId}`, {
       method: 'POST', 
       headers: {
         'Content-Type': 'application/json'
@@ -63,7 +63,7 @@ function ContactTeacher() {
     .then(response => response.json())
     .then(data => {
       console.log("Result of .then data:", data);
-      alert("You successfully sent a message to a teacher!")
+      alert("You received a response from the server; please read it!")
       //setIsLoggedIn("True")
       history.push(`/teacherdetails/${teacherId}`);
     }); //Close .then
@@ -145,7 +145,7 @@ function ContactPodOrganizer() {
     console.log("Text data from form:", textData);
     console.log("Stringified text data:", JSON.stringify(textData));
 
-    fetch(`/api/send_stock_sms/${podId}`, {
+    fetch(`/api/send_stock_sms_pod/${podId}`, {
       method: 'POST', 
       headers: {
         'Content-Type': 'application/json'
@@ -156,7 +156,7 @@ function ContactPodOrganizer() {
     .then(response => response.json())
     .then(data => {
       console.log("Result of .then data:", data);
-      alert("You successfully sent a message to the pod organizer!")
+      alert("You received a response from the server; please read it!")
       //setIsLoggedIn("True")
       history.push(`/poddetails/${podId}`);
     }); //Close .then
@@ -203,7 +203,7 @@ function ContactPodOrganizer() {
 
 function TeacherDetails(props) {
 
-  const [teacherDetailsAll, setTeacherDetails] = React.useState(null);
+  const [teacherDetailsAll, setTeacherDetailsAll] = React.useState({});
   const {teacherId} = ReactRouterDOM.useParams();
   const contact_teacher_link = `/contactteacher/${teacherId}`
 
@@ -221,76 +221,85 @@ function TeacherDetails(props) {
         //use parsed result
         console.log("data in teacher details response:", data);
        
-        const teacherComponentsList = [];
+        const full_name = data[0].fname+" "+data[0].lname;
+        
+        const teacherDetailsResults = {
 
-        for (const teacher of data) {
-
-          const full_name = teacher.fname+" "+teacher.lname;
-
-          const teacherDetailsElement = <TeacherDetailsAll 
-                                    key={teacher.teacher_id}
-                                    teacher_id={teacher.teacher_id}
-                                    bio={teacher.bio}
-                                    email={teacher.email}
-                                    mobile_number={teacher.mobile_number}
-                                    teacher_name={full_name}
-                                    zipcode={teacher.zipcode}
-                                    pod_id={teacher.pod_id}
-                                    img_url={teacher.img_url}
-                                    days_of_week={teacher.days_of_week}
-                                    teaching_experience_in_hours={teacher.teaching_experience_in_hours}
-                                    pay_rate_per_hour={teacher.pay_rate_per_hour}
-                                    isLoggedIn={props.isLoggedIn}
-                                    />
-        console.log("teacher details component:", teacherDetailsElement);
-        setTeacherDetailsAll(teacherDetailsElement);  
+          "teacher_id" : data[0].teacher_id,
+          "teacher_name" : full_name,
+          "bio" : data[0].bio,
+          "email" : data[0].email,
+          "mobile_number" : data[0].mobile_number,
+          "zipcode" : data[0].zipcode,
+          "pod_id" : data[0].pod_id,
+          "img_url" : data[0].img_url,
+          "days_of_week" : data[0].days_of_week,
+          "teaching_experience_in_hours" : data[0].teaching_experience_in_hours,
+          "pay_rate_per_hour" : data[0].pay_rate_per_hour,
         }
-      });
-      }, [])
+        
+        setTeacherDetailsAll(teacherDetailsResults); 
+        console.log("TeacherDetailsResults Dict:", teacherDetailsResults);
+        
+        // console.log("Teacher detail value:", teacherDetailsAll.teacher_id);
+        // console.log("Teacher detail value:", teacherDetailsAll["teacher_id"]);
+      }); // Close .then
+      }, []) // Close useEffect
 
-    console.log("Looking for teacher details:", teacherDetailsAll);
+      console.log("Teacher details state:", teacherDetailsAll);
+      
+      
+      // teacherDetailsAll.map(deet => {
+      //   deet.teacher_id;
 
+      // })
+     
   return ( 
   
       <div> 
+        <br/>
+        <br/>
         <Link to={contact_teacher_link} className="btn btn-primary">Contact Teacher </Link> 
-
+        <br/>
+        <br/>
+        
+        
         <table className="table">
           <tbody>
             
             <tr> 
               <th className="teacher-table-title" scope="row">Teacher name</th>
-              <td>{props.teacher_name}</td>
+              <td>{teacherDetailsAll.teacher_name}<img src={teacherDetailsAll.img_url}/></td>
             </tr>
 
             <tr>
               <th className="teacher-table-title" scope="row">Bio</th>
-              <td>{props.bio}</td>
+              <td>{teacherDetailsAll.bio}</td>
             </tr>
 
-            <tr>
+            {/* <tr>
               <th className="teacher-table-title" scope="row">Email</th>
-              <td>{props.email}</td>
-            </tr>
+              <td>{teacherDetailsAll.email}</td>
+            </tr> */}
             
             <tr>
               <th className="teacher-table-title" scope="row">Zipcode</th>
-              <td>{teacherDetailsAll[0].zipcode}</td>
+              <td>{teacherDetailsAll.zipcode}</td>
             </tr>
             
             <tr>
               <th className="teacher-table-title" scope="row">Preferred days of week</th>
-              <td>{props.days_of_week}</td>
+              <td>{teacherDetailsAll.days_of_week}</td>
             </tr>
             
             <tr>
               <th className="teacher-table-title" scope="row">Teaching experience (in hours)</th>
-              <td>{props.teaching_experience_in_hours}</td>
+              <td>{teacherDetailsAll.teaching_experience_in_hours}</td>
             </tr>
 
             <tr>
-              <th className="teacher-table-title" scope="row">Rate (per hour)</th>
-              <td>{props.pay_rate_per_hour}</td>
+              <th className="teacher-table-title" scope="row">Pay rate (per hour)</th>
+              <td>${teacherDetailsAll.pay_rate_per_hour}</td>
             </tr>
 
           </tbody>  
@@ -457,6 +466,7 @@ function TeachersInPod (props) {
   return (
     <tr>
       
+      <td><img src={props.img}/></td>
       <td>{props.bio}</td>
       <td>{props.teaching_experience_in_hours}</td>
       <td>{props.pay_rate_per_hour}</td>
@@ -475,7 +485,7 @@ function TeachersInPodList(props) {
   React.useEffect(() => {
     
       console.log("Beg of useEffect in TeachersInPodList");
-      fetch(`/api/teachers/${podId}`, {
+      fetch(`/api/teachersinpod/${podId}`, {
         method: 'GET',
       }) //Close fetch
 
@@ -496,6 +506,7 @@ function TeachersInPodList(props) {
           const teacherElement = <TeachersInPod 
                                     key={teacher.teacher_id}
                                     bio={teacher.bio}
+                                    img={teacher.img_url}
                                     teaching_experience_in_hours={teacher.teaching_experience_in_hours}
                                     pay_rate_per_hour={teacher.pay_rate_per_hour}
                                     />
@@ -515,6 +526,7 @@ function TeachersInPodList(props) {
         <thead>
           <tr> 
           
+            <th scope="col">Photo</th>
             <th scope="col">Bio</th>
             <th scope="col">Teaching experience (total hours)</th>
             <th scope="col">Pay rate per hour</th>
@@ -1022,6 +1034,8 @@ function TeacherList(props) {
     <div>
       <br/>
       <br/>
+      <div>
+      </div>
       <table className="table">
         <thead>
           <tr> 
@@ -1592,7 +1606,7 @@ function TeacherSignUpForm() {
 
       <label> Password</label>
       <br/>
-      <input type="text" value={userInputSignUp.signuppassword} name="signuppassword" onChange={handleChange} />
+      <input type="password" value={userInputSignUp.signuppassword} name="signuppassword" onChange={handleChange} />
       <br/>
 
       <br/>
@@ -1704,7 +1718,7 @@ function ParentSignUpForm() {
 
       <label> Password</label>
       <br/>
-      <input type="text" value={userInputSignUp.signuppassword} name="signuppassword" onChange={handleChange} />
+      <input type="password" value={userInputSignUp.signuppassword} name="signuppassword" onChange={handleChange} />
       <br/>
 
       <br/>
@@ -1791,7 +1805,7 @@ function LogInForm(props) {
     <label> 
       Password
       <br/>
-      <input type="text" value={loginpassword} name="loginpassword" onChange={handlePasswordChange} />
+      <input type="password" value={loginpassword} name="loginpassword" onChange={handlePasswordChange} />
     </label>
 
     <br/>

@@ -190,7 +190,7 @@ def get_teacher_details_by_teacher_id(teacher_id):
     """Get the SQLAlchemy teacher object based on the teacher_id."""
 
     #Returns a Teacher object
-    return db.session.query(Teacher).filter(Teacher.teacher_id==teacher_id).one()
+    return db.session.query(Teacher).filter(Teacher.teacher_id==teacher_id).all()
 
 
 
@@ -232,8 +232,16 @@ def get_teachers_by_pod_id(pod_id):
     """Get the SQLAlchemy teacher object based on the associated pod_id."""
 
     teachers = db.session.query(Teacher).filter(Teacher.pod_id==pod_id).all()
-
+    print("teachers in pod: ", teachers)
     return teachers
+
+
+def get_teacher_by_teacher_id(teacher_id):
+    """Get the SQLAlchemy teacher object based on the associated teacher_id."""
+
+    teacher = db.session.query(Teacher).filter(Teacher.teacher_id==teacher_id).one()
+    print("crud teacher by id: ", teacher)
+    return teacher
 
 
 def get_filtered_teachers(zipcode): #Must use single quotes in SQL and SQLAlchemy
