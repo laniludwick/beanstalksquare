@@ -6,7 +6,7 @@ const Switch = ReactRouterDOM.Switch;
 const Redirect = ReactRouterDOM.Redirect;
 
 //import Button from 'react-bootstrap/Button' OR;
-//const { Badge, Button, Col, Container, Form, FormControl, ListGroup, Navbar, Row, Table } = ReactBootstrap;
+const { Badge, Button, Col, Container, Form, FormControl, ListGroup, Navbar, Row, Table, Modal, Alert} = ReactBootstrap;
 //import 'bootstrap/dist/css/bootstrap.min.css';
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -797,6 +797,7 @@ function PodDetailsContainer(props) {
 
 
 
+
 function CreatePod() {
   
   const history = ReactRouterDOM.useHistory(); 
@@ -809,13 +810,17 @@ function CreatePod() {
     max_child_capacity: "",
     days_per_week: "",
     total_hours_per_day: "",
-    paid_teacher: "",
-    same_school_only: "",
-    same_school_program_only: "",
-    same_grade_only: "",
-    outdoors_only: "",
-    periodic_covid_testing: "",
+    paid_teacher: false,
+    same_school_only: false,
+    same_school_program_only: false,
+    same_grade_only: false,
+    outdoors_only: false,
+    periodic_covid_testing: false,
     cost_per_hour: "",
+    street_address: "",
+    city: "",
+    state: "",
+    zipcode: "",
     }
   );
 
@@ -844,7 +849,11 @@ function CreatePod() {
                 "same_school_program_only": userInputPod.same_school_program_only,
                 "outdoors_only": userInputPod.outdoors_only,
                 "periodic_covid_testing": userInputPod.periodic_covid_testing,
-                "cost_per_hour": userInputPod.cost_per_hour}
+                "cost_per_hour": userInputPod.cost_per_hour,
+                "street_address": userInputPod.street_address,
+                "city": userInputPod.city,
+                "state": userInputPod.state,
+                "zipcode": userInputPod.zipcode,}
                 
     console.log("Pod data from form:", pod);
     console.log("Stringified pod:", JSON.stringify(pod));
@@ -867,6 +876,7 @@ function CreatePod() {
   return (
     <div>
      <br/>
+     
      <label>Pod Name </label>
      <br/>
      <input type="text" name="pod_name" value={userInputPod.pod_name} onChange={handleChange}/>
@@ -922,6 +932,51 @@ function CreatePod() {
       <input type="number" value={userInputPod.cost_per_hour} name="cost_per_hour" onChange={handleChange} />
       <br/>
       <br/>
+
+      <label> Pod meeting location:</label><br/>
+      <label> Street address</label>
+      <input type="text" value={userInputPod.street_address} name="street_address" onChange={handleChange} />
+      <br/>
+      <label> City</label>
+      <input type="text" value={userInputPod.city} name="city" onChange={handleChange} />
+      <label> State</label>
+      <input type="text" value={userInputPod.state} name="state" onChange={handleChange} />
+      <label> Zipcode</label>
+      <input type="text" value={userInputPod.zipcode} name="zipcode" onChange={handleChange} />
+      <br/>
+      <br/>
+
+      <label> Please read the following Covid risk profiles and select the profile that most closely represents your household.</label>
+      <br/>
+      
+      <label>
+        "Very strict": "Stays within home; Maintains 6’ distance; No one outside contact; Strict infection control protocol; No contact with outside world"
+      </label><br/>
+      <label>  
+        "Strict": "Leaves home for essentials; Maintains 6’ of distance outside of home when leaves for essentials; Strict etiquette including hand washing, masks and social distancing are used 100% of the time when outside of the home; No socializing outside of the home"
+      </label><br/>
+      <label>
+        "Fairly strict": "Leaves home only to go to work and for essentials; Fairly strict etiquette including hand washing, masks and social distancing are used 80-99% of the time when outside of the home; Occasionally socializes with others who are not in one’s home, but stay outdoors and maintain social distance of 6’ or less than 6’ only with masks"
+      </label><br/>
+        "Somewhat open": "Leaves home to exercise, go to the store, work,and other activities several times per week; Etiquette including hand washing, masks and social distancing are used 60-79% of the time when outside of the home; Sometimes socializes with others who are not in one’s home at less than a 6 foot distance if they have been following fairly strict or somewhat open protocols as well"
+      <label>
+        "Moderately open": "Leaves home to exercise, go to the store, work,and other activities multiple times per week; Etiquette including hand washing, masks and social distancing are used 20-59% of the time when outside of the home; May not maintain social distance and may see more than 10 people at a time"
+      </label><br/>
+        <label>
+        "Very open": "No precautions to protect oneself from infection; Actively socializes without regard to social distancing or recommended etiquette"
+        </label>
+        <br/>
+        Covid Risk Profile 
+      <select value={userInputPod.covid_risk_profile} onChange={handleChange}>
+        <option >Very strict </option>
+        <option >Strict </option>
+        <option >Fairly strict </option>
+        <option >Somewhat open </option>
+        <option >Moderately open </option>
+        <option >Fairly open </option>
+      </select>
+      <br/>
+      <br/>
       <button onClick={makePod}> Complete Pod Creation </button>
     </div>
      );
@@ -935,6 +990,7 @@ function Teacher(props) {
 
   return (
     <tr>
+      <td><img src={props.img_url}/></td>
       <td>{props.teacher_name}</td>
       <td>{props.zipcode}</td>
       <td>{props.days_of_week}</td>
@@ -953,7 +1009,7 @@ function Pod(props) {
   const podDetailsLink = `/poddetails/${props.pod_id}`;
 
   return (
-    <tr>
+    <tr>   
       <td>{props.pod_name}</td>
       <td>{props.zipcode}</td>
       <td>{props.days_per_week}</td>
@@ -1006,25 +1062,26 @@ function TeacherList(props) {
       
       const full_name = teacher.fname+" "+teacher.lname;
 
-      console.log("teacher:", teacher);
-      const teacherComponent = <Teacher key={teacher.teacher_id}
-                                teacher_id={teacher.teacher_id}
-                                bio={teacher.bio}
-                                email={teacher.email}
-                                mobile_number={teacher.mobile_number}
-                                teacher_name={full_name}
-                                zipcode={teacher.zipcode}
-                                pod_id={teacher.pod_id}
-                                img_url={teacher.img_url}
-                                days_of_week={teacher.days_of_week}
-                                teaching_experience_in_hours={teacher.teaching_experience_in_hours}
-                                pay_rate_per_hour={teacher.pay_rate_per_hour}
-                                isLoggedIn={props.isLoggedIn}
-                                />
-      console.log("teacher component:", teacherComponent);
-      teacherComponentsList.push(teacherComponent);
-      console.log("teacher components list:", teacherComponentsList);
-      
+      if (teacher.pod_id == undefined) {
+        console.log("teacher:", teacher);
+        const teacherComponent = <Teacher key={teacher.teacher_id}
+                                  teacher_id={teacher.teacher_id}
+                                  bio={teacher.bio}
+                                  email={teacher.email}
+                                  mobile_number={teacher.mobile_number}
+                                  teacher_name={full_name}
+                                  zipcode={teacher.zipcode}
+                                  pod_id={teacher.pod_id}
+                                  img_url={teacher.img_url}
+                                  days_of_week={teacher.days_of_week}
+                                  teaching_experience_in_hours={teacher.teaching_experience_in_hours}
+                                  pay_rate_per_hour={teacher.pay_rate_per_hour}
+                                  isLoggedIn={props.isLoggedIn}
+                                  />
+        console.log("teacher component:", teacherComponent);
+        teacherComponentsList.push(teacherComponent);
+        console.log("teacher components list:", teacherComponentsList);
+        }
   }; //Close for loop
   
   setTeacherList(teacherComponentsList);
@@ -1039,6 +1096,7 @@ function TeacherList(props) {
       <table className="table">
         <thead>
           <tr> 
+            <th scope="col"></th>
             <th scope="col">Teacher name</th>
             <th scope="col">Zipcode</th>
             <th scope="col">Preferred Days of week</th>
@@ -1163,7 +1221,7 @@ function PodSearch(props) {
        
         <br/> 
            {/*<label>Find Students</label> */}
-        <br/>
+        
           <input type="text" value={zipcode} name="zipcode" onChange={handleChange} />
           <input type="submit" value="search" /> 
       </form>
@@ -1196,7 +1254,7 @@ function TeacherSearch(props) {
        
         <br/> 
            {/*<label>Find Students</label> */}
-        <br/>
+        
           <input type="text" value={zipcode} name="zipcode" onChange={handleChange} />
           <input type="submit" value="search" /> 
       </form>
@@ -1257,18 +1315,6 @@ function Benefits() {
 
 
 
-function Homepage() {
-
-  return (
-    <div>
-      <br/>
-      <br/>
-      <p> (LARGE PHOTO GOES HERE) </p>
-      <p>Find a small group of children in your area for your child to engage in distance learning with.</p>  
-      {/*<img src= />*/}
-    </div>
-  );
-}
 
 
 
@@ -1311,25 +1357,27 @@ function HomeContainer() {
 
   return (
     <div>
-      
-      <div><Homepage /></div>
-      
-      <div className="btn-group btn-group-toggle" data-toggle="buttons">
-      
-        <div className="search-toggle">
+      <Container fluid>
+        <Row>Navbar
+        </Row>
         
-          <Link name="options" className="find-students" id="option1" onClick={clickStudents}> Find Students </Link>
+        <Row>
+          <Col><div><img src="/static/img/beanstalkhero.jpg" width="100%"/></div>
+            <div className="top-left">Engage in distance learning together.</div>
             
-          <Link name="options" className="find-teachers" id="option2" onClick={clickTeachers}> Find Teachers</Link>
+            <div >
+              <div className="middle-left">
+              <Link name="options" className="find-students" id="option1" onClick={clickStudents}> Find Students </Link>
+              <Link name="options" className="find-teachers" id="option2" onClick={clickTeachers}> Find Teachers</Link>
+              </div>
+            </div>
             
-        </div>
-
-        <div>
-          {linkStatus=="find_students"? <PodSearch  /> : <TeacherSearch />}
-        </div>
-      
-      </div>
-      <br/>
+            <div className="middle-left">
+              {linkStatus=="find_students"? <PodSearch  /> : <TeacherSearch />}
+            </div>
+          </Col>
+        </Row>
+      </Container>
       
       <br/>
       <div>

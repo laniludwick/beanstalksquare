@@ -277,8 +277,6 @@ def show_teachers_in_pod(pod_id):
 def start_pod():
     """Create a new pod."""
 
-
-
     data = request.get_json()
     print("******************data in createpod route:", data)
     pod_name = data["pod_name"]
@@ -292,45 +290,21 @@ def start_pod():
     outdoors_only = data["outdoors_only"]
     periodic_covid_testing = data["periodic_covid_testing"]
     cost_per_hour = data["cost_per_hour"]
-
-
-    if data["paid_teacher"]=="":
-        paid_teacher="No" 
-    else:
-        paid_teacher="Yes"
-    
-    if data["same_grade_only"]=="":
-        same_grade_only="No" 
-    else:
-        same_grade_only="Yes"
-    
-    if data["same_school_only"]=="":
-        same_school_only="No" 
-    else:
-        same_school_only="Yes"
-        
-    if data["same_school_program_only"]=="":
-        same_school_program_only="No" 
-    else:
-        same_school_program_only="Yes"
-
-    if data["outdoors_only"]=="":
-        outdoors_only="No" 
-    else:
-        outdoors_only="Yes"
-
-    if data["periodic_covid_testing"]=="":
-        periodic_covid_testing="No" 
-    else:
-        periodic_covid_testing="Yes"
+    street_address = data["street_address"]
+    city = data["city"]
+    state = data["state"]
+    zipcode = data["zipcode"]
 
     print("****************pod name createpod route:", pod_name)
 
-    pod = crud.create_pod(pod_name, max_child_capacity, days_per_week, 
-                            total_hours_per_day, paid_teacher, same_grade_only, 
-                            same_school_only, same_school_program_only, 
-                            outdoors_only, periodic_covid_testing, 
-                            cost_per_hour)
+    pod = crud.create_pod(pod_name=pod_name, max_child_capacity=max_child_capacity, days_per_week=days_per_week, 
+                            total_hours_per_day=total_hours_per_day, paid_teacher=paid_teacher, same_grade_only=same_school_program_only, 
+                            same_school_only=same_school_only, same_school_program_only=same_school_program_only, 
+                            outdoors_only=outdoors_only, periodic_covid_testing=periodic_covid_testing, 
+                            cost_per_hour=cost_per_hour)
+
+    # pod_location = crud.create_pod_location(pod_id=pod_id, zipcode=zipcode, street_address=street_address, city=city, 
+    # state=state, day_of_week=day_of_week)
     print("***************result from createpod crud:", pod)
     #flash("Successfully created pod in server route!")
 
