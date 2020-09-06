@@ -6,7 +6,7 @@ const Switch = ReactRouterDOM.Switch;
 const Redirect = ReactRouterDOM.Redirect;
 
 //import Button from 'react-bootstrap/Button' OR;
-const { Badge, Button, Col, Container, Form, FormControl, ListGroup, Navbar, Row, Table, Modal, Alert} = ReactBootstrap;
+const { Badge, Button, Col, Container, Form, FormControl, ListGroup, Navbar, Nav, Row, Table, Modal, Alert} = ReactBootstrap;
 //import 'bootstrap/dist/css/bootstrap.min.css';
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -1271,38 +1271,44 @@ function Benefits() {
   return (
     
   <div>
-    <p>(BENEFITS SECTION)</p>
+    
     <div className = "three-containers">
       <div className="row">
         
-        <div className = "col-4"> 
-          <div className="mx-auto mktg">
+        <div className = "col-4 shadow p-3 mb-5 bg-white rounded"> 
+          <div className="mx-auto mktg benefit-icon">
             <i className="fa fa-trophy"></i> 
-            Limit Risk Exposure
+            </div>
+            <div>
+            <h3>Limit Your Risk Exposure</h3>
           </div>
-
+          <br/>
           <div>Stay safe by finding a small group of other children to study or play with.
           </div>
         </div>
 
-        <div className="col-4"> 
-          <div className="mx-auto mktg">
+        <div className="col-4 shadow p-3 mb-5 bg-white rounded"> 
+          <div className="mx-auto mktg benefit-icon">
             <i className="fa fa-globe"></i>
-            Maintain Social Interaction
+            </div>
+            <div>
+            <h3>Maintain Social Interaction</h3>
           </div>
-          
+          <br/>
           <div>Social interaction is important for children to meet developmental milestones.
 
           </div>
         </div>
 
 
-        <div className="col-4"> 
-          <div className="mx-auto mktg">
+        <div className="col-4 shadow p-3 mb-5 bg-white rounded"> 
+          <div className="mx-auto mktg benefit-icon">
             <i className="fa fa-certificate"></i>
-            Contact Families Near You
+            </div>
+            <div>
+            <h3>Contact Families Near You</h3>
           </div>  
-          
+          <br/>
           <div>Get in touch with other families to discuss joining a pod together.
           </div>
         
@@ -1358,9 +1364,6 @@ function HomeContainer() {
   return (
     <div>
       <Container fluid>
-        <Row>Navbar
-        </Row>
-        
         <Row>
           <Col><div><img src="/static/img/beanstalkhero.jpg" width="100%"/></div>
             <div className="top-left">Engage in distance learning together.</div>
@@ -1871,14 +1874,41 @@ function SignUpParties () {
 
   return (
   <div>
-  
-    <div>
-      <Link key={1} to="/signup_parent" className="btn btn-primary" > I'm a parent </Link>
-    </div>
+    
+    
+    <div className = "two-containers">
+    <br/>
+    <h3>Let's get started! Please choose an option. </h3>
+      <div className="row">
+        <div className = "col-3  p-2 mb-5 bg-white rounded"> 
+          <div className="mx-auto mktg">
+          </div>
+          <div className="outline-card" id="sign-up-1">
+            <h3>I'm a parent</h3>
+            <p>I'm looking for other students or a teacher.</p>
+            <div>
+            <Link key={1} to="/signup_parent" className="btn btn-primary" > Start search </Link>
+          </div>
+          </div>
+          <br/>
+          
+        </div>
 
-    <div>
-      <Link key={2} to="/signup_teacher" className="btn btn-primary" >I'm a teacher </Link> 
-    </div>
+        <div className="col-3 p-2 mb-5 bg-white rounded"> 
+          <div className="mx-auto mktg">    
+          </div>
+          <div className="outline-card" id="sign-up-2">
+            <h3>I'm a teacher </h3>
+            <p>I'm looking for students to teach.</p>
+            <div>
+            <Link key={2} to="/signup_teacher" className="btn btn-primary" >Start search </Link> 
+          </div>
+          </div>
+          <br/>
+          
+        </div>
+      </div>
+    </div>  
   </div>
   )
 }
@@ -1901,17 +1931,26 @@ function GlobalNavigationBar(props) {
   return (
 
     <div> 
-      <nav bg="light" expand="lg">
-        
-        <Link to="/"> <img src="static/img/beanstalksquarelogo.png" width="200px" height="40px"/></Link>
-        
-        {props.isLoggedIn==="True"? 
-          [<Link key={1} to="/createpod" className="btn btn-primary" > Start a pod </Link>,
-          <Link key={2} to="/" onClick={LogOut} className="btn btn-primary" > Log Out </Link>]
-          : [<Link key={1} to="/login" className="btn btn-primary" > Log In </Link>, 
-          <Link key={2} to="/signup" className="btn btn-primary"> Sign Up </Link>]}
-
-      </nav>
+    <Navbar bg="none" variant="light">
+    <Navbar.Brand href="#home"><img src="static/img/beanstalksquarelogo.png" width="200px" height="40px"/></Navbar.Brand>
+    {/*<Nav className="mr-auto">
+      <Nav.Link href="#home">Home</Nav.Link>
+      <Nav.Link href="#features">Features</Nav.Link>
+      <Nav.Link href="#pricing">Pricing</Nav.Link>
+    </Nav> */}
+    <Form inline>
+      {/*<FormControl type="text" placeholder="Search" className="mr-sm-2" /> */}
+          
+          {props.isLoggedIn==="True"? 
+          [<Link key={1} to="/createpod" className="btn bg-transparent nav-links" variant="outline-primary" > Start a pod </Link>,
+          <Link key={2} to="/" onClick={LogOut} className="btn bg-transparent nav-links" > Log Out </Link>]
+          : [<Link key={1} to="/login" className="btn bg-transparent nav-links" > Log In </Link>, 
+          <Link key={2} to="/signup" className="btn bg-transparent nav-links" > Sign Up </Link>]}
+          
+      {/*<Button variant="outline-primary">Search</Button> */}
+    </Form>
+  </Navbar>
+      
 
       <Switch>
               
