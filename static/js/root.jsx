@@ -1843,27 +1843,21 @@ function LogInForm(props) {
    
 
   return ( 
-   <form onSubmit={attemptLogIn} >
-    
-    <br/>
-    <label> 
-      Email 
-      <br/>
-      <input type="text" value={loginemail} name="loginemail" onChange={handleEmailChange} />
-    </label>
+    <Form onSubmit={attemptLogIn} >
+      <Form.Group controlId="formBasicEmail">
+        <Form.Label> Email Address</Form.Label>
+        <Form.Control type="email" placeholder="Enter email" value={loginemail} name="loginemail" onChange={handleEmailChange}/> 
+        <Form.Text className="text-muted">We'll never share your email with anyone else.</Form.Text>
+      </Form.Group>
 
-    <br/>
-    <label> 
-      Password
-      <br/>
-      <input type="password" value={loginpassword} name="loginpassword" onChange={handlePasswordChange} />
-    </label>
+      <Form.Group controlId="formBasicPassword">
+        <Form.Label> Password</Form.Label>
+        <Form.Control type="password" placeholder="Password" value={loginpassword} name="loginpassword" onChange={handlePasswordChange}/> 
+      </Form.Group>
 
-    <br/>
-    <br/>
-    <input type="submit" value="Submit" /> 
-  </form>
-      );
+      <Button variant="primary" type="submit">Submit</Button> 
+    </Form>
+  );
       
   
 } //Close the entire LogIn Function
