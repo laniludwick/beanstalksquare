@@ -73,31 +73,32 @@ function ContactTeacher() {
 
   return ( 
    
-    <div>
-     
+    <div className="contact-form-wrapper">
+     <h3>Send a message to the teacher</h3>
      <br/>
-     <label>Your name </label>
-     <br/>
-     <input type="text" name="name" value={userInputSms.name} onChange={handleChange}/>
-      <br/>
+      <Form>
+        <Form.Group controlId="formFirstName">
+        
+          <Form.Control type="text" placeholder="Your Name" value={userInputSms.name} name="name" onChange={handleChange}/> 
+        </Form.Group>
 
-      <label> Phone number</label>
-      <br/>
-      <input type="text" value={userInputSms.phone} name="phone" onChange={handleChange} />
-      <br/>
+        <Form.Group controlId="formPhoneNumber">
 
-      <label> Email</label>
-      <br/>
-      <input type="text" value={userInputSms.email} name="email" onChange={handleChange} />
-      <br/>
+          <Form.Control type="text" placeholder="Phone Number" value={userInputSms.phone} name="phone" onChange={handleChange}/> 
+        </Form.Group>
 
-      <label> Message</label>
-      <br/>
-      <input type="textarea" value={userInputSms.message} name="message" onChange={handleChange} rows={5}/>
-      <br/>
+        <Form.Group controlId="formBasicEmail">
 
-      <br/>
-      <button onClick={contactTeacher}> Send message </button>
+          <Form.Control type="email" placeholder="Email Address" value={userInputSms.email} name="email" onChange={handleChange}/> 
+        </Form.Group>
+
+        <Form.Group controlId="formMessage">
+
+          <Form.Control type="textarea" placeholder="Message" value={userInputSms.message} name="message" onChange={handleChange} rows={5}/> 
+        </Form.Group>
+
+        <Button variant="primary" onClick={contactTeacher} type="submit">Send message</Button> 
+      </Form>
     </div>
 
   );
@@ -166,31 +167,32 @@ function ContactPodOrganizer() {
 
   return ( 
    
-    <div>
-     
+    <div className="contact-form-wrapper">
+     <h3>Send a message to this pod's organizer(s)</h3>
      <br/>
-     <label>Your name </label>
-     <br/>
-     <input type="text" name="name" value={userInputSms.name} onChange={handleChange}/>
-      <br/>
+      <Form>
+        <Form.Group controlId="formFirstName">
+        
+          <Form.Control type="text" placeholder="Your Name" value={userInputSms.name} name="name" onChange={handleChange}/> 
+        </Form.Group>
 
-      <label> Phone number</label>
-      <br/>
-      <input type="text" value={userInputSms.phone} name="phone" onChange={handleChange} />
-      <br/>
+        <Form.Group controlId="formPhoneNumber">
 
-      <label> Email</label>
-      <br/>
-      <input type="text" value={userInputSms.email} name="email" onChange={handleChange} />
-      <br/>
+          <Form.Control type="text" placeholder="Phone Number" value={userInputSms.phone} name="phone" onChange={handleChange}/> 
+        </Form.Group>
 
-      <label> Message</label>
-      <br/>
-      <input type="textarea" value={userInputSms.message} name="message" onChange={handleChange} rows={5}/>
-      <br/>
+        <Form.Group controlId="formBasicEmail">
 
-      <br/>
-      <button onClick={contactPodOrganizer}> Send message </button>
+          <Form.Control type="email" placeholder="Email Address" value={userInputSms.email} name="email" onChange={handleChange}/> 
+        </Form.Group>
+
+        <Form.Group controlId="formMessage">
+
+          <Form.Control type="textarea" placeholder="Message" value={userInputSms.message} name="message" onChange={handleChange} rows={5}/> 
+        </Form.Group>
+
+        <Button variant="primary" onClick={contactPodOrganizer} type="submit">Send message</Button> 
+      </Form>
     </div>
 
   );
@@ -259,7 +261,7 @@ function TeacherDetails(props) {
       <div> 
         <br/>
         <br/>
-        <Link to={contact_teacher_link} className="btn btn-primary">Contact Teacher </Link> 
+        <Link to={contact_teacher_link} className="btn btn-primary float-right">Contact Teacher </Link> 
         <br/>
         <br/>
         
@@ -411,7 +413,7 @@ function GoogleMap(props) {
 
     setMap(new google.maps.Map(googleMapRef.current, {
 
-      zoom:11,
+      zoom:13,
       center: { lat: latitude,
                 lng: longitude,},
       disableDefaultUI: true,
@@ -440,7 +442,7 @@ function GoogleMap(props) {
   //Render map
   return (
     
-    <div id="google-map" ref={googleMapRef} style={{width: '400px', height: '300px'}}>
+    <div id="google-map" ref={googleMapRef} style={{width: '700px', height: '500px'}}>
     </div>
     
     );
@@ -453,7 +455,8 @@ function MapContainer(props) {
   console.log("props in Mapcontainer component:", props)
   return ( 
     <div className="map">
-    This is the map view of search results!
+    <br/>
+    <h3>Pod location(s) </h3>
       <GoogleMap podDetailsAll={props.podDetailsAll} />    
     </div>
   )
@@ -468,8 +471,8 @@ function TeachersInPod (props) {
       
       <td><img src={props.img}/></td>
       <td>{props.bio}</td>
-      <td>{props.teaching_experience_in_hours}</td>
-      <td>{props.pay_rate_per_hour}</td>
+      <td>{props.teaching_experience_in_hours} hrs</td>
+      <td>${props.pay_rate_per_hour}/hr</td>
       
     </tr>
   );
@@ -522,17 +525,17 @@ function TeachersInPodList(props) {
   
   return ( 
     <div>
-      <br/>
+      
       <h3>Teacher(s) </h3>
 
-        <table className="podteachers">
+        <table className="podteachers table">
         <thead>
-          <tr> 
+          <tr > 
           
-            <th scope="col">Photo</th>
-            <th scope="col">Bio</th>
-            <th scope="col">Teaching experience (total hours)</th>
-            <th scope="col">Pay rate per hour</th>
+            <th className="table-header-row" scope="col">Photo</th>
+            <th className="table-header-row" scope="col">Bio</th>
+            <th className="table-header-row" scope="col">Teaching experience</th>
+            <th className="table-header-row" scope="col">Pay rate</th>
             
           </tr>
         </thead>
@@ -554,8 +557,8 @@ function Child (props) {
       <td>{props.gender}</td>
       <td>{props.zipcode}</td>
       <td>{props.grade_name}</td>
-      <td>{props.school_program}</td>
       <td>{props.school_name}</td>
+      <td>{props.school_program}</td>
       
     </tr>
   );
@@ -612,15 +615,16 @@ function ChildrenInPodList(props) {
       <br/>
       <h3 className="table-title">Children</h3>
       <br/>
-        <table className="podchildren">
+        <table className="table podchildren">
         <thead>
           <tr> 
-            <th scope="col">Name</th>
-            <th scope="col">Gender</th>
-            <th scope="col">Zipcode</th>
-            <th scope="col">Grade name</th>
-            <th scope="col">School program</th>
-            <th scope="col">School name</th>
+            <th className="table-header-row" scope="col">Name</th>
+            <th className="table-header-row" scope="col">Gender</th>
+            <th className="table-header-row" scope="col">Zipcode</th>
+            <th className="table-header-row" scope="col">Grade</th>
+            <th className="table-header-row" scope="col">School</th>
+            <th className="table-header-row" scope="col">Program</th>
+            
             
           </tr>
         </thead>
@@ -781,9 +785,9 @@ function PodDetailsContainer(props) {
     <div className="detail-results-table-wrapper">
       <br/>
       <br/>
-      
+      <br/>
       <div className="contact-button-position">
-        <Link to={contact_pod_organizers_link} className="btn btn-primary">Contact Pod Parent </Link> 
+        <Link to={contact_pod_organizers_link} className="btn btn-primary">Contact Pod Organizer </Link> 
       </div>
       <br/>
       <div width="50%">
@@ -1376,8 +1380,8 @@ function HomeContainer() {
             
             <div >
               <div className="middle-left">
-              <Link name="options" className="find-students" id="option1" onClick={clickStudents}> Find Students </Link>
-              <Link name="options" className="find-teachers" id="option2" onClick={clickTeachers}> Find Teachers</Link>
+              <Link name="options" className="find-students a-search" id="option1" onClick={clickStudents}> Find Students </Link>
+              <Link name="options" className="find-teachers a-search" id="option2" onClick={clickTeachers}> Find Teachers</Link>
               </div>
             </div>
             
@@ -1922,10 +1926,10 @@ function GlobalNavigationBar(props) {
       {/*<FormControl type="text" placeholder="Search" className="mr-sm-2" /> */}
           
           {props.isLoggedIn==="True"? 
-          [<Link key={1} to="/createpod" className="btn bg-transparent nav-links" variant="outline-primary" > Start a pod </Link>,
-          <Link key={2} to="/" onClick={LogOut} className="btn bg-transparent nav-links" > Log Out </Link>]
-          : [<Link key={1} to="/login" className="btn bg-transparent nav-links" > Log In </Link>, 
-          <Link key={2} to="/signup" className="btn bg-transparent nav-links" > Sign Up </Link>]}
+          [<Link key={1} to="/createpod" className="btn bg-transparent nav-links" variant="btn-primary" > Start a pod </Link>,
+          <Link key={2} to="/" onClick={LogOut} className="btn bg-transparent nav-links" variant="btn-secondary"> Log Out </Link>]
+          : [<Link key={1} to="/login" className="btn nav-links" variant="btn-secondary"> Log In </Link>, 
+          <Link key={2} to="/signup" className="btn btn-primary nav-links" variant="btn-primary"> Sign Up </Link>]}
           
       {/*<Button variant="outline-primary">Search</Button> */}
     </Form>
