@@ -6,7 +6,7 @@ const Switch = ReactRouterDOM.Switch;
 const Redirect = ReactRouterDOM.Redirect;
 
 //import Button from 'react-bootstrap/Button' OR;
-const { Badge, Button, Col, Container, Form, FormControl, FormFile, FormLabel, ListGroup, Navbar, Nav, Row, Table, Modal, Alert} = ReactBootstrap;
+const { Badge, Button, Col, Container, CardDeck, Card, Form, FormControl, FormFile, FormLabel, ListGroup, Navbar, Nav, Row, Table, Modal, Alert} = ReactBootstrap;
 //import 'bootstrap/dist/css/bootstrap.min.css';
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -1282,52 +1282,93 @@ function TeacherSearch(props) {
 function Benefits() {
 
   return (
+    <CardDeck>
+  <Card>
     
-  <div>
+    <Card.Body>
+      <Card.Title>Contact Nearby Families</Card.Title>
+      <Card.Text>
+        Get in touch with other families to discuss joining a pod together.
+      </Card.Text>
+    </Card.Body>
+    <Card.Img variant="bottom" src="/static/img/benefits1.jpg" />
+    {/*<Card.Footer>
+      <small className="text-muted">Last updated 3 mins ago</small>
+    </Card.Footer>*/}
+  </Card>
+  <Card>
+   
+    <Card.Body>
+      <Card.Title>Limit Your Risk Exposure</Card.Title>
+      <Card.Text>
+        Stay safe by finding a small group of other children to study or play with.{' '}
+      </Card.Text>
+    </Card.Body>
+     <Card.Img variant="bottom" src="/static/img/benefits2.jpg" />
+    {/*<Card.Footer>
+      <small className="text-muted">Last updated 3 mins ago</small>
+    </Card.Footer>*/}
+  </Card>
+  <Card>
     
-    <div className = "three-containers">
-      <div className="row">
+    <Card.Body>
+      <Card.Title>Have Social Interaction</Card.Title>
+      <Card.Text>
+        Social interaction is important for children to meet developmental milestones.
+      </Card.Text>
+    </Card.Body>
+    <Card.Img variant="bottom" src="/static/img/benefits3.jpg" />
+    {/*<Card.Footer>
+      <small className="text-muted">Last updated 3 mins ago</small>
+    </Card.Footer>*/}
+  </Card>
+</CardDeck>
+  // <div>
+    
+  //   <div className = "three-containers">
+  //     <div className="row">
         
-        <div className="col-4 shadow p-3 mb-5 bg-white rounded"> 
-          <div className="mx-auto mktg benefit-icon">
-            <i className="fa fa-certificate"></i>
-            </div>
-            <div>
-            <h3>Contact Nearby Families</h3>
-          </div>  
-          <br/>
-          <div>Get in touch with other families to discuss joining a pod together.
-          </div>
-        </div>
+  //       <div className="col-4 shadow p-3 mb-5 bg-white rounded"> 
+  //         <div className="mx-auto mktg benefit-icon">
+  //           <i className="fa fa-certificate"></i>
+  //           </div>
+  //           <div>
+  //           <h3>Contact Nearby Families</h3>
+  //         </div>  
+  //         <br/>
+  //         <div>Get in touch with other families to discuss joining a pod together.
+  //         </div>
+  //       </div>
 
-        <div className = "col-4 shadow p-3 mb-5 bg-white rounded"> 
-          <div className="mx-auto mktg benefit-icon">
-            <i className="fa fa-trophy"></i> 
-            </div>
-            <div>
-            <h3>Limit Your Risk Exposure</h3>
-          </div>
-          <br/>
-          <div>Stay safe by finding a small group of other children to study or play with.
-          </div>
-        </div>
+  //       <div className = "col-4 shadow p-3 mb-5 bg-white rounded"> 
+  //         <div className="mx-auto mktg benefit-icon">
+  //           <i className="fa fa-trophy"></i> 
+  //           </div>
+  //           <div>
+  //           <h3>Limit Your Risk Exposure</h3>
+  //         </div>
+  //         <br/>
+  //         <div>Stay safe by finding a small group of other children to study or play with.
+  //         </div>
+  //       </div>
           
-        <div className="col-4 shadow p-3 mb-5 bg-white rounded"> 
-          <div className="mx-auto mktg benefit-icon">
-            <i className="fa fa-globe"></i>
-            </div>
-            <div>
-            <h3>Have Social Interaction</h3>
-          </div>
-          <br/>
-          <div>Social interaction is important for children to meet developmental milestones.
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  //       <div className="col-4 shadow p-3 mb-5 bg-white rounded"> 
+  //         <div className="mx-auto mktg benefit-icon">
+  //           <i className="fa fa-globe"></i>
+  //           </div>
+  //           <div>
+  //           <h3>Have Social Interaction</h3>
+  //         </div>
+  //         <br/>
+  //         <div>Social interaction is important for children to meet developmental milestones.
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </div>
+  // </div>
   );
 }
+
 
 
 
@@ -1916,7 +1957,7 @@ function GlobalNavigationBar(props) {
 
     <div> 
     <Navbar bg="none" variant="light">
-    <Navbar.Brand href="#home"><img src="static/img/beanstalksquarelogo.png" width="200px" height="40px"/></Navbar.Brand>
+    <Navbar.Brand href="#home"><img src="static/img/beanstalksquarelogo.png" width="245px" height="40px"/></Navbar.Brand>
     {/*<Nav className="mr-auto">
       <Nav.Link href="#home">Home</Nav.Link>
       <Nav.Link href="#features">Features</Nav.Link>
