@@ -888,113 +888,192 @@ function CreatePod() {
   }
 
   return (
-    <div>
-     <br/>
-     
-     <label>Pod Name </label>
-     <br/>
-     <input type="text" name="pod_name" value={userInputPod.pod_name} onChange={handleChange}/>
-      <br/>
-
-      <label> Maximum number of students </label>
-      <br/>
-      <input type="text" value={userInputPod.max_child_capacity} name="max_child_capacity" onChange={handleChange} />
-      <br/>
     
-      <label> Number of days per week</label>
-      <br/>
-      <input type="number" value={userInputPod.days_per_week} name="days_per_week" onChange={handleChange} />
-      <br/>
+    <div className="create-pod-form-wrapper">
+     <br/>
+     <h3>Add a new pod to Beanstalk Square!</h3>
+     <br/>
+    <Form>
+      <Form.Group controlId="formPodName">
+        <Form.Control type="text" placeholder="Pod name" value={userInputPod.pod_name} name="pod_name" onChange={handleChange}/> 
+      </Form.Group>
 
-      <label> Number of hours per day</label>
-      <br/>
-      <input type="number" value={userInputPod.total_hours_per_day} name="total_hours_per_day" onChange={handleChange} />
-      <br/>
+      <Form.Group controlId="formMaxNumberOfStudents">
+        <Form.Control type="text" placeholder="Maximum number of students" value={userInputPod.max_child_capacity} name="max_child_capacity" onChange={handleChange}/> 
+      </Form.Group>
 
-      <label> Paid teacher (rather than rotating parent volunteers)</label>
-      <br/>
-      <input type="checkbox" checked={userInputPod.paid_teacher} name="paid_teacher" onChange={handleChange} />
-      <br/>
+      <Form.Group controlId="formNumberOfDaysPerWeek">
+        <Form.Control type="number" placeholder="Number of Days per Week" value={userInputPod.days_per_week} name="days_per_week" onChange={handleChange}/> 
+      
+      </Form.Group>
 
-      <label> Students are in the same grade </label>
-      <br/>
-      <input type="checkbox" checked={userInputPod.same_grade_only} name="same_grade_only" onChange={handleChange} />
-      <br/>
+      <Form.Group controlId="formNumberOfHoursPerDay">
+        <Form.Control type="text" placeholder="Number of Hours per Day" value={userInputPod.total_hours_per_day} name="total_hours_per_day" onChange={handleChange}/> 
+      </Form.Group>
 
-      <label> Students are in the same school </label>
-      <br/>
-      <input type="checkbox" checked={userInputPod.same_school_only} name="same_school_only" onChange={handleChange} />
-      <br/>
+      <Form.Group controlId="formCostPerHour">
+        <Form.Control type="number" placeholder="Cost per Hour per Child" value={userInputPod.cost_per_hour} name="cost_per_hour" onChange={handleChange}/> 
+      </Form.Group>
 
-      <label> Students are in the same school program </label>
-      <br/>
-      <input type="checkbox" checked={userInputPod.same_school_program_only} name="same_school_program_only" onChange={handleChange} />
-      <br/>
+      <Form.Group id="formPaidTeacher">
+      <Form.Check type="checkbox" label="Paid Teacher" checked={userInputPod.paid_teacher} name="paid_teacher" onChange={handleChange}/> 
+      </Form.Group>
 
-      <label> Meets outdoors only</label>
-      <br/>
-      <input type="checkbox" checked={userInputPod.outdoors_only} name="outdoors_only" onChange={handleChange} />
-      <br/>
+      <Form.Group id="formStudentsInTheSameGrade">
+        <Form.Check type="checkbox" label="Students in the Same Grade" checked={userInputPod.same_grade_only} name="same_grade_only" onChange={handleChange}/> 
+      </Form.Group>
 
-      <label> Requests periodic tests for Covid</label>
-      <br/>
-      <input type="checkbox" checked={userInputPod.periodic_covid_testing} name="periodic_covid_testing" onChange={handleChange} />
-      <br/>
+      <Form.Group id="formStudentsInTheSameSchool">
+        <Form.Check type="checkbox" label="Students in the Same School" checked={userInputPod.same_school_only} name="same_school_only" onChange={handleChange}/> 
+      </Form.Group>
 
-      <label> Cost per hour</label>
-      <br/>
-      <input type="number" value={userInputPod.cost_per_hour} name="cost_per_hour" onChange={handleChange} />
-      <br/>
-      <br/>
+      <Form.Group id="formStudentsInTheSameSchoolProgram">
+        <Form.Check type="checkbox" label="Students in the Same School Program" checked={userInputPod.same_school_program_only} name="same_school_program_only" onChange={handleChange}/> 
+      </Form.Group>
 
-      <label> Pod meeting location:</label><br/>
-      <label> Street address</label>
-      <input type="text" value={userInputPod.street_address} name="street_address" onChange={handleChange} />
-      <br/>
-      <label> City</label>
-      <input type="text" value={userInputPod.city} name="city" onChange={handleChange} />
-      <label> State</label>
-      <input type="text" value={userInputPod.state} name="state" onChange={handleChange} />
-      <label> Zipcode</label>
-      <input type="text" value={userInputPod.zipcode} name="zipcode" onChange={handleChange} />
-      <br/>
-      <br/>
+      <Form.Group id="formOutdoorsOnly">
+        <Form.Check type="checkbox" label="Meets Outdoors Only" checked={userInputPod.outdoors_only} name="outdoors_only" onChange={handleChange}/> 
+      </Form.Group>
 
-      <label> Please read the following Covid risk profiles and select the profile that most closely represents your household.</label>
+      <Form.Group id="formPeriodicTestsForCovid">
+        <Form.Check type="checkbox" label="Requests Child to Obtain a Periodic Covid Test" checked={userInputPod.periodic_covid_testing} name="periodic_covid_testing" onChange={handleChange}/> 
+      </Form.Group>
+
       <br/>
       
-      <label>
-        "Very strict": "Stays within home; Maintains 6’ distance; No one outside contact; Strict infection control protocol; No contact with outside world"
-      </label><br/>
-      <label>  
-        "Strict": "Leaves home for essentials; Maintains 6’ of distance outside of home when leaves for essentials; Strict etiquette including hand washing, masks and social distancing are used 100% of the time when outside of the home; No socializing outside of the home"
-      </label><br/>
-      <label>
-        "Fairly strict": "Leaves home only to go to work and for essentials; Fairly strict etiquette including hand washing, masks and social distancing are used 80-99% of the time when outside of the home; Occasionally socializes with others who are not in one’s home, but stay outdoors and maintain social distance of 6’ or less than 6’ only with masks"
-      </label><br/>
-        "Somewhat open": "Leaves home to exercise, go to the store, work,and other activities several times per week; Etiquette including hand washing, masks and social distancing are used 60-79% of the time when outside of the home; Sometimes socializes with others who are not in one’s home at less than a 6 foot distance if they have been following fairly strict or somewhat open protocols as well"
-      <label>
-        "Moderately open": "Leaves home to exercise, go to the store, work,and other activities multiple times per week; Etiquette including hand washing, masks and social distancing are used 20-59% of the time when outside of the home; May not maintain social distance and may see more than 10 people at a time"
-      </label><br/>
-        <label>
-        "Very open": "No precautions to protect oneself from infection; Actively socializes without regard to social distancing or recommended etiquette"
-        </label>
-        <br/>
-        Covid Risk Profile 
-      <select value={userInputPod.covid_risk_profile} onChange={handleChange}>
-        <option >Very strict </option>
-        <option >Strict </option>
-        <option >Fairly strict </option>
-        <option >Somewhat open </option>
-        <option >Moderately open </option>
-        <option >Fairly open </option>
-      </select>
+      <Form.Label>Pod Location</Form.Label>
+      <Form.Group controlId="formStreetAddress">
+        <Form.Control type="text" placeholder="Street Address" value={userInputPod.street_address} name="street_address" onChange={handleChange}/> 
+      </Form.Group>
+
+      <Form.Row>
+        <Form.Group as={Col} controlId="formCity">
+            <Form.Control type="text" placeholder="City" value={userInputPod.city} name="city" onChange={handleChange}/> 
+          </Form.Group>
+
+          <Form.Group as={Col} controlId="formState">
+            <Form.Control type="text" placeholder="State" value={userInputPod.state} name="state" onChange={handleChange}/> 
+          </Form.Group>
+
+          <Form.Group as={Col} controlId="formZipcode">
+            <Form.Control type="text" placeholder="Zipcode" value={userInputPod.zipcode} name="state" onChange={handleChange}/> 
+          </Form.Group>
+      </Form.Row>
       <br/>
-      <br/>
-      <button onClick={makePod}> Complete Pod Creation </button>
-    </div>
+
+      <Button variant="primary" onClick={makePod} type="submit">Create Pod</Button> 
+    </Form>
+  </div>
+
+
+    // <div>
+    //  <br/>
+     
+    //  <label>Pod Name </label>
+    //  <br/>
+    //  <input type="text" name="pod_name" value={userInputPod.pod_name} onChange={handleChange}/>
+    //   <br/>
+
+    //   <label> Maximum number of students </label>
+    //   <br/>
+    //   <input type="text" value={userInputPod.max_child_capacity} name="max_child_capacity" onChange={handleChange} />
+    //   <br/>
+    
+    //   <label> Number of days per week</label>
+    //   <br/>
+    //   <input type="number" value={userInputPod.days_per_week} name="days_per_week" onChange={handleChange} />
+    //   <br/>
+
+    //   <label> Number of hours per day</label>
+    //   <br/>
+    //   <input type="number" value={userInputPod.total_hours_per_day} name="total_hours_per_day" onChange={handleChange} />
+    //   <br/>
+
+    //   <label> Paid teacher (rather than rotating parent volunteers)</label>
+    //   <br/>
+    //   <input type="checkbox" checked={userInputPod.paid_teacher} name="paid_teacher" onChange={handleChange} />
+    //   <br/>
+
+    //   <label> Students are in the same grade </label>
+    //   <br/>
+    //   <input type="checkbox" checked={userInputPod.same_grade_only} name="same_grade_only" onChange={handleChange} />
+    //   <br/>
+
+    //   <label> Students are in the same school </label>
+    //   <br/>
+    //   <input type="checkbox" checked={userInputPod.same_school_only} name="same_school_only" onChange={handleChange} />
+    //   <br/>
+
+    //   <label> Students are in the same school program </label>
+    //   <br/>
+    //   <input type="checkbox" checked={userInputPod.same_school_program_only} name="same_school_program_only" onChange={handleChange} />
+    //   <br/>
+
+    //   <label> Meets outdoors only</label>
+    //   <br/>
+    //   <input type="checkbox" checked={userInputPod.outdoors_only} name="outdoors_only" onChange={handleChange} />
+    //   <br/>
+
+    //   <label> Requests periodic tests for Covid</label>
+    //   <br/>
+    //   <input type="checkbox" checked={userInputPod.periodic_covid_testing} name="periodic_covid_testing" onChange={handleChange} />
+    //   <br/>
+
+    //   <label> Cost per hour</label>
+    //   <br/>
+    //   <input type="number" value={userInputPod.cost_per_hour} name="cost_per_hour" onChange={handleChange} />
+    //   <br/>
+    //   <br/>
+
+    //   <label> Pod meeting location:</label><br/>
+    //   <label> Street address</label>
+    //   <input type="text" value={userInputPod.street_address} name="street_address" onChange={handleChange} />
+    //   <br/>
+    //   <label> City</label>
+    //   <input type="text" value={userInputPod.city} name="city" onChange={handleChange} />
+    //   <label> State</label>
+    //   <input type="text" value={userInputPod.state} name="state" onChange={handleChange} />
+    //   <label> Zipcode</label>
+    //   <input type="text" value={userInputPod.zipcode} name="zipcode" onChange={handleChange} />
+    //   <br/>
+    //   <br/>
+
+    //   <label> Please read the following Covid risk profiles and select the profile that most closely represents your household.</label>
+    //   <br/>
+      
+    //   <label>
+    //     "Very strict": "Stays within home; Maintains 6’ distance; No one outside contact; Strict infection control protocol; No contact with outside world"
+    //   </label><br/>
+    //   <label>  
+    //     "Strict": "Leaves home for essentials; Maintains 6’ of distance outside of home when leaves for essentials; Strict etiquette including hand washing, masks and social distancing are used 100% of the time when outside of the home; No socializing outside of the home"
+    //   </label><br/>
+    //   <label>
+    //     "Fairly strict": "Leaves home only to go to work and for essentials; Fairly strict etiquette including hand washing, masks and social distancing are used 80-99% of the time when outside of the home; Occasionally socializes with others who are not in one’s home, but stay outdoors and maintain social distance of 6’ or less than 6’ only with masks"
+    //   </label><br/>
+    //     "Somewhat open": "Leaves home to exercise, go to the store, work,and other activities several times per week; Etiquette including hand washing, masks and social distancing are used 60-79% of the time when outside of the home; Sometimes socializes with others who are not in one’s home at less than a 6 foot distance if they have been following fairly strict or somewhat open protocols as well"
+    //   <label>
+    //     "Moderately open": "Leaves home to exercise, go to the store, work,and other activities multiple times per week; Etiquette including hand washing, masks and social distancing are used 20-59% of the time when outside of the home; May not maintain social distance and may see more than 10 people at a time"
+    //   </label><br/>
+    //     <label>
+    //     "Very open": "No precautions to protect oneself from infection; Actively socializes without regard to social distancing or recommended etiquette"
+    //     </label>
+    //     <br/>
+    //     Covid Risk Profile 
+    //   <select value={userInputPod.covid_risk_profile} onChange={handleChange}>
+    //     <option >Very strict </option>
+    //     <option >Strict </option>
+    //     <option >Fairly strict </option>
+    //     <option >Somewhat open </option>
+    //     <option >Moderately open </option>
+    //     <option >Fairly open </option>
+    //   </select>
+    //   <br/>
+    //   <br/>
+    //   <button onClick={makePod}> Complete Pod Creation </button>
+    // </div>
      );
 }
+
 
 
 function Teacher(props) {
@@ -1282,96 +1361,55 @@ function TeacherSearch(props) {
 function Benefits() {
 
   return (
-    <CardDeck>
-  <Card>
-    
-    <Card.Body>
-      <Card.Title>Contact Nearby Families</Card.Title>
-      <Card.Text>
-        Get in touch with other families to discuss joining a pod together.
-      </Card.Text>
-    </Card.Body>
-    <Card.Img variant="bottom" src="/static/img/benefits1.jpg" />
-    {/*<Card.Footer>
-      <small className="text-muted">Last updated 3 mins ago</small>
-    </Card.Footer>*/}
-  </Card>
-  <Card>
-   
-    <Card.Body>
-      <Card.Title>Limit Your Risk Exposure</Card.Title>
-      <Card.Text>
-        Stay safe by finding a small group of other children to study or play with.{' '}
-      </Card.Text>
-    </Card.Body>
-     <Card.Img variant="bottom" src="/static/img/benefits2.jpg" />
-    {/*<Card.Footer>
-      <small className="text-muted">Last updated 3 mins ago</small>
-    </Card.Footer>*/}
-  </Card>
-  <Card>
-    
-    <Card.Body>
-      <Card.Title>Have Social Interaction</Card.Title>
-      <Card.Text>
-        Social interaction is important for children to meet developmental milestones.
-      </Card.Text>
-    </Card.Body>
-    <Card.Img variant="bottom" src="/static/img/benefits3.jpg" />
-    {/*<Card.Footer>
-      <small className="text-muted">Last updated 3 mins ago</small>
-    </Card.Footer>*/}
-  </Card>
-</CardDeck>
-  // <div>
-    
-  //   <div className = "three-containers">
-  //     <div className="row">
-        
-  //       <div className="col-4 shadow p-3 mb-5 bg-white rounded"> 
-  //         <div className="mx-auto mktg benefit-icon">
-  //           <i className="fa fa-certificate"></i>
-  //           </div>
-  //           <div>
-  //           <h3>Contact Nearby Families</h3>
-  //         </div>  
-  //         <br/>
-  //         <div>Get in touch with other families to discuss joining a pod together.
-  //         </div>
-  //       </div>
-
-  //       <div className = "col-4 shadow p-3 mb-5 bg-white rounded"> 
-  //         <div className="mx-auto mktg benefit-icon">
-  //           <i className="fa fa-trophy"></i> 
-  //           </div>
-  //           <div>
-  //           <h3>Limit Your Risk Exposure</h3>
-  //         </div>
-  //         <br/>
-  //         <div>Stay safe by finding a small group of other children to study or play with.
-  //         </div>
-  //       </div>
+    <Container fluid>
+      <Row>
+        <Col>
+          <CardDeck>
+            <Card>
           
-  //       <div className="col-4 shadow p-3 mb-5 bg-white rounded"> 
-  //         <div className="mx-auto mktg benefit-icon">
-  //           <i className="fa fa-globe"></i>
-  //           </div>
-  //           <div>
-  //           <h3>Have Social Interaction</h3>
-  //         </div>
-  //         <br/>
-  //         <div>Social interaction is important for children to meet developmental milestones.
-  //         </div>
-  //       </div>
-  //     </div>
-  //   </div>
-  // </div>
+              <Card.Body>
+                <Card.Title>Contact Nearby Families</Card.Title>
+                <Card.Text>
+                  Get in touch with other families to discuss joining a pod together.
+                </Card.Text>
+              </Card.Body>
+              <Card.Img variant="bottom" src="/static/img/benefits1.jpg" />
+              {/*<Card.Footer>
+                <small className="text-muted">Last updated 3 mins ago</small>
+              </Card.Footer>*/}
+            </Card>
+            
+            <Card>
+              <Card.Body>
+                <Card.Title>Limit Your Risk Exposure</Card.Title>
+                <Card.Text>
+                  Stay safe by finding a small group of other children to study or play with.{' '}
+                </Card.Text>
+              </Card.Body>
+               <Card.Img variant="bottom" src="/static/img/benefits2.jpg" />
+              {/*<Card.Footer>
+                <small className="text-muted">Last updated 3 mins ago</small>
+              </Card.Footer>*/}
+            </Card>
+            <Card>
+          
+              <Card.Body>
+                <Card.Title>Have Social Interaction</Card.Title>
+                <Card.Text>
+                  Social interaction is important for children to meet developmental milestones.
+                </Card.Text>
+              </Card.Body>
+              <Card.Img variant="bottom" src="/static/img/benefits3.jpg" />
+              {/*<Card.Footer>
+                <small className="text-muted">Last updated 3 mins ago</small>
+              </Card.Footer>*/}
+            </Card>
+          </CardDeck>
+        </Col>
+      </Row>  
+    </Container>
   );
 }
-
-
-
-
 
 
 
@@ -1416,7 +1454,7 @@ function HomeContainer() {
     <div>
       <Container fluid>
         <Row>
-          <Col><div><img src="/static/img/beanstalkhero.jpg" width="100%"/></div>
+          <Col><div><img src="/static/img/beanstalkhero1.jpg" width="100%"/></div>
             <div className="top-left">Engage in distance learning together.</div>
             
             <div >
