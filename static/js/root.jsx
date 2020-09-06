@@ -521,7 +521,10 @@ function TeachersInPodList(props) {
   console.log("Looking for teachers list:", teachersInPod);
   
   return ( 
-  
+    <div>
+      <br/>
+      <h3>Teacher(s) </h3>
+
         <table className="podteachers">
         <thead>
           <tr> 
@@ -537,7 +540,7 @@ function TeachersInPodList(props) {
         {teachersInPod}
         </tbody>
       </table> 
-  
+  </div>
   )
 }
 
@@ -605,7 +608,10 @@ function ChildrenInPodList(props) {
   console.log("Looking for children list:", childrenInPod);
   
   return ( 
-  
+    <div>
+      <br/>
+      <h3 className="table-title">Children</h3>
+      <br/>
         <table className="podchildren">
         <thead>
           <tr> 
@@ -622,7 +628,7 @@ function ChildrenInPodList(props) {
         {childrenInPod}
         </tbody>
       </table> 
-  
+    </div>
   )
 }
 
@@ -747,16 +753,20 @@ function PodDetails(props) {
     console.log("Looking for pod details:", podDetailsAll)
   return ( 
   
-      <div> 
-        <table className="table">
-          {podDetailsAll} 
-        </table> 
+    <div> 
+      <br/>
+      <h3 className="table-title"> Pod Details </h3>
+      <br/>
+      
+      <table className="table">
+        {podDetailsAll} 
+      </table> 
   
-        <div width="50%">
-        {podDetailsAll? <MapContainer podDetailsAll={podDetailsAll}/> : null}
-        </div>
-
+      <div width="50%">
+      {podDetailsAll? <MapContainer podDetailsAll={podDetailsAll}/> : null}
       </div>
+
+    </div>
   )
 }
 
@@ -768,11 +778,11 @@ function PodDetailsContainer(props) {
   const contact_pod_organizers_link = `/contactpodorganizer/${podId}`
 
   return (
-    <div>
+    <div className="detail-results-table-wrapper">
       <br/>
       <br/>
       
-      <div>
+      <div className="contact-button-position">
         <Link to={contact_pod_organizers_link} className="btn btn-primary">Contact Pod Parent </Link> 
       </div>
       <br/>
@@ -1088,21 +1098,20 @@ function TeacherList(props) {
   }, [dataResult]);
 
   return ( 
-    <div>
+    <div className="search-results-table-wrapper">
       <br/>
+        <h3 className="table-title">{zipcode} Search Results</h3> 
       <br/>
-      <div>
-      </div>
       <table className="table">
         <thead>
           <tr> 
-            <th scope="col"></th>
-            <th scope="col">Teacher name</th>
-            <th scope="col">Zipcode</th>
-            <th scope="col">Preferred Days of week</th>
-            <th scope="col">Teaching Experience (in hours)</th>
-            <th scope="col">Hourly Pay Rate</th>
-            <th scope="col">Details</th>
+            <th scope="col" className="table-header-row"></th>
+            <th scope="col" className="table-header-row">Teacher name</th>
+            <th scope="col" className="table-header-row">Zipcode</th>
+            <th scope="col" className="table-header-row">Preferred Days of week</th>
+            <th scope="col" className="table-header-row">Teaching Experience (in hours)</th>
+            <th scope="col" className="table-header-row">Hourly Pay Rate</th>
+            <th scope="col" className="table-header-row">Details</th>
            {/* {props.isLoggedIn==="True"? <th scope="col">Details</th> : null}*/}
           </tr> 
               
@@ -1176,7 +1185,7 @@ function PodList(props) {
   return ( 
   
       <div className="search-results-table-wrapper">
-        <div >
+       
           <br/>
           <h3 className="table-title">{zipcode} Search Results</h3> 
           <br/>
@@ -1197,7 +1206,7 @@ function PodList(props) {
           {podList}
           </tbody>
         </table> 
-      </div>
+   
     </div>
   );
 } //Close the entire Pod list
@@ -1818,8 +1827,10 @@ function LogInForm(props) {
    
 
   return ( 
-    <div>
+    <div className="entry-form-wrapper">
+    <br/>
     <h3>Welcome, back!</h3>
+    <br/>
     <Form onSubmit={attemptLogIn} >
       <Form.Group controlId="formBasicEmail">
        
