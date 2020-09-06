@@ -6,7 +6,7 @@ const Switch = ReactRouterDOM.Switch;
 const Redirect = ReactRouterDOM.Redirect;
 
 //import Button from 'react-bootstrap/Button' OR;
-const { Badge, Button, Col, Container, Form, FormControl, ListGroup, Navbar, Nav, Row, Table, Modal, Alert} = ReactBootstrap;
+const { Badge, Button, Col, Container, Form, FormControl, FormFile, FormLabel, ListGroup, Navbar, Nav, Row, Table, Modal, Alert} = ReactBootstrap;
 //import 'bootstrap/dist/css/bootstrap.min.css';
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -1174,26 +1174,30 @@ function PodList(props) {
   }, [dataResult]);
 
   return ( 
-    <div>
-      <br/>
-      <br/>
-      <table className="table">
-        <thead>
-          <tr> 
-            <th scope="col">Pod name</th>
-            <th scope="col">Zipcode</th>
-            <th scope="col">Days per week</th>
-            <th scope="col">Hours per day</th>
-            <th scope="col">Paid teacher</th>
-            <th scope="col">Details</th>
-           {/* {props.isLoggedIn==="True"? <th scope="col">Details</th> : null}*/}
-          </tr> 
-              
-        </thead>
-        <tbody>
-        {podList}
-        </tbody>
-      </table> 
+  
+      <div className="search-results-table-wrapper">
+        <div >
+          <br/>
+          <h3 className="table-title">{zipcode} Search Results</h3> 
+          <br/>
+          <table className="table">
+          <thead>
+            <tr> 
+              <th scope="col" className="table-header-row">Pod name</th>
+              <th scope="col" className="table-header-row">Zipcode</th>
+              <th scope="col" className="table-header-row">Days per week</th>
+              <th scope="col" className="table-header-row">Hours per day</th>
+              <th scope="col" className="table-header-row">Paid teacher</th>
+              <th scope="col" className="table-header-row">Details</th>
+             {/* {props.isLoggedIn==="True"? <th scope="col">Details</th> : null}*/}
+            </tr> 
+                
+          </thead>
+          <tbody>
+          {podList}
+          </tbody>
+        </table> 
+      </div>
     </div>
   );
 } //Close the entire Pod list
@@ -1217,20 +1221,19 @@ function PodSearch(props) {
 
   return ( 
      <div>
-       <form onSubmit={handleSubmit} >
-       
-        <br/> 
-           {/*<label>Find Students</label> */}
-        
-          <input type="text" value={zipcode} name="zipcode" onChange={handleChange} />
-          <input type="submit" value="search" /> 
-      </form>
-    {/* {dataResult? <PodList data={dataResult}/> : null} */}
-     
+     <br/>
+     <Form inline onSubmit={handleSubmit} >
+       <Form.Group>
+        <Form.Control type="text" value={zipcode} name="zipcode" onChange={handleChange} placeholder="Enter Zipcode" className="mr-sm-2" />
+        <Button variant="secondary" type="submit" value="search" >Search</Button>
+        </Form.Group>
+      </Form>
     </div>
     ); //Close return of HTML in PodSearch function.
   } //Close the entire PodSearch function.
     
+
+
 
 function TeacherSearch(props) {
 
@@ -1250,16 +1253,13 @@ function TeacherSearch(props) {
 
   return ( 
      <div>
-       <form onSubmit={handleSubmit} >
-       
-        <br/> 
-           {/*<label>Find Students</label> */}
-        
-          <input type="text" value={zipcode} name="zipcode" onChange={handleChange} />
-          <input type="submit" value="search" /> 
-      </form>
-    {/* {dataResult? <PodList data={dataResult}/> : null} */}
-     
+     <br/>
+     <Form inline onSubmit={handleSubmit} >
+       <Form.Group>
+        <Form.Control type="text" value={zipcode} name="zipcode" onChange={handleChange} placeholder="Enter Zipcode" className="mr-sm-2" />
+        <Button variant="secondary" type="submit" value="search" >Search</Button>
+        </Form.Group>
+      </Form>
     </div>
     ); //Close return of HTML in PodSearch function.
   } //Close the entire PodSearch function.
@@ -1275,6 +1275,18 @@ function Benefits() {
     <div className = "three-containers">
       <div className="row">
         
+        <div className="col-4 shadow p-3 mb-5 bg-white rounded"> 
+          <div className="mx-auto mktg benefit-icon">
+            <i className="fa fa-certificate"></i>
+            </div>
+            <div>
+            <h3>Contact Nearby Families</h3>
+          </div>  
+          <br/>
+          <div>Get in touch with other families to discuss joining a pod together.
+          </div>
+        </div>
+
         <div className = "col-4 shadow p-3 mb-5 bg-white rounded"> 
           <div className="mx-auto mktg benefit-icon">
             <i className="fa fa-trophy"></i> 
@@ -1286,32 +1298,17 @@ function Benefits() {
           <div>Stay safe by finding a small group of other children to study or play with.
           </div>
         </div>
-
+          
         <div className="col-4 shadow p-3 mb-5 bg-white rounded"> 
           <div className="mx-auto mktg benefit-icon">
             <i className="fa fa-globe"></i>
             </div>
             <div>
-            <h3>Maintain Social Interaction</h3>
+            <h3>Have Social Interaction</h3>
           </div>
           <br/>
           <div>Social interaction is important for children to meet developmental milestones.
-
           </div>
-        </div>
-
-
-        <div className="col-4 shadow p-3 mb-5 bg-white rounded"> 
-          <div className="mx-auto mktg benefit-icon">
-            <i className="fa fa-certificate"></i>
-            </div>
-            <div>
-            <h3>Contact Families Near You</h3>
-          </div>  
-          <br/>
-          <div>Get in touch with other families to discuss joining a pod together.
-          </div>
-        
         </div>
       </div>
     </div>
@@ -1446,16 +1443,16 @@ function TeacherProfilePic() {
   
   return ( 
    
-    <div>
-
-      <label> Profile Photo</label>
-      <input type="file" id="opener" name="profile-pic" onChange={handleFileChange} />
-      <br/>
-
-      <button onClick={handleFileUpload}> Upload profile photo </button>
-      <br/>
-      <br/>
-    </div>
+ 
+    <Form>
+      <Form.Group>
+        <br/>
+        <Form.File id="opener" label="Profile Photo" name="profile-pic" onChange={handleFileChange} />
+        <br/>
+        <Button variant="primary" onClick={handleFileUpload} type="submit">Upload Profile Photo</Button> 
+        <br/>
+      </Form.Group>
+    </Form>
 
   );
 }
@@ -1533,46 +1530,40 @@ function TeacherProfileForm() {
   return ( 
    
     <div>
-     
+
      <br/>
-     
+     <h3>Adding to your profile helps families find you.</h3>
      <TeacherProfilePic />
-     
      <br/>
-     <br/>
+    <Form>
+      <Form.Group controlId="formBio">
+        <Form.Control type="text" placeholder="Bio" value={userInputProfile.teacher_bio} name="teacher_bio" onChange={handleChange}/> 
+      </Form.Group>
 
-    <label> Bio</label>
-    <br/>
-    <input type="text" value={userInputProfile.teacher_bio} name="teacher_bio" onChange={handleChange} />
-    <br/>
+      <Form.Group controlId="formZipcode">
+        <Form.Control type="text" placeholder="Zipcode" value={userInputProfile.zipcode} name="zipcode" onChange={handleChange}/> 
+      </Form.Group>
 
-    <label> Zipcode</label>
-    <br/>
-    <input type="text" value={userInputProfile.zipcode} name="zipcode" onChange={handleChange} />
-    <br/>
+      <Form.Group controlId="formPreferredDaysOfWeek">
+        <Form.Control type="text" placeholder="Preferred Days of Week (e.g. 'Mon-Fri')" value={userInputProfile.days_of_week} name="days_of_week" onChange={handleChange}/> 
+      
+      </Form.Group>
 
-    <label> Preferred Days of Week</label>
-    <br/>
-    <input type="text" value={userInputProfile.days_of_week} name="days_of_week" onChange={handleChange} />
-    <br/>
+      <Form.Group controlId="TeachingExperience">
+        <Form.Control type="text" placeholder="Teaching Experience (total hours)" value={userInputProfile.teaching_experience_in_hours} name="teaching_experience_in_hours" onChange={handleChange}/> 
+      </Form.Group>
 
-    <label> Teaching experience (total number of hours)</label>
-    <br/>
-    <input type="text" value={userInputProfile.teaching_experience_in_hours} name="teaching_experience_in_hours" onChange={handleChange} />
-    <br/>
+      <Form.Group controlId="PayRatePerHour">
+        <Form.Control type="number" placeholder="Pay Rate per Hour" value={userInputProfile.pay_rate_per_hour} name="pay_rate_per_hour" onChange={handleChange}/> 
+      </Form.Group>
 
-    <label> Pay Rate per Hour</label>
-    <br/>
-    <input type="text" value={userInputProfile.pay_rate_per_hour} name="pay_rate_per_hour" onChange={handleChange} />
-    <br/>
-    <br/>
-
-    <button onClick={makeProfile}> Update Profile </button>
-    </div>
+      <Button variant="primary" onClick={makeProfile} type="submit">Update Profile</Button> 
+    </Form>
+  </div>
 
   );
 }
-
+    
 
 
 function TeacherSignUpForm() {
@@ -1635,59 +1626,43 @@ function TeacherSignUpForm() {
   } //Close makeSignUp function
 
 
+
   return ( 
    
     <div>
-     
+     <h3>Try Beanstalk Square today!</h3>
      <br/>
-     <label>Teacher First name </label>
-     <br/>
-     <input type="text" name="fname" value={userInputSignUp.fname} onChange={handleChange}/>
-      <br/>
+    <Form>
+      <Form.Group controlId="formFirstName">
+      
+        <Form.Control type="text" placeholder="First Name" value={userInputSignUp.fname} name="fname" onChange={handleChange}/> 
+      </Form.Group>
 
-      <label> Last name</label>
-      <br/>
-      <input type="text" value={userInputSignUp.lname} name="lname" onChange={handleChange} />
-      <br/>
+      <Form.Group controlId="formLastName">
 
-      <label> Email</label>
-      <br/>
-      <input type="text" value={userInputSignUp.signupemail} name="signupemail" onChange={handleChange} />
-      <br/>
+        <Form.Control type="text" placeholder="Last Name" value={userInputSignUp.lname} name="lname" onChange={handleChange}/> 
+      </Form.Group>
 
-      <label> Password</label>
-      <br/>
-      <input type="password" value={userInputSignUp.signuppassword} name="signuppassword" onChange={handleChange} />
-      <br/>
+      <Form.Group controlId="formBasicEmail">
 
-      <br/>
+        <Form.Control type="email" placeholder="Enter email" value={userInputSignUp.signupemail} name="signupemail" onChange={handleChange}/> 
+        <Form.Text className="text-muted">We'll never share your email with anyone else.</Form.Text>
+      </Form.Group>
 
-      <button onClick={makeSignUp}> Sign Up </button>
-    </div>
+      <Form.Group controlId="formBasicPassword">
+
+        <Form.Control type="password" placeholder="Password" value={userInputSignUp.signuppassword} name="signuppassword" onChange={handleChange}/> 
+      </Form.Group>
+
+      <Button variant="primary" onClick={makeSignUp} type="submit">Complete Sign Up</Button> 
+    </Form>
+  </div>
 
   );
 }
 
-{/*function ProfilePhotoUpload() {
 
-  const uploadWidget = () => {
-    cloudinary.openUploadWidget('#opener',{ 
-      cloudName: 'beanstalksquare', uploadPreset: 'preset' 
-      }, 
-      (error, result) => { });   
-  }
 
-  return ( 
-    <div class="profile-pic-upload">
-      <label> Profile Photo</label>
-      <br/>
-      
-      <input type="file" id="opener" onChange={handleFileChange} />
-      <br/>
-      )
-
-}
-*/}
 
 function ParentSignUpForm() {
   
@@ -1739,47 +1714,47 @@ function ParentSignUpForm() {
     .then(response => response.json())
     .then(data => {
       console.log("Result of .then data:", data);
-      alert("You successfully signed up!")
+      alert("You successfully signed up! Next, please log in.")
       //setIsLoggedIn("True")
       history.push("/");
     }); //Close .then
-
-
   }
+
+
 
   return ( 
    
-    <div>
-     
+   <div>
+     <h3>Try Beanstalk Square today!</h3>
      <br/>
-     <label>First name </label>
-     <br/>
-     <input type="text" name="fname" value={userInputSignUp.fname} onChange={handleChange}/>
-      <br/>
+    <Form>
+      <Form.Group controlId="formFirstName">
+      
+        <Form.Control type="text" placeholder="First Name" value={userInputSignUp.fname} name="fname" onChange={handleChange}/> 
+      </Form.Group>
 
-      <label> Last name</label>
-      <br/>
-      <input type="text" value={userInputSignUp.lname} name="lname" onChange={handleChange} />
-      <br/>
+      <Form.Group controlId="formLastName">
 
-      <label> Email</label>
-      <br/>
-      <input type="text" value={userInputSignUp.signupemail} name="signupemail" onChange={handleChange} />
-      <br/>
+        <Form.Control type="text" placeholder="Last Name" value={userInputSignUp.lname} name="lname" onChange={handleChange}/> 
+      </Form.Group>
 
-      <label> Password</label>
-      <br/>
-      <input type="password" value={userInputSignUp.signuppassword} name="signuppassword" onChange={handleChange} />
-      <br/>
+      <Form.Group controlId="formBasicEmail">
 
-      <br/>
-      <button onClick={makeSignUp}> Complete Sign Up </button>
-    </div>
+        <Form.Control type="email" placeholder="Enter email" value={userInputSignUp.signupemail} name="signupemail" onChange={handleChange}/> 
+        <Form.Text className="text-muted">We'll never share your email with anyone else.</Form.Text>
+      </Form.Group>
 
-  );
+      <Form.Group controlId="formBasicPassword">
+
+        <Form.Control type="password" placeholder="Password" value={userInputSignUp.signuppassword} name="signuppassword" onChange={handleChange}/> 
+      </Form.Group>
+
+      <Button variant="primary" onClick={makeSignUp} type="submit">Complete Sign Up</Button> 
+    </Form>
+  </div>
+    
+  );  
 }
-
-
 
 
 function LogInForm(props) {
@@ -1843,20 +1818,22 @@ function LogInForm(props) {
    
 
   return ( 
+    <div>
+    <h3>Welcome, back!</h3>
     <Form onSubmit={attemptLogIn} >
       <Form.Group controlId="formBasicEmail">
-        <Form.Label> Email Address</Form.Label>
-        <Form.Control type="email" placeholder="Enter email" value={loginemail} name="loginemail" onChange={handleEmailChange}/> 
-        <Form.Text className="text-muted">We'll never share your email with anyone else.</Form.Text>
+       
+        <Form.Control type="email" placeholder="Enter Email Address" value={loginemail} name="loginemail" onChange={handleEmailChange}/> 
       </Form.Group>
 
       <Form.Group controlId="formBasicPassword">
-        <Form.Label> Password</Form.Label>
+       
         <Form.Control type="password" placeholder="Password" value={loginpassword} name="loginpassword" onChange={handlePasswordChange}/> 
       </Form.Group>
 
       <Button variant="primary" type="submit">Submit</Button> 
     </Form>
+  </div>
   );
       
   
@@ -1870,16 +1847,14 @@ function SignUpParties () {
   <div>
     
     
-    <div className = "two-containers">
+    <div className = "two-containers" >
     <br/>
     <h3>Let's get started! Please choose an option. </h3>
       <div className="row">
-        <div className = "col-3  p-2 mb-5 bg-white rounded"> 
-          <div className="mx-auto mktg">
-          </div>
+        <div className = "col-3 bg-white rounded"> 
           <div className="outline-card" id="sign-up-1">
             <h3>I'm a parent</h3>
-            <p>I'm looking for other students or a teacher.</p>
+            <p>Looking for students or a teacher.</p>
             <div>
             <Link key={1} to="/signup_parent" className="btn btn-primary" > Start search </Link>
           </div>
@@ -1888,12 +1863,10 @@ function SignUpParties () {
           
         </div>
 
-        <div className="col-3 p-2 mb-5 bg-white rounded"> 
-          <div className="mx-auto mktg">    
-          </div>
+        <div className="col-3 bg-white rounded"> 
           <div className="outline-card" id="sign-up-2">
             <h3>I'm a teacher </h3>
-            <p>I'm looking for students to teach.</p>
+            <p>Looking for students to teach.</p>
             <div>
             <Link key={2} to="/signup_teacher" className="btn btn-primary" >Start search </Link> 
           </div>
@@ -1906,6 +1879,8 @@ function SignUpParties () {
   </div>
   )
 }
+
+
 
 function GlobalNavigationBar(props) {
   console.log("props in Global nav:******", props)
