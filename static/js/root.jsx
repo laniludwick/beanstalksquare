@@ -1483,6 +1483,8 @@ function HomeContainer() {
       <br/>
       <div>
         <Benefits />
+        <br/>
+        <br/>
       </div>
       <br/>
       <br/>
@@ -1640,7 +1642,7 @@ function TeacherProfileForm() {
      <br/>
     <Form>
       <Form.Group controlId="formBio">
-        <Form.Control type="textarea" rows="2" placeholder="Bio" value={userInputProfile.teacher_bio} name="teacher_bio" onChange={handleChange}/> 
+        <Form.Control type="textarea" rows="3" placeholder="Bio" value={userInputProfile.teacher_bio} name="teacher_bio" onChange={handleChange}/> 
       </Form.Group>
 
       <Form.Group controlId="formZipcode">
@@ -2164,12 +2166,21 @@ function App() {
 
   
   return (
-    <Router>
-      <div> 
-        <Spinner color="info" />
-        <GlobalNavigationBar setLoggedInStatus={setLoggedInStatus} isLoggedIn={isLoggedIn} />
+    <div>
+      <Router>
+        <div> 
+          <Spinner color="info" />
+          <GlobalNavigationBar setLoggedInStatus={setLoggedInStatus} isLoggedIn={isLoggedIn} />
+        </div>
+      </Router>
+      
+      <div className="footer">
+        <br/>
+        <p>© 2020 Copyright: Beanstalk Square.<br/>
+        All rights reserved.</p>
       </div>
-    </Router>
+    </div>
+
   );
 }
 
