@@ -330,7 +330,10 @@ def signup_parent():
     #else:
     user = crud.create_parent(fname, lname, email, password)
     
-    return jsonify("Successfully registered a new parent!")
+    access_token = create_access_token(identity=email)
+    print("******Access token:", access_token)
+        
+    return jsonify({"access_token": access_token})
 
 
 
@@ -346,7 +349,12 @@ def signup_teacher():
     
     user = crud.create_teacher(fname, lname, email, password)
     
-    return jsonify("Successfully registered a new teacher!")
+    access_token = create_access_token(identity=email)
+    print("******Access token:", access_token)
+        
+    return jsonify({"access_token": access_token})
+
+    
 
 
 def allowed_file(filename):

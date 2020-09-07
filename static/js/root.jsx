@@ -6,7 +6,7 @@ const Switch = ReactRouterDOM.Switch;
 const Redirect = ReactRouterDOM.Redirect;
 
 //import Button from 'react-bootstrap/Button' OR;
-const { Badge, Button, Col, Container, CardDeck, Card, Form, FormControl, FormFile, FormLabel, ListGroup, Navbar, Nav, Row, Table, Modal, Alert} = ReactBootstrap;
+const { Badge, Button, Col, Container, CardDeck, Card, Form, FormControl, FormFile, FormLabel, ListGroup, Navbar, Nav, Row, Table, Modal, Spinner, Alert} = ReactBootstrap;
 //import 'bootstrap/dist/css/bootstrap.min.css';
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -75,6 +75,7 @@ function ContactTeacher() {
    
     <div className="contact-form-wrapper">
      <h3>Send a message to the teacher</h3>
+     <hr />
      <br/>
       <Form>
         <Form.Group controlId="formFirstName">
@@ -169,6 +170,7 @@ function ContactPodOrganizer() {
    
     <div className="contact-form-wrapper">
      <h3>Send a message to this pod's organizer(s)</h3>
+     <hr />
      <br/>
       <Form>
         <Form.Group controlId="formFirstName">
@@ -892,6 +894,7 @@ function CreatePod() {
     <div className="create-pod-form-wrapper">
      <br/>
      <h3>Add a new pod to Beanstalk Square!</h3>
+     <hr />
      <br/>
     <Form>
       <Form.Group controlId="formPodName">
@@ -1090,7 +1093,7 @@ function Teacher(props) {
       <td>{props.teaching_experience_in_hours}</td>
       <td>{props.pay_rate_per_hour}</td>
       {/*<td><Link to={podDetailsLink}> View details</Link></td>*/}
-     {props.isLoggedIn==="True"? <td><Link to={teacherDetailsLink}> View details</Link></td>: <td>View details</td>}
+     {props.isLoggedIn==="True"? <td><Link to={teacherDetailsLink}> View</Link></td>: <td>View</td>}
     </tr>
   );
 }
@@ -1109,7 +1112,7 @@ function Pod(props) {
       <td>{props.total_hours_per_day}</td>
       <td>{props.paid_teacher}</td>
       {/*<td><Link to={podDetailsLink}> View details</Link></td>*/}
-     {props.isLoggedIn==="True"? <td><Link to={podDetailsLink}> View details</Link></td>: <td>View details</td>}
+     {props.isLoggedIn==="True"? <td><Link to={podDetailsLink}> View</Link></td>: <td>View</td>}
     </tr>
   );
 }
@@ -1270,7 +1273,11 @@ function PodList(props) {
       <div className="search-results-table-wrapper">
        
           <br/>
+          
+          <div className="title-row-cta">
           <h3 className="table-title">{zipcode} Search Results</h3> 
+          <Link key={1} to="/createpod" className="btn btn-primary" variant="btn-primary" > Start a pod </Link>
+          </div>
           <br/>
           <table className="table">
           <thead>
@@ -1439,6 +1446,7 @@ function HomeContainer() {
     setLinkStatus("find_students");
     document.getElementById('option1').style="text-decoration: underline; bold;";
     document.getElementById('option2').style="text-decoration: none";  
+    console.log("linkStatus after clickstudents:", linkStatus)
   }
 
   const clickTeachers = () => {
@@ -1446,30 +1454,31 @@ function HomeContainer() {
     setLinkStatus("find_teachers");
     document.getElementById('option2').style="text-decoration: underline; bold;";
     document.getElementById('option1').style="text-decoration: none"; 
+    console.log("linkStatus after clickteachers:", linkStatus)
   }
 
 
 
   return (
     <div>
-      <Container fluid>
-        <Row>
-          <Col><div><img src="/static/img/beanstalkhero1.jpg" width="100%"/></div>
+      {/*<Container fluid >
+        <Row > */}
+          <div><img src="/static/img/beanstalkhero1.jpg" width="100%"/></div>
             <div className="top-left">Engage in distance learning together.</div>
             
             <div >
               <div className="middle-left">
-              <Link name="options" className="find-students a-search" id="option1" onClick={clickStudents}> Find Students </Link>
-              <Link name="options" className="find-teachers a-search" id="option2" onClick={clickTeachers}> Find Teachers</Link>
+                <Link name="find-students" className="filtered-search a-search" id="option1" onClick={clickStudents}> Find Students </Link>
+                <Link name="find-teachers" className="filtered-search a-search" id="option2" onClick={clickTeachers}> Find Teachers</Link>
               </div>
             </div>
             
             <div className="middle-left">
               {linkStatus=="find_students"? <PodSearch  /> : <TeacherSearch />}
             </div>
-          </Col>
-        </Row>
-      </Container>
+          
+        {/*</Row>
+      </Container> */}
       
       <br/>
       <div>
@@ -1539,9 +1548,9 @@ function TeacherProfilePic() {
     <Form>
       <Form.Group>
         <br/>
-        <Form.File id="opener" label="Profile Photo" name="profile-pic" onChange={handleFileChange} />
+        <Form.File id="opener" label="Your Profile Photo" name="profile-pic" onChange={handleFileChange} />
         <br/>
-        <Button variant="primary" onClick={handleFileUpload} type="submit">Upload Profile Photo</Button> 
+        <Button variant="primary" onClick={handleFileUpload} type="submit">Upload Photo</Button> 
         <br/>
       </Form.Group>
     </Form>
@@ -1621,15 +1630,17 @@ function TeacherProfileForm() {
   
   return ( 
    
-    <div>
+    <div className="entry-form-wrapper">
 
      <br/>
      <h3>Adding to your profile helps families find you.</h3>
+     <hr />
      <TeacherProfilePic />
+     <hr />
      <br/>
     <Form>
       <Form.Group controlId="formBio">
-        <Form.Control type="text" placeholder="Bio" value={userInputProfile.teacher_bio} name="teacher_bio" onChange={handleChange}/> 
+        <Form.Control type="textarea" rows="2" placeholder="Bio" value={userInputProfile.teacher_bio} name="teacher_bio" onChange={handleChange}/> 
       </Form.Group>
 
       <Form.Group controlId="formZipcode">
@@ -1658,7 +1669,7 @@ function TeacherProfileForm() {
     
 
 
-function TeacherSignUpForm() {
+function TeacherSignUpForm(props) {
   
   const history = ReactRouterDOM.useHistory();
   const [userInputSignUp, setUserInputSignUp] = React.useReducer(
@@ -1710,10 +1721,17 @@ function TeacherSignUpForm() {
     .then(response => response.json())
     .then(data => {
       console.log("Result of .then data:", data);
-      alert("You successfully signed up!")
-      //setIsLoggedIn("True")
-      history.push("/profile_teacher");
-    }); //Close .then
+      if (data.access_token){
+        localStorage.setItem("user", data.access_token);
+        localStorage.setItem("useremail", userInputSignUp.signupemail);
+        console.log("***************set item useremail:", userInputSignUp.signupemail);
+        console.log("***************get item useremail:", localStorage.getItem("useremail"));
+        alert("You are now logged in!");
+        console.log("***************props in loginform function post-response:", props);
+        props.setLoggedInStatus("True");
+        
+        history.push("/profile_teacher");
+    }}); //Close .then
     
   } //Close makeSignUp function
 
@@ -1721,8 +1739,9 @@ function TeacherSignUpForm() {
 
   return ( 
    
-    <div>
+    <div className="entry-form-wrapper">
      <h3>Try Beanstalk Square today!</h3>
+     <hr />
      <br/>
     <Form>
       <Form.Group controlId="formFirstName">
@@ -1756,7 +1775,7 @@ function TeacherSignUpForm() {
 
 
 
-function ParentSignUpForm() {
+function ParentSignUpForm(props) {
   
   const history = ReactRouterDOM.useHistory();
   const [userInputSignUp, setUserInputSignUp] = React.useReducer(
@@ -1806,18 +1825,25 @@ function ParentSignUpForm() {
     .then(response => response.json())
     .then(data => {
       console.log("Result of .then data:", data);
-      alert("You successfully signed up! Next, please log in.")
-      //setIsLoggedIn("True")
-      history.push("/");
-    }); //Close .then
+      if (data.access_token){
+        localStorage.setItem("user", data.access_token);
+        localStorage.setItem("useremail", userInputSignUp.signupemail);
+        console.log("***************set item useremail:", userInputSignUp.signupemail);
+        console.log("***************get item useremail:", localStorage.getItem("useremail"));
+        alert("You are now logged in!");
+        console.log("***************props in loginform function post-response:", props);
+        props.setLoggedInStatus("True");
+        history.push("/dashboard");
+    }}); //Close .then
   }
 
 
 
   return ( 
    
-   <div>
+   <div className="entry-form-wrapper">
      <h3>Try Beanstalk Square today!</h3>
+     <hr />
      <br/>
     <Form>
       <Form.Group controlId="formFirstName">
@@ -1911,22 +1937,23 @@ function LogInForm(props) {
 
   return ( 
     <div className="entry-form-wrapper">
-    <br/>
-    <h3>Welcome, back!</h3>
-    <br/>
-    <Form onSubmit={attemptLogIn} >
-      <Form.Group controlId="formBasicEmail">
-       
-        <Form.Control type="email" placeholder="Enter Email Address" value={loginemail} name="loginemail" onChange={handleEmailChange}/> 
-      </Form.Group>
+      <br/>
+      <h3>Welcome, back!</h3>
+      {/*<hr />*/}
+      <br/>
+      <Form onSubmit={attemptLogIn} >
+        <Form.Group controlId="formBasicEmail">
+         
+          <Form.Control type="email" placeholder="Enter Email Address" value={loginemail} name="loginemail" onChange={handleEmailChange}/> 
+        </Form.Group>
 
-      <Form.Group controlId="formBasicPassword">
-       
-        <Form.Control type="password" placeholder="Password" value={loginpassword} name="loginpassword" onChange={handlePasswordChange}/> 
-      </Form.Group>
+        <Form.Group controlId="formBasicPassword">
+         
+          <Form.Control type="password" placeholder="Password" value={loginpassword} name="loginpassword" onChange={handlePasswordChange}/> 
+        </Form.Group>
 
-      <Button variant="primary" type="submit">Submit</Button> 
-    </Form>
+        <Button variant="primary" type="submit">Submit</Button> 
+      </Form>
   </div>
   );
       
@@ -1938,19 +1965,50 @@ function LogInForm(props) {
 function SignUpParties () {
 
   return (
-  <div>
-    
-    
-    <div className = "two-containers" >
+  <Container>
+    <Row>
     <br/>
-    <h3>Let's get started! Please choose an option. </h3>
+    <br/>
+    <Row/>
+    <h3 className="centered-header">Let's get started! Please choose an option. </h3>
+    </Row>
+    <br/>
+    <Row xs="8">
+      
+      <Col> </Col>
+      <Col> </Col>
+      <Col xs="4">
+        <div className="rounded outline-card" id="sign-up-1"> 
+          <h3>I'm a parent</h3>
+            <p>Looking for students or a teacher.</p>
+            <div >
+            <Link key={1} to="/signup_parent" className="btn btn-primary" > Start search </Link>
+            </div>
+        </div>
+      </Col>
+      
+      <Col> </Col>
+      <Col> </Col>
+      <Col xs="4">
+        <div className="rounded outline-card" id="sign-up-2">
+          <h3>I'm a teacher </h3>
+            <p>Looking for students to teach.</p>
+            <div>
+            <Link key={2} to="/signup_teacher" className="btn btn-primary" >Start search </Link> 
+            </div>
+        </div>
+      </Col>
+      
+      <Col> </Col>
+      <Col> </Col>
+
+    {/*<div className = "two-containers" >
+    <br/>
+    
       <div className="row">
         <div className = "col-3 bg-white rounded"> 
           <div className="outline-card" id="sign-up-1">
-            <h3>I'm a parent</h3>
-            <p>Looking for students or a teacher.</p>
-            <div>
-            <Link key={1} to="/signup_parent" className="btn btn-primary" > Start search </Link>
+            
           </div>
           </div>
           <br/>
@@ -1959,18 +2017,16 @@ function SignUpParties () {
 
         <div className="col-3 bg-white rounded"> 
           <div className="outline-card" id="sign-up-2">
-            <h3>I'm a teacher </h3>
-            <p>Looking for students to teach.</p>
-            <div>
-            <Link key={2} to="/signup_teacher" className="btn btn-primary" >Start search </Link> 
+            
           </div>
           </div>
           <br/>
           
         </div>
       </div>
-    </div>  
-  </div>
+    </div>  */}
+    </Row>
+  </Container>
   )
 }
 
@@ -1996,17 +2052,12 @@ function GlobalNavigationBar(props) {
     <div> 
     <Navbar bg="none" variant="light">
     <Navbar.Brand href="#home"><img src="static/img/beanstalksquarelogo.png" width="245px" height="40px"/></Navbar.Brand>
-    {/*<Nav className="mr-auto">
-      <Nav.Link href="#home">Home</Nav.Link>
-      <Nav.Link href="#features">Features</Nav.Link>
-      <Nav.Link href="#pricing">Pricing</Nav.Link>
-    </Nav> */}
+
     <Form inline>
       {/*<FormControl type="text" placeholder="Search" className="mr-sm-2" /> */}
           
           {props.isLoggedIn==="True"? 
-          [<Link key={1} to="/createpod" className="btn bg-transparent nav-links" variant="btn-primary" > Start a pod </Link>,
-          <Link key={2} to="/" onClick={LogOut} className="btn bg-transparent nav-links" variant="btn-secondary"> Log Out </Link>]
+          [<Link key={1} to="/" onClick={LogOut} className="btn bg-transparent nav-links" variant="btn-secondary"> Log Out </Link>]
           : [<Link key={1} to="/login" className="btn nav-links" variant="btn-secondary"> Log In </Link>, 
           <Link key={2} to="/signup" className="btn btn-primary nav-links" variant="btn-primary"> Sign Up </Link>]}
           
@@ -2024,13 +2075,15 @@ function GlobalNavigationBar(props) {
         </Route>  
 
         <Route path="/signup_parent">
-         <ParentSignUpForm />
+          <ParentSignUpForm setLoggedInStatus={props.setLoggedInStatus}/>
         </Route>  
 
-        <Route path="/signup_teacher" component={TeacherSignUpForm}>
+        <Route path="/signup_teacher"> 
+          <TeacherSignUpForm setLoggedInStatus={props.setLoggedInStatus} />
         </Route> 
 
-        <Route path="/profile_teacher" component={TeacherProfileForm}>
+        <Route path="/profile_teacher">
+          <TeacherProfileForm />
         </Route>
 
 
@@ -2113,7 +2166,7 @@ function App() {
   return (
     <Router>
       <div> 
-        
+        <Spinner color="info" />
         <GlobalNavigationBar setLoggedInStatus={setLoggedInStatus} isLoggedIn={isLoggedIn} />
       </div>
     </Router>
