@@ -1401,7 +1401,7 @@ function Benefits() {
             <Card>
           
               <Card.Body>
-                <Card.Title>Have Social Interaction</Card.Title>
+                <Card.Title>Gain Social Interaction</Card.Title>
                 <Card.Text>
                   Social interaction is important for children to meet developmental milestones.
                 </Card.Text>
@@ -1444,16 +1444,16 @@ function HomeContainer() {
   const clickStudents = () => {
 
     setLinkStatus("find_students");
-    document.getElementById('option1').style="text-decoration: underline; bold;";
-    document.getElementById('option2').style="text-decoration: none";  
+    document.getElementById('find-students').style="text-decoration: underline; bold;";
+    document.getElementById('find-teachers').style="text-decoration: none";  
     console.log("linkStatus after clickstudents:", linkStatus)
   }
 
   const clickTeachers = () => {
 
     setLinkStatus("find_teachers");
-    document.getElementById('option2').style="text-decoration: underline; bold;";
-    document.getElementById('option1').style="text-decoration: none"; 
+    document.getElementById('find-teachers').style="text-decoration: underline; bold;";
+    document.getElementById('find-students').style="text-decoration: none"; 
     console.log("linkStatus after clickteachers:", linkStatus)
   }
 
@@ -1463,13 +1463,13 @@ function HomeContainer() {
     <div>
       {/*<Container fluid >
         <Row > */}
-          <div><img src="/static/img/beanstalkhero1.jpg" width="100%"/></div>
+          <div><img src="/static/img/beanstalkhero2.jpg" width="100%"/></div>
             <div className="top-left">Engage in distance learning together.</div>
             
             <div >
               <div className="middle-left">
-                <Link name="find-students" className="filtered-search a-search" id="option1" onClick={clickStudents}> Find Students </Link>
-                <Link name="find-teachers" className="filtered-search a-search" id="option2" onClick={clickTeachers}> Find Teachers</Link>
+                <Link name="find-students" className="filtered-search a-search" id="find-students" onClick={clickStudents}> Find Students </Link>
+                <Link name="find-teachers" className="filtered-search a-search" id="find-teachers" onClick={clickTeachers}> Find Teachers</Link>
               </div>
             </div>
             
@@ -1481,7 +1481,7 @@ function HomeContainer() {
       </Container> */}
       
       <br/>
-      <div>
+      <div className="card-deck">
         <Benefits />
         <br/>
         <br/>
@@ -2053,18 +2053,25 @@ function GlobalNavigationBar(props) {
 
     <div> 
     <Navbar bg="none" variant="light">
-    <Navbar.Brand href="#home"><img src="static/img/beanstalksquarelogo.png" width="245px" height="40px"/></Navbar.Brand>
-
-    <Form inline>
+    <Navbar.Brand href="#home"><img src="static/img/beanstalksquarelogo.png" width="260px" height="40px"/></Navbar.Brand>
+    <Nav className="navbar-nav ml-auto">
+    
+    <Form inline >
       {/*<FormControl type="text" placeholder="Search" className="mr-sm-2" /> */}
           
           {props.isLoggedIn==="True"? 
-          [<Link key={1} to="/" onClick={LogOut} className="btn bg-transparent nav-links" variant="btn-secondary"> Log Out </Link>]
-          : [<Link key={1} to="/login" className="btn nav-links" variant="btn-secondary"> Log In </Link>, 
-          <Link key={2} to="/signup" className="btn btn-primary nav-links" variant="btn-primary"> Sign Up </Link>]}
+          [<Link key={1} to="/" onClick={LogOut} className="btn bg-transparent nav-links nav-item" variant="btn-secondary" > Log Out </Link>]
+          : [<Link key={1} to="/login" className="btn nav-links nav-item" variant="btn-secondary"> Log In </Link>, 
+          <Link key={2} to="/signup" className="btn btn-primary nav-links nav-item" variant="btn-primary"> Sign Up </Link>]}
           
       {/*<Button variant="outline-primary">Search</Button> */}
     </Form>
+    
+    </Nav>
+    
+{/*    <Nav className="navbar-nav ml-auto">
+    <Nav.Link href="#deets" className="nav-item" >More deets</Nav.Link>
+    </Nav>*/}
   </Navbar>
       
 

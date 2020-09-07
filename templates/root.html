@@ -23,8 +23,10 @@
     <style>
       
       body {
-        font-family: 'Open Sans', San-Serif;
+        font-family: 'Poppins', sans-serif;
         }
+
+
 
       /* Top left text */
       .top-nav {
@@ -37,18 +39,19 @@
 
       .top-left {
         position: absolute;
-        top: 100px;
+        top: 125px;
         left: 30px;
         color: white;
-        font-size: 40px;
+        font-size: 3.5vw;
+        font-family: 'Poppins', serif;
       }
       
       .middle-left {
         position: absolute;
-        top: 160px;
+        top: 215px;
         left: 30px;
         color: white;
-        font-size: 20px;
+        font-size: 1.5vw;
       }
 
       .a-search {
@@ -196,12 +199,17 @@
         border-radius: 40px;
         background: #76B39D;
         border-color: #76B39D;
+        color: white;
       }
 
-      .btn-primary:active {
-        border-radius: 40px;
-        background: #155E63
-        border-color: #155E63
+      .btn-primary-success:active,
+      .btn-primary-success:hover,
+      .btn-primary-success:focus,
+       {
+        border-radius: 40px !important;
+        background: #155E63 !important;
+        border-color: #155E63 !important;
+        color: white !important; 
       }
 
       .btn-secondary {
@@ -218,6 +226,20 @@
       #page-container {
         position: relative;
         min-height: 100vh;
+      }
+
+      .card-deck {
+        margin-bottom: 14px;
+        padding-bottom: 14px;
+      }
+
+      #find-students {
+        margin-right: 5px;
+        ;
+      }
+
+      #find-teachers {
+        margin-left: 5px;
       }
 
       .footer {
