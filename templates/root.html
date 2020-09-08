@@ -26,9 +26,7 @@
         font-family: 'Poppins', sans-serif;
         }
 
-
-
-      /* Top left text */
+      
       .top-nav {
         position: absolute;
         top: 0px;
@@ -37,7 +35,18 @@
         font-size: 16px;
       }
 
-      .top-left {
+      .search-bar-width {
+        input[type=text]{width:430px !important;}
+        width:100%;
+      }
+
+
+
+      #zipcode-search-box {
+
+      }
+
+      .upper-hero-text {
         position: absolute;
         top: 125px;
         left: 30px;
@@ -46,12 +55,13 @@
         font-family: 'Poppins', serif;
       }
       
-      .middle-left {
+      .hero-search-options {
         position: absolute;
         top: 215px;
         left: 30px;
         color: white;
         font-size: 1.5vw;
+        padding-bottom: 10px;
       }
 
       .a-search {
@@ -59,13 +69,17 @@
         }
       
       .a-search:hover {
-        color: #00F
+        color: white;
         border-style: solid;
         border-color: #EAE7E7;
         border-width: 2px;
-        border-radius: 25px;
+        border-radius: 0;
       }
     
+      .table-vertical-align {
+        vertical-align: middle !important;
+      }
+
       .nav-links {
         
         display: flex;
@@ -129,6 +143,15 @@
         margin-right: auto;
       }
 
+      #teacher-detail-results-table-wrapper {
+        display: block;
+        text-align: center;
+        padding: 0%;
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
       .detail-results-table-wrapper {
         display: block;
         
@@ -146,7 +169,7 @@
         border-style: solid;
         border-color: #EAE7E7;
         border-width: 2px;
-        border-radius: 25px;
+        border-radius: 25px !important;
         padding: 20px;
 
       }
@@ -189,8 +212,8 @@
         border-style: solid;
         border-color: #EAE7E7;
         border-width: 2px;
-        border-radius: 40px;
-        padding: 20px;
+        border-radius: 25px !important;
+        padding: 25px;
         text-align: center;
 
       }
@@ -235,11 +258,16 @@
 
       #find-students {
         margin-right: 5px;
+        text-decoration: underline; 
+        margin-bottom: 10px;
+        padding-bottom: 10px;
         ;
       }
 
       #find-teachers {
         margin-left: 5px;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
       }
 
       .footer {
@@ -252,6 +280,10 @@
         text-align: center;
       }
 
+      .bottom-padded {
+        margin-bottom: 14px;
+        padding-bottom: 14px;
+      }
 
 
     </style>

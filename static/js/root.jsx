@@ -95,7 +95,8 @@ function ContactTeacher() {
 
         <Form.Group controlId="formMessage">
 
-          <Form.Control type="textarea" placeholder="Message" value={userInputSms.message} name="message" onChange={handleChange} rows={5}/> 
+          {/*<Form.Control type="textarea" placeholder="Message" value={userInputSms.message} name="message" onChange={handleChange} rows={5}/> */}
+          <textarea class="form-control" placeholder="Message" rows="3" value={userInputSms.message} name="message" onChange={handleChange}></textarea>
         </Form.Group>
 
         <Button variant="primary" onClick={contactTeacher} type="submit">Send message</Button> 
@@ -190,7 +191,8 @@ function ContactPodOrganizer() {
 
         <Form.Group controlId="formMessage">
 
-          <Form.Control type="textarea" placeholder="Message" value={userInputSms.message} name="message" onChange={handleChange} rows={5}/> 
+          {/*<Form.Control type="textarea" placeholder="Message" value={userInputSms.message} name="message" onChange={handleChange} rows={5}/>*/} 
+          <textarea class="form-control" placeholder="Message" rows="3" value={userInputSms.message} name="message" onChange={handleChange}></textarea>
         </Form.Group>
 
         <Button variant="primary" onClick={contactPodOrganizer} type="submit">Send message</Button> 
@@ -268,49 +270,35 @@ function TeacherDetails(props) {
         <br/>
         
         
-        <table className="table">
+        <table className="table" id="teacher-detail-results-table-wrapper">
+          
+          <thead>
+          <tr > 
+            <th className="table-header-row" scope="col"></th>
+            <th className="table-header-row" scope="col">Name</th>
+            <th className="table-header-row" scope="col">Bio</th>
+            <th className="table-header-row" scope="col">Zipcode</th>
+            <th className="table-header-row" scope="col">Availability</th>
+            <th className="table-header-row" scope="col">Experience</th>
+            <th className="table-header-row" scope="col">Pay rate</th>
+          </tr>
+          </thead>
+
           <tbody>
-            
-            <tr> 
-              <th className="teacher-table-title" scope="row">Teacher name</th>
-              <td>{teacherDetailsAll.teacher_name}<img src={teacherDetailsAll.img_url}/></td>
-            </tr>
-
-            <tr>
-              <th className="teacher-table-title" scope="row">Bio</th>
-              <td>{teacherDetailsAll.bio}</td>
-            </tr>
-
-            {/* <tr>
-              <th className="teacher-table-title" scope="row">Email</th>
-              <td>{teacherDetailsAll.email}</td>
-            </tr> */}
-            
-            <tr>
-              <th className="teacher-table-title" scope="row">Zipcode</th>
-              <td>{teacherDetailsAll.zipcode}</td>
-            </tr>
-            
-            <tr>
-              <th className="teacher-table-title" scope="row">Preferred days of week</th>
-              <td>{teacherDetailsAll.days_of_week}</td>
-            </tr>
-            
-            <tr>
-              <th className="teacher-table-title" scope="row">Teaching experience (in hours)</th>
-              <td>{teacherDetailsAll.teaching_experience_in_hours}</td>
-            </tr>
-
-            <tr>
-              <th className="teacher-table-title" scope="row">Pay rate (per hour)</th>
-              <td>${teacherDetailsAll.pay_rate_per_hour}</td>
-            </tr>
+            <td><img src={teacherDetailsAll.img_url}/></td>
+            <td>{teacherDetailsAll.teacher_name}</td>
+            <td>{teacherDetailsAll.bio}</td>
+            <td>{teacherDetailsAll.zipcode}</td>
+            <td>{teacherDetailsAll.days_of_week}</td>
+            <td>{teacherDetailsAll.teaching_experience_in_hours} hrs</td>
+            <td>${teacherDetailsAll.pay_rate_per_hour}/hr</td>
 
           </tbody>  
         </table> 
       </div>
   )
 }
+
 
 
 function GoogleMap(props) {
@@ -535,6 +523,7 @@ function TeachersInPodList(props) {
           <tr > 
           
             <th className="table-header-row" scope="col">Photo</th>
+
             <th className="table-header-row" scope="col">Bio</th>
             <th className="table-header-row" scope="col">Teaching experience</th>
             <th className="table-header-row" scope="col">Pay rate</th>
@@ -802,10 +791,12 @@ function PodDetailsContainer(props) {
         <ChildrenInPodList />
       </div>
 
-       <div width="50%">
+       <div width="50%" className="bottom-padded">
         <br/>
         <br/>
         <TeachersInPodList />
+        <br/>
+        <br/>
       </div>
     </div>    
   )
@@ -1085,15 +1076,15 @@ function Teacher(props) {
   const teacherDetailsLink = `/teacherdetails/${props.teacher_id}`;
 
   return (
-    <tr>
+    <tr className="table-vertical-align">
       <td><img src={props.img_url}/></td>
-      <td>{props.teacher_name}</td>
-      <td>{props.zipcode}</td>
-      <td>{props.days_of_week}</td>
-      <td>{props.teaching_experience_in_hours}</td>
-      <td>{props.pay_rate_per_hour}</td>
+      <td className="table-vertical-align">{props.teacher_name}</td>
+      <td className="table-vertical-align">{props.zipcode}</td>
+      <td className="table-vertical-align">{props.days_of_week}</td>
+      <td className="table-vertical-align">{props.teaching_experience_in_hours} hrs</td>
+      <td className="table-vertical-align">${props.pay_rate_per_hour}/hr</td>
       {/*<td><Link to={podDetailsLink}> View details</Link></td>*/}
-     {props.isLoggedIn==="True"? <td><Link to={teacherDetailsLink}> View</Link></td>: <td>View</td>}
+     {props.isLoggedIn==="True"? <td className="table-vertical-align"><Link to={teacherDetailsLink}> View</Link></td >: <td className="table-vertical-align">View</td>}
     </tr>
   );
 }
@@ -1105,14 +1096,14 @@ function Pod(props) {
   const podDetailsLink = `/poddetails/${props.pod_id}`;
 
   return (
-    <tr>   
-      <td>{props.pod_name}</td>
-      <td>{props.zipcode}</td>
-      <td>{props.days_per_week}</td>
-      <td>{props.total_hours_per_day}</td>
-      <td>{props.paid_teacher}</td>
+    <tr className="table-vertical-align">   
+      <td className="table-vertical-align">{props.pod_name}</td>
+      <td className="table-vertical-align">{props.zipcode}</td>
+      <td className="table-vertical-align">{props.days_per_week} days/wk</td>
+      <td className="table-vertical-align">{props.total_hours_per_day} hrs/day</td>
+      <td className="table-vertical-align">{props.paid_teacher}</td>
       {/*<td><Link to={podDetailsLink}> View details</Link></td>*/}
-     {props.isLoggedIn==="True"? <td><Link to={podDetailsLink}> View</Link></td>: <td>View</td>}
+     {props.isLoggedIn==="True"? <td className="table-vertical-align"><Link to={podDetailsLink}> View</Link></td>: <td className="table-vertical-align">View</td>}
     </tr>
   );
 }
@@ -1191,12 +1182,12 @@ function TeacherList(props) {
       <table className="table">
         <thead>
           <tr> 
-            <th scope="col" className="table-header-row"></th>
-            <th scope="col" className="table-header-row">Teacher name</th>
+            <th scope="col" className="table-header-row">Teacher</th>
+            <th scope="col" className="table-header-row">Name</th>
             <th scope="col" className="table-header-row">Zipcode</th>
-            <th scope="col" className="table-header-row">Preferred Days of week</th>
-            <th scope="col" className="table-header-row">Teaching Experience (in hours)</th>
-            <th scope="col" className="table-header-row">Hourly Pay Rate</th>
+            <th scope="col" className="table-header-row">Availability</th>
+            <th scope="col" className="table-header-row">Teaching Experience</th>
+            <th scope="col" className="table-header-row">Pay Rate</th>
             <th scope="col" className="table-header-row">Details</th>
            {/* {props.isLoggedIn==="True"? <th scope="col">Details</th> : null}*/}
           </tr> 
@@ -1270,11 +1261,11 @@ function PodList(props) {
 
   return ( 
   
-      <div className="search-results-table-wrapper">
+      <div >
        
           <br/>
           
-          <div className="title-row-cta">
+          <div className="title-row-cta search-results-table-wrapper">
           <h3 className="table-title">{zipcode} Search Results</h3> 
           <Link key={1} to="/createpod" className="btn btn-primary" variant="btn-primary" > Start a pod </Link>
           </div>
@@ -1284,8 +1275,8 @@ function PodList(props) {
             <tr> 
               <th scope="col" className="table-header-row">Pod name</th>
               <th scope="col" className="table-header-row">Zipcode</th>
-              <th scope="col" className="table-header-row">Days per week</th>
-              <th scope="col" className="table-header-row">Hours per day</th>
+              <th scope="col" className="table-header-row">Days</th>
+              <th scope="col" className="table-header-row">Hours</th>
               <th scope="col" className="table-header-row">Paid teacher</th>
               <th scope="col" className="table-header-row">Details</th>
              {/* {props.isLoggedIn==="True"? <th scope="col">Details</th> : null}*/}
@@ -1320,11 +1311,10 @@ function PodSearch(props) {
 
   return ( 
      <div>
-     <br/>
      <Form inline onSubmit={handleSubmit} >
        <Form.Group>
-        <Form.Control type="text" value={zipcode} name="zipcode" onChange={handleChange} placeholder="Enter Zipcode" className="mr-sm-2" />
-        <Button variant="secondary" type="submit" value="search" >Search</Button>
+        <Form.Control type="text" className="search-bar-width" value={zipcode} name="zipcode" onChange={handleChange} placeholder="Enter Zipcode" className="mr-sm-2" />
+        <Button variant="secondary" id="zipcode-search-box" type="submit" value="search" >Search</Button>
         </Form.Group>
       </Form>
     </div>
@@ -1352,10 +1342,9 @@ function TeacherSearch(props) {
 
   return ( 
      <div>
-     <br/>
      <Form inline onSubmit={handleSubmit} >
        <Form.Group>
-        <Form.Control type="text" value={zipcode} name="zipcode" onChange={handleChange} placeholder="Enter Zipcode" className="mr-sm-2" />
+        <Form.Control type="text" className="search-bar-width" value={zipcode} name="zipcode" onChange={handleChange} placeholder="Enter Zipcode" className="mr-sm-2" />
         <Button variant="secondary" type="submit" value="search" >Search</Button>
         </Form.Group>
       </Form>
@@ -1424,26 +1413,14 @@ function Benefits() {
 function HomeContainer() {
 
   const [linkStatus, setLinkStatus] = React.useState("find_students");
-
-
-
-//   var clickStudents = document.getElementsByClassName("contactme")[0];
-
-//   contact.addEventListener("click", function() {
-//     document.getElementById('download').style.display='none';
-//     document.getElementByID('skype').style.display='none';
-// }
-
-//   var clickTeachers = document.getElementsByClassName("contactme")[0];
-
-//   contact.addEventListener("click", function() {
-//     document.getElementById('download').style.display='none';
-//     document.getElementByID('skype').style.display='none';
-// }
   
+  console.log("linkStatus before render in HomeContainer:", linkStatus)
+
+
   const clickStudents = () => {
 
     setLinkStatus("find_students");
+    alert("Hi");
     document.getElementById('find-students').style="text-decoration: underline; bold;";
     document.getElementById('find-teachers').style="text-decoration: none";  
     console.log("linkStatus after clickstudents:", linkStatus)
@@ -1452,33 +1429,37 @@ function HomeContainer() {
   const clickTeachers = () => {
 
     setLinkStatus("find_teachers");
+    alert("Hello");
     document.getElementById('find-teachers').style="text-decoration: underline; bold;";
     document.getElementById('find-students').style="text-decoration: none"; 
     console.log("linkStatus after clickteachers:", linkStatus)
   }
 
-
-
   return (
     <div>
-      {/*<Container fluid >
-        <Row > */}
-          <div><img src="/static/img/beanstalkhero2.jpg" width="100%"/></div>
-            <div className="top-left">Engage in distance learning together.</div>
+
+          <div className="hero">
+            <img src="/static/img/beanstalkhero2.jpg" width="100%" useMap="#heromap"/>
+            <map name="heromap">
+              <area shape="rect" coords="10,140,150,250" alt="FindStudents" onClick={clickStudents} />
+              <area shape="rect" coords="150,140,300,250" alt="FindTeachers" onClick={clickTeachers} />
+            </map>
+          </div>
+            <div className="upper-hero-text">Engage in distance learning together.</div>
             
             <div >
-              <div className="middle-left">
-                <Link name="find-students" className="filtered-search a-search" id="find-students" onClick={clickStudents}> Find Students </Link>
-                <Link name="find-teachers" className="filtered-search a-search" id="find-teachers" onClick={clickTeachers}> Find Teachers</Link>
+              <div className="hero-search-options">
+                <Link to="" name="find-students" className="filtered-search a-search active" id="find-students" > Find Students </Link>
+                <Link to="" name="find-teachers" className="filtered-search a-search" id="find-teachers" > Find Teachers</Link>
+                <h5></h5>
+                {linkStatus=="find_students"? <PodSearch  /> : <TeacherSearch />}
               </div>
             </div>
             
             <div className="middle-left">
-              {linkStatus=="find_students"? <PodSearch  /> : <TeacherSearch />}
             </div>
           
-        {/*</Row>
-      </Container> */}
+
       
       <br/>
       <div className="card-deck">
@@ -1642,7 +1623,8 @@ function TeacherProfileForm() {
      <br/>
     <Form>
       <Form.Group controlId="formBio">
-        <Form.Control type="textarea" rows="3" placeholder="Bio" value={userInputProfile.teacher_bio} name="teacher_bio" onChange={handleChange}/> 
+        {/*<Form.Control type="textarea" rows="3" placeholder="Bio" value={userInputProfile.teacher_bio} name="teacher_bio" onChange={handleChange}/> */}
+        <textarea class="form-control" placeholder="Bio" rows="3" value={userInputProfile.teacher_bio} name="teacher_bio" onChange={handleChange}></textarea>
       </Form.Group>
 
       <Form.Group controlId="formZipcode">
@@ -1923,7 +1905,7 @@ function LogInForm(props) {
         localStorage.setItem("useremail", logInData["loginemail"]);
         console.log("***************set item useremail:", logInData["loginemail"]);
         console.log("***************get item useremail:", localStorage.getItem("useremail"));
-        alert("You are now logged in!");
+        
         console.log("***************props in loginform function post-response:", props);
         props.setLoggedInStatus("True");
         history.push("/dashboard");
@@ -1975,8 +1957,9 @@ function SignUpParties () {
     <h3 className="centered-header">Let's get started! Please choose an option. </h3>
     </Row>
     <br/>
-    <Row xs="8">
+    <Row xs="12">
       
+      <Col> </Col>
       <Col> </Col>
       <Col> </Col>
       <Col xs="4">
@@ -2000,7 +1983,7 @@ function SignUpParties () {
             </div>
         </div>
       </Col>
-      
+      <Col> </Col>
       <Col> </Col>
       <Col> </Col>
 
@@ -2053,7 +2036,7 @@ function GlobalNavigationBar(props) {
 
     <div> 
     <Navbar bg="none" variant="light">
-    <Navbar.Brand href="#home"><img src="static/img/beanstalksquarelogo.png" width="260px" height="40px"/></Navbar.Brand>
+    <Navbar.Brand href="#home"><img src="static/img/beanstalksquarelogo.png" width="270px" height="40px"/></Navbar.Brand>
     <Nav className="navbar-nav ml-auto">
     
     <Form inline >

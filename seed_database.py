@@ -201,11 +201,11 @@ tonya = crud.create_teacher(fname="Tonya", lname="Kramer", email="tonya.lopez@gm
 
 nadine = crud.create_teacher(fname="Nadine", lname="Cruz",email="nadine.cruz@gmail.com", password="asdf", mobile_number="917-538-4741", pod_id=21, zipcode="94010",
     bio="I minored in Spanish in college. During college, I also tutored student-athletes averaging no less than a B+ on all assignments and course levels. I am fluent in Spanish reading, writing, and speaking. I know how to work with all skill levels and have the patience and energy needed to be an effective teacher.",
-                            days_of_week="Mon-Fri",teaching_experience_in_hours="500",pay_rate_per_hour=15,covid_risk_profile_id=2,img_url="/static/img/teacher2.jpg",)
+                            days_of_week="Mon-Fri",teaching_experience_in_hours="500",pay_rate_per_hour=15,covid_risk_profile_id=2,img_url="/static/img/teacher2.png",)
 
 jasmine = crud.create_teacher(fname="Jasmine", lname="Jones", email="jasmine.jones@gmail.com", password="asdf", mobile_number="917-538-4741", zipcode="94010",
     bio="I have a masters in education and have nannied and tutored students after school for the past year. I am very organized and punctual and make sure to plan the prior day for the next day's lessons.",
-    days_of_week="Mon-Fri",teaching_experience_in_hours="800",pay_rate_per_hour=20,covid_risk_profile_id=3,img_url="/static/img/teacher3.jpg",)
+    days_of_week="Mon-Fri",teaching_experience_in_hours="800",pay_rate_per_hour=20,covid_risk_profile_id=3,img_url="/static/img/teacher3.png",)
 
 
 
