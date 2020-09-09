@@ -1313,7 +1313,7 @@ function PodSearch(props) {
      <div>
      <Form inline onSubmit={handleSubmit} >
        <Form.Group>
-        <Form.Control type="text" className="search-bar-width" value={zipcode} name="zipcode" onChange={handleChange} placeholder="Enter Zipcode" className="mr-sm-2" />
+        <Form.Control type="text" value={zipcode} name="zipcode" onChange={handleChange} placeholder="Enter Zipcode" className="mr-sm-2 search-bar-width" />
         <Button variant="secondary" id="zipcode-search-box" type="submit" value="search" >Search</Button>
         </Form.Group>
       </Form>
@@ -1344,7 +1344,7 @@ function TeacherSearch(props) {
      <div>
      <Form inline onSubmit={handleSubmit} >
        <Form.Group>
-        <Form.Control type="text" className="search-bar-width" value={zipcode} name="zipcode" onChange={handleChange} placeholder="Enter Zipcode" className="mr-sm-2" />
+        <Form.Control type="text" value={zipcode} name="zipcode" onChange={handleChange} placeholder="Enter Zipcode" className="mr-sm-2 search-bar-width" />
         <Button variant="secondary" type="submit" value="search" >Search</Button>
         </Form.Group>
       </Form>
@@ -1413,67 +1413,76 @@ function Benefits() {
 function HomeContainer() {
 
   const [linkStatus, setLinkStatus] = React.useState("find_students");
+
+  const [originalStatus, setOriginalStatus] = React.useState("active-style;");
+  const [oppositeStatus, setOppositeStatus] = React.useState("");
   
-  console.log("linkStatus before render in HomeContainer:", linkStatus)
+  console.log("originalStatus, oppositeStatus before render in HomeContainer:", originalStatus, oppositeStatus);
 
 
   const clickStudents = () => {
 
+    // alert("clickStudents");
     setLinkStatus("find_students");
-    alert("Hi");
-    document.getElementById('find-students').style="text-decoration: underline; bold;";
-    document.getElementById('find-teachers').style="text-decoration: none";  
-    console.log("linkStatus after clickstudents:", linkStatus)
+    setOriginalStatus("active-style");
+    setOppositeStatus("");
+    console.log("originalStatus, oppositeStatus, linkStatus after clickstudents:", originalStatus, oppositeStatus, linkStatus);
   }
 
   const clickTeachers = () => {
 
+    // alert("clickTeachers");
     setLinkStatus("find_teachers");
-    alert("Hello");
-    document.getElementById('find-teachers').style="text-decoration: underline; bold;";
-    document.getElementById('find-students').style="text-decoration: none"; 
-    console.log("linkStatus after clickteachers:", linkStatus)
+    setOriginalStatus("");
+    setOppositeStatus("active-style");
+    console.log("originalStatus oppositeStatus, linkStatus after clickteachers:", originalStatus, oppositeStatus, linkStatus);
   }
+
+
 
   return (
     <div>
 
-          <div className="hero">
-            <img src="/static/img/beanstalkhero2.jpg" width="100%" useMap="#heromap"/>
-            <map name="heromap">
-              <area shape="rect" coords="10,140,150,250" alt="FindStudents" onClick={clickStudents} />
-              <area shape="rect" coords="150,140,300,250" alt="FindTeachers" onClick={clickTeachers} />
-            </map>
-          </div>
-            <div className="upper-hero-text">Engage in distance learning together.</div>
-            
-            <div >
-              <div className="hero-search-options">
-                <Link to="" name="find-students" className="filtered-search a-search active" id="find-students" > Find Students </Link>
-                <Link to="" name="find-teachers" className="filtered-search a-search" id="find-teachers" > Find Teachers</Link>
-                <h5></h5>
-                {linkStatus=="find_students"? <PodSearch  /> : <TeacherSearch />}
-              </div>
-            </div>
-            
-            <div className="middle-left">
-            </div>
-          
-
+      <div className="hero">
+        {/*<img src="/static/img/beanstalkhero2.jpg" width="100%" useMap="#heromap"/>*/}
+        <map name="heromap">
+          <area shape="rect" id="find-students" coords="10,140,150,250" onClick={clickStudents} alt="FindStudents" />
+          <area shape="rect" id="find-teachers" coords="150,140,300,250" onClick={clickTeachers} alt="FindTeachers"  />
+        </map>
+      </div>
       
+      <div className="upper-hero-text">
+        Engage in distance learning together.
+      </div>
+      
+      <div>
+        <div className="hero-search-options">
+          {linkStatus=="find_students"? 
+          [<Link to="" key="0" name="find-students" className="filtered-search a-search active-style" onClick={clickStudents} id="find-students"> Find Students </Link>,
+          <Link to="" key="1" name="find-teachers" className="filtered-search a-search" onClick={clickTeachers} id="find-teachers" > Find Teachers</Link>] : 
+          [<Link to="" key="3" name="find-students" className="filtered-search a-search" onClick={clickStudents} id="find-students"> Find Students </Link>,
+          <Link to="" key="4" name="find-teachers" className="filtered-search a-search active-style" onClick={clickTeachers} id="find-teachers" > Find Teachers</Link>]}
+          <h5> </h5>
+          {linkStatus=="find_students"? <PodSearch  /> : <TeacherSearch />}
+        </div>
+      </div>
+      
+      <div className="middle-left">
+      </div>
+
       <br/>
       <div className="card-deck">
         <Benefits />
         <br/>
         <br/>
       </div>
+      
       <br/>
       <br/>
     
     </div>
   )
 }
-
 
 
 function TeacherProfilePic() {
