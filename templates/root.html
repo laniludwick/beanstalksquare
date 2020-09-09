@@ -42,12 +42,10 @@
 
       .hero {
         background-image: url("/static/img/beanstalkhero2.jpg");
-
         height: 500px; 
         background-position: 75% 25%;
         background-size: contain;
         background-repeat: no-repeat;
-
 
       }
 
@@ -86,10 +84,12 @@
       }
 
 
-    
-      .table-vertical-align {
-        vertical-align: middle !important;
+      .linen-background {
+        /*background-image: url("/static/img/linen.png");*/
+
       }
+
+     
 
       .nav-links {
         
@@ -145,23 +145,9 @@
         margin-right: auto;
       }
 
-      .search-results-table-wrapper {
-        display: block;
-        text-align: center;
-        padding: 0%;
-        width: 80%;
-        margin-left: auto;
-        margin-right: auto;
-      }
+      
 
-      #teacher-detail-results-table-wrapper {
-        display: block;
-        text-align: center;
-        padding: 0%;
-        width: 90%;
-        margin-left: auto;
-        margin-right: auto;
-      }
+      
 
       .detail-results-table-wrapper {
         display: block;
@@ -172,23 +158,24 @@
         margin-right: auto;
       }
 
-      .table-title {
-        text-align: left;
-      }
 
-      .table {
+
+      .table-corners {
         border-style: solid;
         border-color: #EAE7E7;
         border-width: 2px;
-        border-radius: 25px !important;
-        padding: 20px;
-
       }
+
+
 
       .table-header-row {
         background: #EAE7E7;
         color: #696969;
         font-size: 20px;
+      }
+
+       .table-vertical-align {
+        vertical-align: middle !important;
       }
 
       .two-containers {
@@ -200,12 +187,45 @@
 
       }
 
-
-
       .title-row-cta {
-        display: inline-block;
-
+        display: block;
+        width: 80%;
+        margin-left: 0;
+        
       }
+
+      .table-title {
+        
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        display: inline-block;
+      }
+
+      .search-results-table-wrapper {
+        display: block;
+        text-align: center;
+        padding: 0%;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .search-results-table-wrapper-75 {
+        display: block;
+        text-align: center;
+        padding: 0%;
+        width: 75%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .btn-align-right {
+        display: inline-block;
+        margin-right: 0;
+        align-content: right; 
+      }
+
       .outline-card {
         border-style: solid;
         border-color: #EAE7E7;
@@ -223,14 +243,44 @@
         color: white;
       }
 
-      .btn-primary-success:active,
-      .btn-primary-success:hover,
-      .btn-primary-success:focus,
+      .btn-primary:hover {
+        border-radius: 40px !important;
+        background-color: #155E63 !important;
+        border-color: #155E63 !important
+      }
+
+      .btn-primary:active {
+        border-radius: 40px !important;
+        background-color: #155E63 !important;
+        border-color: #155E63 !important
+      }
+
+      .btn-primary:focus,
        {
         border-radius: 40px !important;
-        background: #155E63 !important;
+        background-color: #155E63 !important;
         border-color: #155E63 !important;
-        color: white !important; 
+        color: white; 
+      }
+
+      a.btn-primary:hover {
+        border-radius: 40px !important;
+        background-color: #155E63 !important;
+        border-color: #155E63 !important
+      }
+
+      a.btn-primary:active {
+        border-radius: 40px !important;
+        background-color: #155E63 !important;
+        border-color: #155E63 !important
+      }
+
+      a.btn-primary:focus,
+       {
+        border-radius: 40px !important;
+        background-color: #155E63 !important;
+        border-color: #155E63 !important;
+        color: white; 
       }
 
       .btn-secondary {
@@ -290,6 +340,13 @@
         padding-bottom: 14px;
       }
 
+      .cta-button-right {
+        display: block;
+        margin-right: 0;
+        align-items: right;
+        align-content: right;
+      }
+
       #sign-up-1 {
         display: inline-block;
         text-align: middle;
@@ -304,6 +361,16 @@
         right: 40%;
         top: 50px;
       }
+
+      #teacher-detail-results-table-wrapper {
+        display: block;
+        text-align: center;
+        padding: 0%;
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
 
     </style>
   </head>

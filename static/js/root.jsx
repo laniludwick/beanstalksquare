@@ -262,15 +262,15 @@ function TeacherDetails(props) {
      
   return ( 
   
-      <div> 
+      <div className = "cta-button-right" width="80%"> 
         <br/>
         <br/>
-        <Link to={contact_teacher_link} className="btn btn-primary float-right">Contact Teacher </Link> 
+        <Link to={contact_teacher_link} className="btn btn-primary btn-primary:hover">Contact Teacher </Link> 
         <br/>
         <br/>
         
         
-        <table className="table" id="teacher-detail-results-table-wrapper">
+        <table className="table table-corners" id="teacher-detail-results-table-wrapper">
           
           <thead>
           <tr > 
@@ -518,7 +518,7 @@ function TeachersInPodList(props) {
       
       <h3>Teacher(s) </h3>
 
-        <table className="podteachers table">
+        <table className="podteachers table table-corners">
         <thead>
           <tr > 
           
@@ -606,7 +606,7 @@ function ChildrenInPodList(props) {
       <br/>
       <h3 className="table-title">Children</h3>
       <br/>
-        <table className="table podchildren">
+        <table className="table table-corners">
         <thead>
           <tr> 
             <th className="table-header-row" scope="col">Name</th>
@@ -623,6 +623,8 @@ function ChildrenInPodList(props) {
         {childrenInPod}
         </tbody>
       </table> 
+      <br/>
+      <br/>
     </div>
   )
 }
@@ -788,13 +790,12 @@ function PodDetailsContainer(props) {
       <div width="50%">
         <br/>
         <br/>
-        <ChildrenInPodList />
+        <TeachersInPodList />
       </div>
 
        <div width="50%" className="bottom-padded">
         <br/>
-        <br/>
-        <TeachersInPodList />
+        <ChildrenInPodList />
         <br/>
         <br/>
       </div>
@@ -956,7 +957,16 @@ function CreatePod() {
       <br/>
 
       <Button variant="primary" onClick={makePod} type="submit">Create Pod</Button> 
+      
+      <br/>
+      <br/>
+    
     </Form>
+      
+      <br/>
+      <br/>
+      <br/>
+      <br/>
   </div>
 
 
@@ -1175,28 +1185,32 @@ function TeacherList(props) {
   }, [dataResult]);
 
   return ( 
-    <div className="search-results-table-wrapper">
-      <br/>
-        <h3 className="table-title">{zipcode} Search Results</h3> 
-      <br/>
-      <table className="table">
-        <thead>
-          <tr> 
-            <th scope="col" className="table-header-row">Teacher</th>
-            <th scope="col" className="table-header-row">Name</th>
-            <th scope="col" className="table-header-row">Zipcode</th>
-            <th scope="col" className="table-header-row">Availability</th>
-            <th scope="col" className="table-header-row">Teaching Experience</th>
-            <th scope="col" className="table-header-row">Pay Rate</th>
-            <th scope="col" className="table-header-row">Details</th>
-           {/* {props.isLoggedIn==="True"? <th scope="col">Details</th> : null}*/}
-          </tr> 
-              
-        </thead>
-        <tbody>
-        {teacherList}
-        </tbody>
-      </table> 
+    <div>
+      <div>
+        <br/>
+        <h3 className="title-row-cta mx-auto">{zipcode} Search Results</h3> 
+        <br/>
+      </div> 
+     
+      <div className="table-corners search-results-table-wrapper"> 
+        <table className="table">
+          <thead>
+            <tr> 
+              <th scope="col" className="table-header-row">Teacher</th>
+              <th scope="col" className="table-header-row">Name</th>
+              <th scope="col" className="table-header-row">Zipcode</th>
+              <th scope="col" className="table-header-row">Availability</th>
+              <th scope="col" className="table-header-row">Teaching Experience</th>
+              <th scope="col" className="table-header-row">Pay Rate</th>
+              <th scope="col" className="table-header-row">Details</th>
+             {/* {props.isLoggedIn==="True"? <th scope="col">Details</th> : null}*/}
+          </tr>     
+          </thead>
+          <tbody>
+          {teacherList}
+          </tbody>
+        </table> 
+      </div>
     </div>
   );
 } //Close the entire Pod list
@@ -1261,16 +1275,32 @@ function PodList(props) {
 
   return ( 
   
-      <div >
-       
+    <div>
+    <br/>
+      {/*<div className="d-flex justify-content-between">    */}
+      <div className="mx-auto w-75">
+
+        {/*<div width="50%">
+          <h3 >{zipcode} Search Results</h3> 
+        </div>
+        
+        <div >
+          {props.isLoggedIn==="True"? <Link key={1} to="/createpod" className="btn btn-primary" variant="btn-primary" > Start a pod </Link>: null}
+        </div>*/}
+        <span className="float-left"> 
+          <h3>{zipcode} Search Results</h3> 
           <br/>
-          
-          <div className="title-row-cta search-results-table-wrapper">
-          <h3 className="table-title">{zipcode} Search Results</h3> 
-          <Link key={1} to="/createpod" className="btn btn-primary" variant="btn-primary" > Start a pod </Link>
-          </div>
-          <br/>
-          <table className="table">
+        </span>
+        <span className="float-right">
+          {props.isLoggedIn==="True"? <Link key={1} to="/createpod" className="btn btn-primary" variant="btn-primary" > Start a pod </Link>: null}
+        </span>
+        <br/>
+      </div>
+      
+      <br/>
+      
+      <div className="search-results-table-wrapper-75">
+        <table className="table table-corners">
           <thead>
             <tr> 
               <th scope="col" className="table-header-row">Pod name</th>
@@ -1287,7 +1317,7 @@ function PodList(props) {
           {podList}
           </tbody>
         </table> 
-   
+      </div>
     </div>
   );
 } //Close the entire Pod list
@@ -1860,7 +1890,7 @@ function ParentSignUpForm(props) {
         <Form.Control type="password" placeholder="Password" value={userInputSignUp.signuppassword} name="signuppassword" onChange={handleChange}/> 
       </Form.Group>
 
-      <Button variant="primary" onClick={makeSignUp} type="submit">Complete Sign Up</Button> 
+      <Button className="btn btn-primary" variant="primary" onClick={makeSignUp} type="submit">Complete Sign Up</Button> 
     </Form>
   </div>
     
@@ -1945,7 +1975,7 @@ function LogInForm(props) {
           <Form.Control type="password" placeholder="Password" value={loginpassword} name="loginpassword" onChange={handlePasswordChange}/> 
         </Form.Group>
 
-        <Button variant="primary" type="submit">Submit</Button> 
+        <Button className="btn btn-primary" type="submit">Submit</Button> 
       </Form>
   </div>
   );
@@ -1958,7 +1988,7 @@ function LogInForm(props) {
 function SignUpParties () {
 
   return (
-  <Container>
+  <Container className="linen-background">
     <Row>
     <br/>
     <br/>
@@ -2037,7 +2067,7 @@ function GlobalNavigationBar(props) {
 
     alert("You are now logged out of your account.");
     props.setLoggedInStatus();
-    //history.push("/");
+    
 
   }
 
@@ -2149,6 +2179,7 @@ function App() {
     //Use logic to determine if the user is logged in or not
 
   const [isLoggedIn, setIsLoggedIn] = React.useState("False");
+  const [hasJustLoggedIn, setHasJustLoggedIn] = React.useState("False");
   
   const setLoggedInStatus = () => { 
 
@@ -2169,7 +2200,11 @@ function App() {
       <Router>
         <div> 
           <Spinner color="info" />
-          <GlobalNavigationBar setLoggedInStatus={setLoggedInStatus} isLoggedIn={isLoggedIn} />
+          <GlobalNavigationBar setLoggedInStatus={setLoggedInStatus} 
+                                isLoggedIn={isLoggedIn} 
+                                setHasJustLoggedIn={setHasJustLoggedIn}
+                                hasJustLoggedIn={hasJustLoggedIn}
+                                />
         </div>
       </Router>
       
