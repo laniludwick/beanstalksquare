@@ -1080,7 +1080,7 @@ function CreatePod() {
 
 
 
-function Teacher(props) {
+function Teacher1(props) {
 
   console.log("data in for isLoggedIn in Teacher component:", props.isLoggedIn);
   const teacherDetailsLink = `/teacherdetails/${props.teacher_id}`;
@@ -1099,6 +1099,72 @@ function Teacher(props) {
   );
 }
 
+function Teacher(props) {
+
+  const teacherDetailsLink = `/teacherdetails/${props.teacher_id}`;
+
+  return (
+     
+        <div className="card mx-auto w-75 card-width">
+            <table>
+            <tbody>
+            <tr>
+              <td>
+                <div className="row no-gutters">
+                    <div className="col-sm-3 card-image-position" >
+                        <img src={props.img_url}/>
+                    </div>
+                </div>
+
+              </td>
+
+              <td>    
+                <div className="col-sm-11">
+                    <div className="card-body">
+                        <h5 className="card-title">{props.teacher_name}</h5>
+            
+
+                        <table className="text-alignment">
+                        <tbody>
+                        <tr>
+
+                        <th> Zipcode</th>
+              
+                        <th className="table-padding">Availability</th>
+                     
+                        <th className="table-padding">Teaching Experience</th>
+                  
+                        <th className="table-padding">Pay Rate</th>
+                        
+                        </tr>
+                        
+                        <tr>
+             
+                        <td >{props.zipcode}</td>
+               
+                        <td className="table-padding">{props.days_of_week}</td>
+                 
+                        <td className="table-padding">{props.teaching_experience_in_hours} hrs</td>
+              
+                        <td className="table-padding">${props.pay_rate_per_hour}/hr</td>
+                        </tr>
+                        
+                        </tbody>
+                        </table>
+
+                        <p className="card-text"></p>
+                        {props.isLoggedIn==="True"? <Link to={teacherDetailsLink} className="btn btn-primary" variant="primary"> View Profile </Link>:<Link to="/login" className="btn btn-primary" variant="primary"> Login to View Profile </Link>}
+                    </div>
+                </div>
+            </td>
+            </tr>
+            </tbody>
+            </table>
+         
+        </div>
+    
+  );
+}
 
 function Pod(props) {
 
@@ -1117,6 +1183,7 @@ function Pod(props) {
     </tr>
   );
 }
+
 
 
 function TeacherList(props) {
@@ -1188,12 +1255,12 @@ function TeacherList(props) {
     <div>
       <div>
         <br/>
-        <h3 className="title-row-cta mx-auto">{zipcode} Search Results</h3> 
+        <h3 className="mx-auto" id="teacher-list-title-row">{zipcode} Search Results</h3> 
         <br/>
       </div> 
-     
-      <div className="table-corners search-results-table-wrapper"> 
-        <table className="table">
+     <div>
+      {/*<div className="table-corners search-results-table-wrapper"> */}
+{/*        <table className="table">
           <thead>
             <tr> 
               <th scope="col" className="table-header-row">Teacher</th>
@@ -1204,16 +1271,17 @@ function TeacherList(props) {
               <th scope="col" className="table-header-row">Pay Rate</th>
               <th scope="col" className="table-header-row">Details</th>
              {/* {props.isLoggedIn==="True"? <th scope="col">Details</th> : null}*/}
-          </tr>     
+      {/*    </tr>     
           </thead>
-          <tbody>
+          <tbody>*/}
           {teacherList}
-          </tbody>
-        </table> 
+         {/*} </tbody>
+        </table> */}
       </div>
     </div>
   );
 } //Close the entire Pod list
+
 
 
 function PodList(props) {
@@ -1392,7 +1460,6 @@ function Benefits() {
         <Col>
           <CardDeck>
             <Card>
-          
               <Card.Body>
                 <Card.Title>Contact Nearby Families</Card.Title>
                 <Card.Text>
@@ -1433,6 +1500,8 @@ function Benefits() {
           </CardDeck>
         </Col>
       </Row>  
+
+
     </Container>
   );
 }
@@ -1504,6 +1573,7 @@ function HomeContainer() {
       <div className="card-deck">
         <Benefits />
         <br/>
+    
         <br/>
       </div>
       

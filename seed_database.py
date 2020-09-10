@@ -197,7 +197,7 @@ new_pod4 = crud.create_pod(pod_name="Explorers", max_child_capacity=5,
 #Create teachers in db
 tonya = crud.create_teacher(fname="Tonya", lname="Kramer", email="tonya.lopez@gmail.com", password="asdf", mobile_number="917-538-4741", zipcode="94010",
     bio="I'm a positive and energetic 28-year-old college graduate. Ever since I was in high school I have been tutoring children and even my peers in all subjects.",
-    days_of_week="Mon-Fri", teaching_experience_in_hours="900",pay_rate_per_hour=25,covid_risk_profile_id=2,img_url="/static/img/teacher1.jpg",)
+    days_of_week="Mon-Fri", teaching_experience_in_hours="900",pay_rate_per_hour=25,covid_risk_profile_id=2,img_url="/static/img/teacher1.png",)
 
 nadine = crud.create_teacher(fname="Nadine", lname="Cruz",email="nadine.cruz@gmail.com", password="asdf", mobile_number="917-538-4741", pod_id=21, zipcode="94010",
     bio="I minored in Spanish in college. During college, I also tutored student-athletes averaging no less than a B+ on all assignments and course levels. I am fluent in Spanish reading, writing, and speaking. I know how to work with all skill levels and have the patience and energy needed to be an effective teacher.",
