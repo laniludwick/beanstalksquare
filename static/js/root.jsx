@@ -358,7 +358,7 @@ function GoogleMap(props) {
   //Hook to create markers for GoogleMap if the map itself is available  
   React.useEffect (() => {
     
-    if (map) {
+    if (map !==null) {
   
     createMarker(map);
     //setMarker(createMarker(map));
@@ -523,7 +523,6 @@ function TeachersInPodList(props) {
           <tr > 
           
             <th className="table-header-row" scope="col">Photo</th>
-
             <th className="table-header-row" scope="col">Bio</th>
             <th className="table-header-row" scope="col">Teaching experience</th>
             <th className="table-header-row" scope="col">Pay rate</th>
@@ -540,20 +539,85 @@ function TeachersInPodList(props) {
 
 
 
-function Child (props) {
+function Child(props) {
 
   return (
-    <tr>
-      <td>{props.full_name}</td>
-      <td>{props.gender}</td>
-      <td>{props.zipcode}</td>
-      <td>{props.grade_name}</td>
-      <td>{props.school_name}</td>
-      <td>{props.school_program}</td>
-      
-    </tr>
+     
+        <div className="card mx-auto w-100 card-width">
+            <table>
+            <tbody>
+            <tr>
+              <td>
+                <div className="row no-gutters">
+                    <div className="col-sm-3 card-image-position" >
+                        <img src="/static/img/child.png"/>
+                    </div>
+                </div>
+
+              </td>
+
+              <td>    
+                <div className="col-sm-11">
+                    <div className="card-body">
+                        {/*<h5 className="card-title">{props.pod_name}</h5>*/}
+            
+
+                        <table className="text-alignment">
+                        <tbody>
+                        <tr>
+
+                        <th> Gender</th>
+              
+                        <th className="table-padding">Grade</th>
+                     
+                        <th className="table-padding">School</th>
+                  
+                        <th className="table-padding">Program</th>
+                        
+                        </tr>
+                        
+                        <tr>
+             
+                        <td >{props.gender}</td>
+               
+                        <td className="table-padding">{props.grade_name}</td>
+                 
+                        <td className="table-padding">{props.school_name}</td>
+              
+                        <td className="table-padding">{props.school_program}</td>
+                        </tr>
+                        
+                        </tbody>
+                        </table>
+
+                        <p className="card-text"></p>
+                        
+                    </div>
+                </div>
+            </td>
+            </tr>
+            </tbody>
+            </table>
+
+        </div>
+    
   );
 }
+
+
+// function Child1 (props) {
+
+//   return (
+//     <tr>
+//       <td>{props.full_name}</td>
+//       <td>{props.gender}</td>   
+//       <td>{props.grade_name}</td>
+//       <td>{props.school_name}</td>
+//       <td>{props.school_program}</td>
+      
+//     </tr>
+//   );
+// }
 
 
 function ChildrenInPodList(props) {
@@ -604,14 +668,13 @@ function ChildrenInPodList(props) {
   return ( 
     <div>
       <br/>
-      <h3 className="table-title">Children</h3>
+      <h3 className="table-title">Students</h3>
       <br/>
-        <table className="table table-corners">
+        {/*<table className="table table-corners">
         <thead>
           <tr> 
             <th className="table-header-row" scope="col">Name</th>
             <th className="table-header-row" scope="col">Gender</th>
-            <th className="table-header-row" scope="col">Zipcode</th>
             <th className="table-header-row" scope="col">Grade</th>
             <th className="table-header-row" scope="col">School</th>
             <th className="table-header-row" scope="col">Program</th>
@@ -619,10 +682,10 @@ function ChildrenInPodList(props) {
             
           </tr>
         </thead>
-        <tbody>
-        {childrenInPod}
-        </tbody>
-      </table> 
+        <tbody>*/}
+       {childrenInPod}
+       {/*} </tbody>
+      </table> */}
       <br/>
       <br/>
     </div>
@@ -777,9 +840,7 @@ function PodDetailsContainer(props) {
   return (
     <div className="detail-results-table-wrapper">
       <br/>
-      <br/>
-      <br/>
-      <div className="contact-button-position">
+      <div className="contact-button-position mx-auto">
         <Link to={contact_pod_organizers_link} className="btn btn-primary">Contact Pod Organizer </Link> 
       </div>
       <br/>
@@ -885,7 +946,7 @@ function CreatePod() {
     
     <div className="create-pod-form-wrapper">
      <br/>
-     <h3>Add a new pod to Beanstalk Square!</h3>
+     <h3>Add a new pod to Beanstalk Square</h3>
      <hr />
      <br/>
     <Form>
@@ -1246,7 +1307,7 @@ function Pod(props) {
             </tr>
             </tbody>
             </table>
-         
+
         </div>
     
   );
