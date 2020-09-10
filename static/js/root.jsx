@@ -1080,24 +1080,24 @@ function CreatePod() {
 
 
 
-function Teacher1(props) {
+// function Teacher1(props) {
 
-  console.log("data in for isLoggedIn in Teacher component:", props.isLoggedIn);
-  const teacherDetailsLink = `/teacherdetails/${props.teacher_id}`;
+//   console.log("data in for isLoggedIn in Teacher component:", props.isLoggedIn);
+//   const teacherDetailsLink = `/teacherdetails/${props.teacher_id}`;
 
-  return (
-    <tr className="table-vertical-align">
-      <td><img src={props.img_url}/></td>
-      <td className="table-vertical-align">{props.teacher_name}</td>
-      <td className="table-vertical-align">{props.zipcode}</td>
-      <td className="table-vertical-align">{props.days_of_week}</td>
-      <td className="table-vertical-align">{props.teaching_experience_in_hours} hrs</td>
-      <td className="table-vertical-align">${props.pay_rate_per_hour}/hr</td>
-      {/*<td><Link to={podDetailsLink}> View details</Link></td>*/}
-     {props.isLoggedIn==="True"? <td className="table-vertical-align"><Link to={teacherDetailsLink}> View</Link></td >: <td className="table-vertical-align">View</td>}
-    </tr>
-  );
-}
+//   return (
+//     <tr className="table-vertical-align">
+//       <td><img src={props.img_url}/></td>
+//       <td className="table-vertical-align">{props.teacher_name}</td>
+//       <td className="table-vertical-align">{props.zipcode}</td>
+//       <td className="table-vertical-align">{props.days_of_week}</td>
+//       <td className="table-vertical-align">{props.teaching_experience_in_hours} hrs</td>
+//       <td className="table-vertical-align">${props.pay_rate_per_hour}/hr</td>
+//       {/*<td><Link to={podDetailsLink}> View details</Link></td>*/}
+//      {props.isLoggedIn==="True"? <td className="table-vertical-align"><Link to={teacherDetailsLink}> View</Link></td >: <td className="table-vertical-align">View</td>}
+//     </tr>
+//   );
+// }
 
 function Teacher(props) {
 
@@ -1166,23 +1166,93 @@ function Teacher(props) {
   );
 }
 
+// function Pod1(props) {
+
+//   console.log("data in for isLoggedIn in Pod component:", props.isLoggedIn);
+//   const podDetailsLink = `/poddetails/${props.pod_id}`;
+
+//   return (
+//     <tr className="table-vertical-align">   
+//       <td className="table-vertical-align">{props.pod_name}</td>
+//       <td className="table-vertical-align">{props.zipcode}</td>
+//       <td className="table-vertical-align">{props.days_per_week} days/wk</td>
+//       <td className="table-vertical-align">{props.total_hours_per_day} hrs/day</td>
+//       <td className="table-vertical-align">{props.paid_teacher}</td>
+//       {/*<td><Link to={podDetailsLink}> View details</Link></td>*/}
+//      {props.isLoggedIn==="True"? <td className="table-vertical-align"><Link to={podDetailsLink}> View</Link></td>: <td className="table-vertical-align">View</td>}
+//     </tr>
+//   );
+// }
+
+
 function Pod(props) {
 
-  console.log("data in for isLoggedIn in Pod component:", props.isLoggedIn);
   const podDetailsLink = `/poddetails/${props.pod_id}`;
 
   return (
-    <tr className="table-vertical-align">   
-      <td className="table-vertical-align">{props.pod_name}</td>
-      <td className="table-vertical-align">{props.zipcode}</td>
-      <td className="table-vertical-align">{props.days_per_week} days/wk</td>
-      <td className="table-vertical-align">{props.total_hours_per_day} hrs/day</td>
-      <td className="table-vertical-align">{props.paid_teacher}</td>
-      {/*<td><Link to={podDetailsLink}> View details</Link></td>*/}
-     {props.isLoggedIn==="True"? <td className="table-vertical-align"><Link to={podDetailsLink}> View</Link></td>: <td className="table-vertical-align">View</td>}
-    </tr>
+     
+        <div className="card mx-auto w-100 card-width">
+            <table>
+            <tbody>
+            <tr>
+              <td>
+                <div className="row no-gutters">
+                    <div className="col-sm-3 card-image-position" >
+                        <img src="/static/img/planticon.png"/>
+                    </div>
+                </div>
+
+              </td>
+
+              <td>    
+                <div className="col-sm-11">
+                    <div className="card-body">
+                        <h5 className="card-title">{props.pod_name}</h5>
+            
+
+                        <table className="text-alignment">
+                        <tbody>
+                        <tr>
+
+                        <th> Zipcode</th>
+              
+                        <th className="table-padding">Days</th>
+                     
+                        <th className="table-padding">Hours</th>
+                  
+                        <th className="table-padding">Paid Teacher</th>
+                        
+                        </tr>
+                        
+                        <tr>
+             
+                        <td >{props.zipcode}</td>
+               
+                        <td className="table-padding">{props.days_per_week}/week</td>
+                 
+                        <td className="table-padding">{props.total_hours_per_day} hrs/day</td>
+              
+                        <td className="table-padding">{props.paid_teacher}</td>
+                        </tr>
+                        
+                        </tbody>
+                        </table>
+
+                        <p className="card-text"></p>
+                        {props.isLoggedIn==="True"? <Link to={podDetailsLink} className="btn btn-primary" variant="primary"> View Details </Link>:<Link to="/login" className="btn btn-primary" variant="primary"> Login to View Details </Link>}
+                    </div>
+                </div>
+            </td>
+            </tr>
+            </tbody>
+            </table>
+         
+        </div>
+    
   );
 }
+
+
 
 
 
@@ -1343,31 +1413,26 @@ function PodList(props) {
 
   return ( 
   
-    <div>
+    <div className="mx-auto" id="pod-list-title-row">
     <br/>
       {/*<div className="d-flex justify-content-between">    */}
-      <div className="mx-auto w-75">
+      {/*<div className="mx-auto w-75">*/}
 
-        {/*<div width="50%">
-          <h3 >{zipcode} Search Results</h3> 
-        </div>
-        
-        <div >
+          <span className="float-left"> 
+           <h3>{zipcode} Search Results</h3> 
+           <br/>
+          </span>
+         
+         <span className="float-right">
           {props.isLoggedIn==="True"? <Link key={1} to="/createpod" className="btn btn-primary" variant="btn-primary" > Start a pod </Link>: null}
-        </div>*/}
-        <span className="float-left"> 
-          <h3>{zipcode} Search Results</h3> 
-          <br/>
-        </span>
-        <span className="float-right">
-          {props.isLoggedIn==="True"? <Link key={1} to="/createpod" className="btn btn-primary" variant="btn-primary" > Start a pod </Link>: null}
-        </span>
-        <br/>
-      </div>
+         </span>
+         <br/>
+      
       
       <br/>
-      
-      <div className="search-results-table-wrapper-75">
+
+      <div>
+      {/*<div className="search-results-table-wrapper-75">
         <table className="table table-corners">
           <thead>
             <tr> 
@@ -1378,13 +1443,13 @@ function PodList(props) {
               <th scope="col" className="table-header-row">Paid teacher</th>
               <th scope="col" className="table-header-row">Details</th>
              {/* {props.isLoggedIn==="True"? <th scope="col">Details</th> : null}*/}
-            </tr> 
-                
-          </thead>
-          <tbody>
+            {/*</tr> 
+                */}
+          {/*</thead>
+          <tbody>*/}
           {podList}
-          </tbody>
-        </table> 
+          {/*</tbody>
+        </table> */}
       </div>
     </div>
   );
