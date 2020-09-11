@@ -262,6 +262,8 @@ def show_teachers_in_pod(pod_id):
         print("*************teacher in teachers:", teacher)
         teacherslist.append({
             "teacher_id": teacher.teacher_id,
+            "fname": teacher.fname,
+            "lname": teacher.lname,
             "img_url": teacher.img_url,
             "bio": teacher.bio,
             "teaching_experience_in_hours": teacher.teaching_experience_in_hours,
@@ -511,7 +513,7 @@ def send_stock_sms_to_pod_organizer(pod_id):
 
     message = client.messages \
                     .create(
-                         body="A parent is interested to learn more about this pod. Please respond at your earliest convenience. \n \n Contact info: \n" + name + ", \n" + phone + ", \n" + email + ". \n Message: \n \" "+message +"\"",
+                         body="A parent is interested to learn more about this pod. Please respond at your earliest convenience. \n \nContact info: \n" + name + " \n" + phone + " \n" + email + ". \n\n Message: \n \""+message +"\"",
                          messaging_service_sid='MG8b0587e27f85f4b05d7525a5833f89db',
                          to=pod_organizers_mobiles,
                      )

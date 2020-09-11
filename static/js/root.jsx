@@ -6,7 +6,7 @@ const Switch = ReactRouterDOM.Switch;
 const Redirect = ReactRouterDOM.Redirect;
 
 //import Button from 'react-bootstrap/Button' OR;
-const { Badge, Button, Col, Container, CardDeck, Card, Form, FormControl, FormFile, FormLabel, ListGroup, Navbar, Nav, Row, Table, Modal, Spinner, Alert} = ReactBootstrap;
+const { Badge, Button, Col, Container, CardDeck, Card, ListGroup, ListGroupItem, Form, FormControl, FormFile, FormLabel, Navbar, Nav, Row, Table, Modal, Spinner, Alert} = ReactBootstrap;
 //import 'bootstrap/dist/css/bootstrap.min.css';
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -299,7 +299,20 @@ function TeacherDetails(props) {
   )
 }
 
+const googleMapScript = document.createElement('script');
+    
+    googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyANBBOatlktyObD1SVk0ZzXGE9vFMZyloc&libraries=places`;
 
+    //In body tag of DOM, add script tags.
+    document.body.appendChild(googleMapScript);
+
+    //Call the function to create map and geocode after script tag has loaded.
+    googleMapScript.addEventListener('load', () => {    
+      
+      window.googlemapsdidload=true;
+      
+      
+    });
 
 function GoogleMap(props) {
                
@@ -324,24 +337,25 @@ function GoogleMap(props) {
 
 
   //Hook to load GoogleMaps script and the map itself upon render of component.
-  React.useEffect(() => {
+  
 
     //Load script tags.  
-    const googleMapScript = document.createElement('script');
-    
-    googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyANBBOatlktyObD1SVk0ZzXGE9vFMZyloc&libraries=places`;
+    if (window.googlemapsdidload) {
+      
+      code_address(address);
+      
+    }
 
-    //In body tag of DOM, add script tags.
-    document.body.appendChild(googleMapScript);
+    else { 
 
-    //Call the function to create map and geocode after script tag has loaded.
     googleMapScript.addEventListener('load', () => {    
       
       code_address(address);
       
-      
-    }); //Close event listener
-  }, [latitude, longitude]); //Close useEffect hook that calls the create map and geocode functions
+    });
+
+  } //Close else
+  //Close useEffect hook that calls the create map and geocode functions
 
 
   //Hook to create map
@@ -356,14 +370,14 @@ function GoogleMap(props) {
 
 
   //Hook to create markers for GoogleMap if the map itself is available  
-  React.useEffect (() => {
+  // React.useEffect (() => {
     
-    if (map !==null) {
+  //   if (map !==null) {
   
-    createMarker(map);
-    //setMarker(createMarker(map));
-    }
-  },[map]);
+    
+  //   //setMarker(createMarker(map));
+  //   }
+  // },[map]);
 
 
   //Define function to convert address into geocode address
@@ -401,35 +415,38 @@ function GoogleMap(props) {
   //Define function that creates/instantiates the map itself
   const createGoogleMap = () => {
 
-    setMap(new google.maps.Map(googleMapRef.current, {
+    const map = new google.maps.Map(googleMapRef.current, {
 
       zoom:13,
       center: { lat: latitude,
                 lng: longitude,},
       disableDefaultUI: true,
 
-    })) ; //Close Map instance
+    }); //Close Map instance
+    
+    setMap(map);
     console.log("google map state in create map, latitude, longitude:", map, latitude, longitude);
-  }
-  console.log("google map state after create map closes, latitude, longitude:", map, latitude, longitude);
-  
+    
+    
 
-  //Define function that adds markers to the map
-  const createMarker = (map) => {
+    const position = new google.maps.LatLng(latitude, longitude)
 
-    new google.maps.Marker({
-      position: { lat: latitude,
-                  lng: longitude,},
+    const marker = new google.maps.Marker({
+      position: position,
       title: 'Pod location',
-      map: map,
+  
     });
 
-    console.log("map, marker:", map, latitude, longitude);  
-  }
-
+    marker.setMap(map);
+    console.log("marker:", marker);  
+    console.log("map, lat, long:", map, latitude, longitude);  
   
+
   console.log("lat, long states:", latitude, longitude);
   //Render map
+  
+  }
+  
   return (
     
     <div id="google-map" ref={googleMapRef} style={{width: '700px', height: '500px'}}>
@@ -438,6 +455,12 @@ function GoogleMap(props) {
     );
 }
 
+// }
+//   console.log("google map state after create map closes, latitude, longitude:", map, latitude, longitude);
+  
+
+  //Define function that adds markers to the map
+  
 
 
 function MapContainer(props) {
@@ -447,26 +470,149 @@ function MapContainer(props) {
     <div className="map">
     <br/>
     <h3>Pod location(s) </h3>
+    <p>{props.podDetailsAll.props.street_address}<br/>
+    {props.podDetailsAll.props.city}, {props.podDetailsAll.props.state}, {props.podDetailsAll.props.zipcode}
+    </p>
       <GoogleMap podDetailsAll={props.podDetailsAll} />    
     </div>
   )
 }
 
 
-
-function TeachersInPod (props) {
+function TeachersInPod(props) {
 
   return (
-    <tr>
-      
-      <td><img src={props.img}/></td>
-      <td>{props.bio}</td>
-      <td>{props.teaching_experience_in_hours} hrs</td>
-      <td>${props.pay_rate_per_hour}/hr</td>
-      
-    </tr>
+     
+        <div className="card mx-auto w-100 card-width">
+            <table>
+            <tbody>
+            <tr>
+              <td >
+                <div className="row no-gutters">
+                    <div className="col-sm-3 card-image-position" >
+                        <img src={props.img_url} id="table-vertical-align-top"/>
+                    </div>
+                </div>
+
+              </td>
+
+              <td>    
+                <div className="col-sm-11">
+                    <div className="card-body">
+                        <h5 className="card-title">{props.name}</h5>
+            
+
+                        <table className="text-alignment">
+                        <tbody>
+                        {/*<tr>
+                        <th className="table-padding">Teaching Experience</th>
+                        </tr>
+                        
+                        <tr>
+                        <td className="table-padding">{props.teaching_experience_in_hours} hrs</td>
+                        </tr>*/}
+                        
+                        </tbody>
+                        </table>
+
+                        <p className="card-text">
+                          <b>Bio</b>
+                          <br/>
+                          {props.bio}
+                        </p>
+              
+                        <p>
+                        <b>Teaching Experience</b>
+                        <br/>
+                    
+                        {props.teaching_experience_in_hours} hrs
+                        </p>         
+                    </div>
+                </div>
+            </td>
+            </tr>
+            </tbody>
+            </table>
+         
+        </div>
+    
   );
 }
+
+
+// function TeachersInPod2(props) {
+
+//   return (
+     
+//         <div className="card mx-auto w-75 card-width">
+//             <table>
+//             <tbody>
+//             <tr>
+//               <td>
+//                 <div className="row no-gutters">
+//                     <div className="col-sm-3 card-image-position" >
+//                         <img src={props.img_url}/>
+//                     </div>
+//                 </div>
+
+//               </td>
+
+//               <td>    
+//                 <div className="col-sm-11">
+//                     <div className="card-body">
+//                         <h5 className="card-title">{props.teacher_name}</h5>
+            
+
+//                         <table className="text-alignment">
+//                         <tbody>
+//                         <tr>
+
+//                         <th> Bio</th>
+              
+                        
+//                         <th className="table-padding">Teaching Experience</th>
+                  
+                    
+                        
+//                         </tr>
+                        
+//                         <tr>
+             
+//                         <td >{props.bio}</td>
+                 
+//                         <td className="table-padding">{props.teaching_experience_in_hours} hrs</td>
+                        
+//                         </tr>
+                        
+//                         </tbody>
+//                         </table>
+
+//                         <p className="card-text"></p>
+                        
+//                     </div>
+//                 </div>
+//             </td>
+//             </tr>
+//             </tbody>
+//             </table>
+         
+//         </div>
+    
+//   );
+// }
+
+// function TeachersInPod1 (props) {
+
+//   return (
+//     <tr>
+      
+//       <td><img src={props.img_url}/></td>
+//       <td>{props.bio}</td>
+//       <td>{props.teaching_experience_in_hours} hrs</td>
+      
+//     </tr>
+//   );
+// }
 
 
 
@@ -498,8 +644,9 @@ function TeachersInPodList(props) {
 
           const teacherElement = <TeachersInPod 
                                     key={teacher.teacher_id}
+                                    name={full_name}
                                     bio={teacher.bio}
-                                    img={teacher.img_url}
+                                    img_url={teacher.img_url}
                                     teaching_experience_in_hours={teacher.teaching_experience_in_hours}
                                     pay_rate_per_hour={teacher.pay_rate_per_hour}
                                     />
@@ -518,21 +665,20 @@ function TeachersInPodList(props) {
       
       <h3>Teacher(s) </h3>
 
-        <table className="podteachers table table-corners">
+        {/*<table className="podteachers table table-corners">
         <thead>
           <tr > 
           
             <th className="table-header-row" scope="col">Photo</th>
             <th className="table-header-row" scope="col">Bio</th>
             <th className="table-header-row" scope="col">Teaching experience</th>
-            <th className="table-header-row" scope="col">Pay rate</th>
             
           </tr>
         </thead>
-        <tbody>
+        <tbody>*/}
         {teachersInPod}
-        </tbody>
-      </table> 
+       {/*} </tbody>
+      </table> */}
   </div>
   )
 }
@@ -693,6 +839,72 @@ function ChildrenInPodList(props) {
 }
 
 
+function PodDetailsAll2 (props) {
+
+return (
+<Card style={{ width: '50%' }}>
+  <Card.Img variant="top" src="holder.js/100px180?text=Image cap" />
+  <Card.Body>
+    <Card.Title>{props.pod_name}</Card.Title>
+{/*    <Card.Text>
+      Some quick example text to build on the card title and make up the bulk of
+      the card's content.
+    </Card.Text>*/}
+  </Card.Body>
+  <ListGroup className="list-group-flush">
+    <ListGroupItem>
+      <table >
+      <tbody>
+      <tr className="table-width-pod-details"><td className="table-data-width-pod-details"><b>Maximum Child Capacity</b>  {props.max_child_capacity}</td><td className="table-data-width-pod-details"><b>Same School Program</b>  {props.same_school_program_only}</td></tr>
+      </tbody>
+      </table>
+    </ListGroupItem>
+
+    <ListGroupItem>
+      <table >
+      <tbody>
+      <tr className="table-width-pod-details"><td className="table-data-width-pod-details"><b>Days</b>  {props.days_per_week}/week</td><td className="table-data-width-pod-details"><b>Same Grade</b>  {props.same_grade_only}</td></tr>
+      </tbody>
+      </table>
+    </ListGroupItem>
+    
+    <ListGroupItem>
+      <table >
+      <tbody>
+      <tr className="table-width-pod-details"><td className="table-data-width-pod-details"><b>Hours</b>  {props.total_hours_per_day} hrs/day</td><td className="table-data-width-pod-details"><b>Meets Outdoors Only</b>  {props.outdoors_only}</td></tr>
+      </tbody>
+      </table>
+
+    </ListGroupItem>
+
+    <ListGroupItem>
+      <table >
+      <tbody>
+      <tr className="table-width-pod-details"><td className="table-data-width-pod-details"><b>Paid teacher</b>  {props.paid_teacher}</td><td className="table-data-width-pod-details"><b>Periodic Covid Testing</b>  {props.periodic_covid_testing}</td></tr>
+      </tbody>
+      </table>
+
+    </ListGroupItem>
+
+    <ListGroupItem>
+      <table >
+      <tbody>
+      <tr className="table-width-pod-details"><td className="table-data-width-pod-details"><b>Same School</b>  {props.same_school_only}</td><td className="table-data-width-pod-details"><b>Cost</b>  ${props.cost_per_hour}/hr</td></tr>
+      </tbody>
+      </table>
+
+    </ListGroupItem>
+
+  </ListGroup>
+{/*  <Card.Body>
+    <Card.Link href="#">Card Link</Card.Link>
+    <Card.Link href="#">Another Link</Card.Link>
+  </Card.Body>*/}
+</Card>
+
+)
+}
+
 function PodDetailsAll (props) {
 
   return (
@@ -700,26 +912,36 @@ function PodDetailsAll (props) {
           <tr> 
             <th className="pod-table-title" scope="row">Pod name</th>
             <td>{props.pod_name}</td>
+            <th className="pod-table-title" scope="row">Same School Program</th>
+            <td>{props.same_school_program_only}</td>
           </tr>
 
           <tr>
             <th className="pod-table-title" scope="row">Maximum Child Capacity</th>
             <td>{props.max_child_capacity}</td>
+            <th className="pod-table-title" scope="row">Same Grade</th>
+            <td>{props.same_grade_only}</td>
           </tr>
 
           <tr>
             <th className="pod-table-title" scope="row">Days per week</th>
             <td>{props.days_per_week}</td>
+            <th className="pod-table-title" scope="row">Meets Outdoors Only</th>
+            <td>{props.outdoors_only}</td>
           </tr>
           
           <tr>
             <th className="pod-table-title" scope="row">Hours per day</th>
             <td>{props.total_hours_per_day}</td>
+             <th className="pod-table-title" scope="row">Periodic Covid Testing</th>
+            <td>{props.periodic_covid_testing}</td>
           </tr>
           
           <tr>
             <th className="pod-table-title" scope="row">Paid teacher</th>
             <td>{props.paid_teacher}</td>
+            <th className="pod-table-title" scope="row">Cost Per Hour</th>
+            <td>{props.cost_per_hour}</td>
           </tr>
           
           <tr>
@@ -727,40 +949,78 @@ function PodDetailsAll (props) {
             <td>{props.same_school_only}</td>
           </tr>
 
-          <tr>
-            <th className="pod-table-title" scope="row">Same School Program</th>
-            <td>{props.same_school_program_only}</td>
-          </tr>
-          
-          <tr>
-            <th className="pod-table-title" scope="row">Same Grade</th>
-            <td>{props.same_grade_only}</td>
-          </tr>
-
-          <tr>
-            <th className="pod-table-title" scope="row">Meets Outdoors Only</th>
-            <td>{props.outdoors_only}</td>
-          </tr>
-          
-          <tr>  
-            <th className="pod-table-title" scope="row">Periodic Covid Testing</th>
-            <td>{props.periodic_covid_testing}</td>
-          </tr>
-
-          <tr>
-            <th className="pod-table-title" scope="row">Cost Per Hour</th>
-            <td>{props.cost_per_hour}</td>
-          </tr>
-
-          <tr>
-            <th className="pod-table-title" scope="row">Location</th>
-            <td>{props.street_address},
-                <br/>
-                {props.city}, {props.state}, {props.zipcode}</td>
-          </tr>
   </tbody>  
   );
 }
+
+// function PodDetailsAll1 (props) {
+
+//   return (
+//     <tbody>
+//           <tr> 
+//             <th className="pod-table-title" scope="row">Pod name</th>
+//             <td>{props.pod_name}</td>
+//           </tr>
+
+//           <tr>
+//             <th className="pod-table-title" scope="row">Maximum Child Capacity</th>
+//             <td>{props.max_child_capacity}</td>
+//           </tr>
+
+//           <tr>
+//             <th className="pod-table-title" scope="row">Days per week</th>
+//             <td>{props.days_per_week}</td>
+//           </tr>
+          
+//           <tr>
+//             <th className="pod-table-title" scope="row">Hours per day</th>
+//             <td>{props.total_hours_per_day}</td>
+//           </tr>
+          
+//           <tr>
+//             <th className="pod-table-title" scope="row">Paid teacher</th>
+//             <td>{props.paid_teacher}</td>
+//           </tr>
+          
+//           <tr>
+//             <th className="pod-table-title" scope="row">Same School</th>
+//             <td>{props.same_school_only}</td>
+//           </tr>
+
+//           <tr>
+//             <th className="pod-table-title" scope="row">Same School Program</th>
+//             <td>{props.same_school_program_only}</td>
+//           </tr>
+          
+//           <tr>
+//             <th className="pod-table-title" scope="row">Same Grade</th>
+//             <td>{props.same_grade_only}</td>
+//           </tr>
+
+//           <tr>
+//             <th className="pod-table-title" scope="row">Meets Outdoors Only</th>
+//             <td>{props.outdoors_only}</td>
+//           </tr>
+          
+//           <tr>  
+//             <th className="pod-table-title" scope="row">Periodic Covid Testing</th>
+//             <td>{props.periodic_covid_testing}</td>
+//           </tr>
+
+//           <tr>
+//             <th className="pod-table-title" scope="row">Cost Per Hour</th>
+//             <td>{props.cost_per_hour}</td>
+//           </tr>
+
+//           {/*<tr>
+//             <th className="pod-table-title" scope="row">Location</th>
+//             <td>{props.street_address},
+//                 <br/>
+//                 {props.city}, {props.state}, {props.zipcode}</td>
+//           </tr>*/}
+//   </tbody>  
+//   );
+// }
 
 
 function PodDetails(props) {
@@ -820,8 +1080,9 @@ function PodDetails(props) {
       
       <table className="table">
         {podDetailsAll} 
+
       </table> 
-  
+
       <div width="50%">
       {podDetailsAll? <MapContainer podDetailsAll={podDetailsAll}/> : null}
       </div>
@@ -1581,6 +1842,7 @@ function TeacherSearch(props) {
 function Benefits() {
 
   return (
+    <div>
     <Container fluid>
       <Row>
         <Col>
@@ -1629,6 +1891,7 @@ function Benefits() {
 
 
     </Container>
+    </div>
   );
 }
 
