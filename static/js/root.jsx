@@ -12,6 +12,9 @@ const { Badge, Button, Col, Container, CardDeck, Card, ListGroup, ListGroupItem,
 
 
 
+//console.log("greeting:", greeting);
+
+
 function ContactTeacher() {
   
   const {teacherId} = ReactRouterDOM.useParams();
@@ -318,7 +321,7 @@ const googleMapScript = document.createElement('script');
 
 function GoogleMap(props) {
                
-  console.log("props in Googlemap component:", props.podDetailsAll.props.street_address)
+  console.log("props in Googlemap component:", props.podDetailsAll.props.street_address);
   //console.log("props in Googlemap component:", props.props.street_address)
   //console.log("props in map component:", props.props.podDetailsAll.street_address)
   const address = props.podDetailsAll.props.street_address + ", " + 
@@ -326,7 +329,7 @@ function GoogleMap(props) {
                   props.podDetailsAll.props.state + " " + 
                   props.podDetailsAll.props.zipcode;
 
-  console.log("concatenated address:", address)
+  console.log("concatenated address:", address);
 
 
   //points to the mounted map element ref'd in the DOM. This spot holds the map.
@@ -357,8 +360,7 @@ function GoogleMap(props) {
     });
 
   } //Close else
-  //Close useEffect hook that calls the create map and geocode functions
-
+ 
 
   //Hook to create map
   React.useEffect (() => {
@@ -366,20 +368,11 @@ function GoogleMap(props) {
     if (latitude !==0 && longitude !==0) {
   
     createGoogleMap();
-    //setMarker(createMarker(map));
+ 
     }
   },[latitude, longitude]);
 
 
-  //Hook to create markers for GoogleMap if the map itself is available  
-  // React.useEffect (() => {
-    
-  //   if (map !==null) {
-  
-    
-  //   //setMarker(createMarker(map));
-  //   }
-  // },[map]);
 
 
   //Define function to convert address into geocode address
@@ -413,10 +406,11 @@ function GoogleMap(props) {
   } //Close code_address function
 
 
-
+  console.log("address right before createmap:", address);
   //Define function that creates/instantiates the map itself
-  const createGoogleMap = () => {
+  function createGoogleMap(address) {
 
+    console.log("address passed to createmap:", address);
     const map = new google.maps.Map(googleMapRef.current, {
 
       zoom:13,
@@ -424,31 +418,45 @@ function GoogleMap(props) {
                 lng: longitude,},
       disableDefaultUI: true,
 
-    }); //Close Map instance
+    }); //Close Map instantiation
     
     setMap(map);
     console.log("google map state in create map, latitude, longitude:", map, latitude, longitude);
     
     
 
-    const position = new google.maps.LatLng(latitude, longitude)
+    const position = new google.maps.LatLng(latitude, longitude);
 
     const marker = new google.maps.Marker({
       position: position,
       title: 'Pod location',
   
-    });
+    }); //Close Marker instantiation
 
     marker.setMap(map);
     console.log("marker:", marker);  
     console.log("map, lat, long:", map, latitude, longitude);  
+    
+
+    console.log("lat, long states:", latitude, longitude);
+
+    //Render map
+    
+      // Create info window. In content you can pass simple text or html code.
+    // var infowindow = new google.maps.InfoWindow({
+    // content: `<div>${address}</div>`,
+    // maxWidth: 500
+    // });
+     
+    // // Add listner for marker. You can add listner for any object. It is just an example in which I am specifying that infowindow will be open on marker mouseover
+    // google.maps.event.addListener(marker, "mouseover", function() {
+    // infowindow.open(map, marker);
+    // });
+    
+
+  } //Close create GoogleMap function
   
 
-  console.log("lat, long states:", latitude, longitude);
-  //Render map
-  
-  }
-  
   return (
     
     <div id="google-map" ref={googleMapRef} style={{width: '715px', height: '510px'}}>
@@ -1445,7 +1453,7 @@ function Teacher(props) {
               <td>
                 <div className="row no-gutters">
                     <div className="col-sm-3 card-image-position" >
-                        <img src={props.img_url}/>
+                        <img src={props.img_url} className="search-list-img"/>
                     </div>
                 </div>
 
@@ -1531,7 +1539,7 @@ function Pod(props) {
               <td>
                 <div className="row no-gutters">
                     <div className="col-sm-3 card-image-position" >
-                        <img src="/static/img/planticon.png"/>
+                        <img src="/static/img/planticon.png" className="search-list-img"/>
                     </div>
                 </div>
 
@@ -1899,8 +1907,6 @@ function Benefits() {
           </CardDeck>
         </Col>
       </Row>  
-
-
     </Container>
     </div>
   );
@@ -1972,9 +1978,7 @@ function HomeContainer() {
       <br/>
       <div className="card-deck">
         <Benefits />
-        <br/>
-    
-        <br/>
+
       </div>
     </div>
   )
@@ -1986,15 +1990,21 @@ function TeacherProfilePic() {
   const history = ReactRouterDOM.useHistory();
 
   const [selectedFile, setSelectedFile] = React.useState(null); 
+
   const user_email = localStorage.getItem("user_email");
 
   const handleFileChange = evt => {
 
     const file = evt.target.files[0];
+    const fileName = evt.target.files[0].name;
     
+
     setSelectedFile(file);
     console.log("selectedFile, file in handlefilechange:", selectedFile, file);
+
     }
+
+
 
   const handleFileUpload = (evt) => {
     
@@ -2038,7 +2048,7 @@ function TeacherProfilePic() {
         <br/>
         <Form.File id="opener" label="Your Profile Photo" name="profile-pic" onChange={handleFileChange} />
         <br/>
-        <Button variant="primary" onClick={handleFileUpload} type="submit">Upload Photo</Button> 
+        {selectedFile ? <div>Your selected file: {selectedFile.name}.</div>:<Button variant="primary" onClick={handleFileUpload} type="submit">Upload Photo</Button>} 
         <br/>
       </Form.Group>
     </Form>
@@ -2129,7 +2139,7 @@ function TeacherProfileForm() {
     <Form>
       <Form.Group controlId="formBio">
         {/*<Form.Control type="textarea" rows="3" placeholder="Bio" value={userInputProfile.teacher_bio} name="teacher_bio" onChange={handleChange}/> */}
-        <textarea class="form-control" placeholder="Bio" rows="3" value={userInputProfile.teacher_bio} name="teacher_bio" onChange={handleChange}></textarea>
+        <textarea className="form-control" placeholder="Bio" rows="3" value={userInputProfile.teacher_bio} name="teacher_bio" onChange={handleChange}></textarea>
       </Form.Group>
 
       <Form.Group controlId="formZipcode">
@@ -2249,7 +2259,7 @@ function TeacherSignUpForm(props) {
 
       <Form.Group controlId="formBasicEmail">
 
-        <Form.Control type="email" placeholder="Enter email" value={userInputSignUp.signupemail} name="signupemail" onChange={handleChange}/> 
+        <Form.Control type="text" placeholder="Enter email" value={userInputSignUp.signupemail} name="signupemail" onChange={handleChange}/> 
         <Form.Text className="text-muted">We'll never share your email with anyone else.</Form.Text>
       </Form.Group>
 
