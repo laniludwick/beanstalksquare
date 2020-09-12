@@ -159,7 +159,7 @@ function ContactPodOrganizer() {
     .then(response => response.json())
     .then(data => {
       console.log("Result of .then data:", data);
-      alert("You received a response from the server; please read it!")
+      // alert("Message successfully sent.")
       //setIsLoggedIn("True")
       history.push(`/poddetails/${podId}`);
     }); //Close .then
@@ -262,10 +262,12 @@ function TeacherDetails(props) {
      
   return ( 
   
-      <div className = "cta-button-right" width="80%"> 
+      <div className="detail-results-table-wrapper">
         <br/>
         <br/>
-        <Link to={contact_teacher_link} className="btn btn-primary btn-primary:hover">Contact Teacher </Link> 
+        <div>
+          <Link to={contact_teacher_link} className="btn btn-primary btn-primary:hover">Contact Teacher </Link> 
+        </div>
         <br/>
         <br/>
         
@@ -449,7 +451,7 @@ function GoogleMap(props) {
   
   return (
     
-    <div id="google-map" ref={googleMapRef} style={{width: '700px', height: '500px'}}>
+    <div id="google-map" ref={googleMapRef} style={{width: '715px', height: '510px'}}>
     </div>
     
     );
@@ -839,11 +841,11 @@ function ChildrenInPodList(props) {
 }
 
 
-function PodDetailsAll2 (props) {
+function PodDetailsAll (props) {
 
 return (
-<Card style={{ width: '50%' }}>
-  <Card.Img variant="top" src="holder.js/100px180?text=Image cap" />
+<Card style={{ width: '100%' }}>
+  {/*<Card.Img variant="top" src="holder.js/100px180?text=Image cap" />*/}
   <Card.Body>
     <Card.Title>{props.pod_name}</Card.Title>
 {/*    <Card.Text>
@@ -855,7 +857,7 @@ return (
     <ListGroupItem>
       <table >
       <tbody>
-      <tr className="table-width-pod-details"><td className="table-data-width-pod-details"><b>Maximum Child Capacity</b>  {props.max_child_capacity}</td><td className="table-data-width-pod-details"><b>Same School Program</b>  {props.same_school_program_only}</td></tr>
+      <tr className="table-width-pod-details"><td className="table-data-width-pod-details"><b>Maximum Child Capacity:</b>   {props.max_child_capacity}</td><td className="table-data-width-pod-details"><b>Same School Program:</b>   {props.same_school_program_only}</td></tr>
       </tbody>
       </table>
     </ListGroupItem>
@@ -863,7 +865,7 @@ return (
     <ListGroupItem>
       <table >
       <tbody>
-      <tr className="table-width-pod-details"><td className="table-data-width-pod-details"><b>Days</b>  {props.days_per_week}/week</td><td className="table-data-width-pod-details"><b>Same Grade</b>  {props.same_grade_only}</td></tr>
+      <tr className="table-width-pod-details"><td className="table-data-width-pod-details"><b>Days:</b>   {props.days_per_week}/week</td><td className="table-data-width-pod-details"><b>Same Grade:</b>   {props.same_grade_only}</td></tr>
       </tbody>
       </table>
     </ListGroupItem>
@@ -871,7 +873,7 @@ return (
     <ListGroupItem>
       <table >
       <tbody>
-      <tr className="table-width-pod-details"><td className="table-data-width-pod-details"><b>Hours</b>  {props.total_hours_per_day} hrs/day</td><td className="table-data-width-pod-details"><b>Meets Outdoors Only</b>  {props.outdoors_only}</td></tr>
+      <tr className="table-width-pod-details"><td className="table-data-width-pod-details"><b>Hours:</b>   {props.total_hours_per_day} hrs/day</td><td className="table-data-width-pod-details"><b>Meets Outdoors Only:</b>   {props.outdoors_only}</td></tr>
       </tbody>
       </table>
 
@@ -880,7 +882,7 @@ return (
     <ListGroupItem>
       <table >
       <tbody>
-      <tr className="table-width-pod-details"><td className="table-data-width-pod-details"><b>Paid teacher</b>  {props.paid_teacher}</td><td className="table-data-width-pod-details"><b>Periodic Covid Testing</b>  {props.periodic_covid_testing}</td></tr>
+      <tr className="table-width-pod-details"><td className="table-data-width-pod-details"><b>Paid teacher:</b>   {props.paid_teacher}</td><td className="table-data-width-pod-details"><b>Periodic Covid Testing:</b>   {props.periodic_covid_testing}</td></tr>
       </tbody>
       </table>
 
@@ -889,7 +891,7 @@ return (
     <ListGroupItem>
       <table >
       <tbody>
-      <tr className="table-width-pod-details"><td className="table-data-width-pod-details"><b>Same School</b>  {props.same_school_only}</td><td className="table-data-width-pod-details"><b>Cost</b>  ${props.cost_per_hour}/hr</td></tr>
+      <tr className="table-width-pod-details"><td className="table-data-width-pod-details"><b>Same School:</b>   {props.same_school_only}</td><td className="table-data-width-pod-details"><b>Cost:</b>   ${props.cost_per_hour}/hr</td></tr>
       </tbody>
       </table>
 
@@ -905,53 +907,53 @@ return (
 )
 }
 
-function PodDetailsAll (props) {
+// function PodDetailsAll2 (props) {
 
-  return (
-    <tbody>
-          <tr> 
-            <th className="pod-table-title" scope="row">Pod name</th>
-            <td>{props.pod_name}</td>
-            <th className="pod-table-title" scope="row">Same School Program</th>
-            <td>{props.same_school_program_only}</td>
-          </tr>
+//   return (
+//     <tbody>
+//           <tr> 
+//             <th className="pod-table-title" scope="row">Pod name</th>
+//             <td>{props.pod_name}</td>
+//             <th className="pod-table-title" scope="row">Same School Program</th>
+//             <td>{props.same_school_program_only}</td>
+//           </tr>
 
-          <tr>
-            <th className="pod-table-title" scope="row">Maximum Child Capacity</th>
-            <td>{props.max_child_capacity}</td>
-            <th className="pod-table-title" scope="row">Same Grade</th>
-            <td>{props.same_grade_only}</td>
-          </tr>
+//           <tr>
+//             <th className="pod-table-title" scope="row">Maximum Child Capacity</th>
+//             <td>{props.max_child_capacity}</td>
+//             <th className="pod-table-title" scope="row">Same Grade</th>
+//             <td>{props.same_grade_only}</td>
+//           </tr>
 
-          <tr>
-            <th className="pod-table-title" scope="row">Days per week</th>
-            <td>{props.days_per_week}</td>
-            <th className="pod-table-title" scope="row">Meets Outdoors Only</th>
-            <td>{props.outdoors_only}</td>
-          </tr>
+//           <tr>
+//             <th className="pod-table-title" scope="row">Days per week</th>
+//             <td>{props.days_per_week}</td>
+//             <th className="pod-table-title" scope="row">Meets Outdoors Only</th>
+//             <td>{props.outdoors_only}</td>
+//           </tr>
           
-          <tr>
-            <th className="pod-table-title" scope="row">Hours per day</th>
-            <td>{props.total_hours_per_day}</td>
-             <th className="pod-table-title" scope="row">Periodic Covid Testing</th>
-            <td>{props.periodic_covid_testing}</td>
-          </tr>
+//           <tr>
+//             <th className="pod-table-title" scope="row">Hours per day</th>
+//             <td>{props.total_hours_per_day}</td>
+//              <th className="pod-table-title" scope="row">Periodic Covid Testing</th>
+//             <td>{props.periodic_covid_testing}</td>
+//           </tr>
           
-          <tr>
-            <th className="pod-table-title" scope="row">Paid teacher</th>
-            <td>{props.paid_teacher}</td>
-            <th className="pod-table-title" scope="row">Cost Per Hour</th>
-            <td>{props.cost_per_hour}</td>
-          </tr>
+//           <tr>
+//             <th className="pod-table-title" scope="row">Paid teacher</th>
+//             <td>{props.paid_teacher}</td>
+//             <th className="pod-table-title" scope="row">Cost Per Hour</th>
+//             <td>{props.cost_per_hour}</td>
+//           </tr>
           
-          <tr>
-            <th className="pod-table-title" scope="row">Same School</th>
-            <td>{props.same_school_only}</td>
-          </tr>
+//           <tr>
+//             <th className="pod-table-title" scope="row">Same School</th>
+//             <td>{props.same_school_only}</td>
+//           </tr>
 
-  </tbody>  
-  );
-}
+//   </tbody>  
+//   );
+// }
 
 // function PodDetailsAll1 (props) {
 
@@ -1078,12 +1080,13 @@ function PodDetails(props) {
       <h3 className="table-title"> Pod Details </h3>
       <br/>
       
-      <table className="table">
+      {/*<table className="table">*/}
         {podDetailsAll} 
 
-      </table> 
+      {/*</table>*/} 
 
       <div width="50%">
+      <br/>
       {podDetailsAll? <MapContainer podDetailsAll={podDetailsAll}/> : null}
       </div>
 
@@ -1099,27 +1102,35 @@ function PodDetailsContainer(props) {
   const contact_pod_organizers_link = `/contactpodorganizer/${podId}`
 
   return (
-    <div className="detail-results-table-wrapper">
-      <br/>
-      <div className="contact-button-position mx-auto">
-        <Link to={contact_pod_organizers_link} className="btn btn-primary">Contact Pod Organizer </Link> 
-      </div>
-      <br/>
-      <div width="50%">
-        <PodDetails /> 
-      </div>
+    <div>
+      {/*<div ClassName="float-left">
+        Back to pods list
+      </div>*/}
       
-      <div width="50%">
-        <br/>
-        <br/>
-        <TeachersInPodList />
-      </div>
+      <div className="detail-results-table-wrapper">
+      
+        {/*history.push(`/podlist/${zipcode}`)*/}
 
-       <div width="50%" className="bottom-padded">
-        <br/>
-        <ChildrenInPodList />
-        <br/>
-        <br/>
+        <div className="contact-button-position">
+          <Link to={contact_pod_organizers_link} className="btn btn-primary">Contact Pod Organizer </Link> 
+        </div>
+      
+        <div width="50%">
+          <PodDetails /> 
+        </div>
+        
+        <div width="50%">
+          <br/>
+          <br/>
+          <TeachersInPodList />
+        </div>
+
+         <div width="50%" className="bottom-padded">
+          <br/>
+          <ChildrenInPodList />
+          <br/>
+          <br/>
+        </div>
       </div>
     </div>    
   )
@@ -1753,7 +1764,7 @@ function PodList(props) {
       
       <br/>
 
-      <div>
+      <div className="search-results-wrapper">
       {/*<div className="search-results-table-wrapper-75">
         <table className="table table-corners">
           <thead>
@@ -1842,7 +1853,7 @@ function TeacherSearch(props) {
 function Benefits() {
 
   return (
-    <div>
+    <div className="card-deck-exterior-padding">
     <Container fluid>
       <Row>
         <Col>
@@ -1965,10 +1976,6 @@ function HomeContainer() {
     
         <br/>
       </div>
-      
-      <br/>
-      <br/>
-    
     </div>
   )
 }
@@ -2012,7 +2019,7 @@ function TeacherProfilePic() {
     .then(response => response.json())
     .then(data => {
       console.log("Result of .then data:", data);
-      alert("You received a response, but need to read it.")
+      // alert("You received a response, but need to read it.")
     }); //Close .then
     // .catch(err => 
     //   console.log("Error caught:", err)
@@ -2101,7 +2108,7 @@ function TeacherProfileForm() {
     .then(response => response.json())
     .then(data => {
       console.log("Result of .then data:", data);
-      alert("You successfully added to your profile!")
+      // alert("You successfully added to your profile!")
       //setIsLoggedIn("True")
       history.push("/");
     }); //Close .then
@@ -2144,6 +2151,10 @@ function TeacherProfileForm() {
 
       <Button variant="primary" onClick={makeProfile} type="submit">Update Profile</Button> 
     </Form>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
   </div>
 
   );
@@ -2208,7 +2219,7 @@ function TeacherSignUpForm(props) {
         localStorage.setItem("useremail", userInputSignUp.signupemail);
         console.log("***************set item useremail:", userInputSignUp.signupemail);
         console.log("***************get item useremail:", localStorage.getItem("useremail"));
-        alert("You are now logged in!");
+        // alert("You are now logged in!");
         console.log("***************props in loginform function post-response:", props);
         props.setLoggedInStatus("True");
         
@@ -2312,7 +2323,7 @@ function ParentSignUpForm(props) {
         localStorage.setItem("useremail", userInputSignUp.signupemail);
         console.log("***************set item useremail:", userInputSignUp.signupemail);
         console.log("***************get item useremail:", localStorage.getItem("useremail"));
-        alert("You are now logged in!");
+        // alert("You are now logged in!");
         console.log("***************props in loginform function post-response:", props);
         props.setLoggedInStatus("True");
         history.push("/dashboard");
@@ -2465,7 +2476,7 @@ function SignUpParties () {
           <h3>I'm a parent</h3>
             <p>Looking for students or a teacher.</p>
             <div >
-            <Link key={1} to="/signup_parent" className="btn btn-primary" > Start search </Link>
+            <Link key={1} to="/signup_parent" className="btn btn-primary" > Begin</Link>
             </div>
         </div>
       </Col>
@@ -2477,7 +2488,7 @@ function SignUpParties () {
           <h3>I'm a teacher </h3>
             <p>Looking for students to teach.</p>
             <div>
-            <Link key={2} to="/signup_teacher" className="btn btn-primary" >Start search </Link> 
+            <Link key={2} to="/signup_teacher" className="btn btn-primary" >Begin</Link> 
             </div>
         </div>
       </Col>
@@ -2518,43 +2529,78 @@ function SignUpParties () {
 function GlobalNavigationBar(props) {
   console.log("props in Global nav:******", props)
   
+  let location = ReactRouterDOM.useLocation();
+  console.log("location pathname:", location.pathname);
+  const [justLoggedOut, setJustLoggedOut] = React.useState(false);
+  
+
   function LogOut(event) {
 
     console.log("***************local storage user islogged in before removal:", localStorage);
     localStorage.removeItem("user");
     console.log("***************local storage user islogged in after removal:", localStorage);
 
-    alert("You are now logged out of your account.");
+    // alert("You are now logged out of your account.");
     props.setLoggedInStatus();
-    
+    setJustLoggedOut(true);
 
   }
+
+  function AlertLoggedOut() {
+    
+    const [show, setShow] = React.useState(true);
+
+    if (show) {
+      return (
+
+      <Alert variant="success" onClose={() => setShow(false)} dismissible>>
+        {/*<Alert.Heading>Hey, nice to see you</Alert.Heading>*/}
+        <p>
+          You are now logged out of your account.
+        </p>
+        {/*<hr />
+        <p className="mb-0">
+          Whenever you need to, be sure to use margin utilities to keep things nice
+          and tidy.
+        </p>*/}
+      </Alert>
+    );
+  }}
 
   return (
 
     <div> 
-    <Navbar bg="none" variant="light">
-    <Navbar.Brand href="#home"><img src="static/img/beanstalksquarelogo.png" width="270px" height="40px"/></Navbar.Brand>
-    <Nav className="navbar-nav ml-auto">
-    
-    <Form inline >
-      {/*<FormControl type="text" placeholder="Search" className="mr-sm-2" /> */}
-          
-          {props.isLoggedIn==="True"? 
-          [<Link key={1} to="/" onClick={LogOut} className="btn bg-transparent nav-links nav-item" variant="btn-secondary" > Log Out </Link>]
-          : [<Link key={1} to="/login" className="btn nav-links nav-item" variant="btn-secondary"> Log In </Link>, 
-          <Link key={2} to="/signup" className="btn btn-primary nav-links nav-item" variant="btn-primary"> Sign Up </Link>]}
-          
-      {/*<Button variant="outline-primary">Search</Button> */}
-    </Form>
-    
-    </Nav>
-    
-{/*    <Nav className="navbar-nav ml-auto">
-    <Nav.Link href="#deets" className="nav-item" >More deets</Nav.Link>
-    </Nav>*/}
-  </Navbar>
+      <Navbar bg="none" variant="light">
+      <Navbar.Brand href="#home"><img src="static/img/beanstalksquarelogo.png" width="270px" height="40px"/></Navbar.Brand>
+      <Nav className="navbar-nav ml-auto">
       
+      <Form inline >
+        {/*<FormControl type="text" placeholder="Search" className="mr-sm-2" /> */}
+            
+            {/*{props.isLoggedIn==="True"? 
+            [<Link key={1} to="/" onClick={LogOut} className="btn bg-transparent nav-links nav-item" variant="btn-secondary" > Log Out </Link>]
+            : [<Link key={1} to="/login" className="btn nav-links nav-item" variant="btn-secondary"> Log In </Link>, 
+            <Link key={2} to="/signup" className="btn btn-primary nav-links nav-item" variant="btn-primary"> Sign Up </Link>]}
+  */}
+            {props.isLoggedIn==="True"? 
+            [<Link key={1} to="/" onClick={LogOut} className="btn bg-transparent nav-links nav-item" variant="btn-secondary" > Log Out </Link>]
+            : location.pathname==="/signup" || location.pathname==="/signup_parent" || location.pathname==="/signup_teacher" ? 
+            [<Link key={1} to="/login" className="btn nav-links nav-item" variant="btn-secondary"> Log In </Link>] : 
+            location.pathname==="/login" ? [<Link key={2} to="/signup" className="btn btn-primary nav-links nav-item" variant="btn-primary"> Sign Up </Link>] 
+            :[<Link key={1} to="/login" className="btn nav-links nav-item" variant="btn-secondary"> Log In </Link>, 
+            <Link key={2} to="/signup" className="btn btn-primary nav-links nav-item" variant="btn-primary"> Sign Up </Link>]}
+            
+        {/*<Button variant="outline-primary">Search</Button> */}
+      </Form>
+      
+      </Nav>
+      
+  {/*    <Nav className="navbar-nav ml-auto">
+      <Nav.Link href="#deets" className="nav-item" >More deets</Nav.Link>
+      </Nav>*/}
+      </Navbar>
+        
+    {/*  {justLoggedOut?  <AlertLoggedOut/>: null}  */}
 
       <Switch>
               
@@ -2666,7 +2712,8 @@ function App() {
                                 />
         </div>
       </Router>
-      
+      <br/>
+      <br/>
       <div className="footer">
         <br/>
         <p>© 2020 Copyright: Beanstalk Square.<br/>

@@ -513,7 +513,7 @@ def send_stock_sms_to_pod_organizer(pod_id):
 
     message = client.messages \
                     .create(
-                         body="A parent is interested to learn more about this pod. Please respond at your earliest convenience. \n \nContact info: \n" + name + " \n" + phone + " \n" + email + ". \n\n Message: \n \""+message +"\"",
+                         body="\n\nA parent is interested to learn more about this pod. Please respond at your earliest convenience. \n \nContact info: \n" + name + " \n" + phone + " \n" + email + ". \n\n Message: \n \""+message +"\"",
                          messaging_service_sid='MG8b0587e27f85f4b05d7525a5833f89db',
                          to=pod_organizers_mobiles,
                      )
