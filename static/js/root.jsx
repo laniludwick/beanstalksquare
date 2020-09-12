@@ -489,10 +489,10 @@ function TeachersInPod(props) {
             <table>
             <tbody>
             <tr>
-              <td >
+              <td id="table-vertical-align-top">
                 <div className="row no-gutters">
                     <div className="col-sm-3 card-image-position" >
-                        <img src={props.img_url} id="table-vertical-align-top"/>
+                        <img src={props.img_url} />
                     </div>
                 </div>
 
@@ -847,7 +847,7 @@ return (
 <Card style={{ width: '100%' }}>
   {/*<Card.Img variant="top" src="holder.js/100px180?text=Image cap" />*/}
   <Card.Body>
-    <Card.Title>{props.pod_name}</Card.Title>
+    <Card.Title id="pod-details-title">{props.pod_name}</Card.Title>
 {/*    <Card.Text>
       Some quick example text to build on the card title and make up the bulk of
       the card's content.
@@ -2716,7 +2716,7 @@ function App() {
       <br/>
       <div className="footer">
         <br/>
-        <p>© 2020 Copyright: Beanstalk Square.<br/>
+        <p className="footer-padding">© 2020 Copyright: Beanstalk Square.<br/>
         All rights reserved.</p>
       </div>
     </div>
