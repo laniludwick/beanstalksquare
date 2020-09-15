@@ -1985,6 +1985,8 @@ function HomeContainer() {
 }
 
 
+
+
 function TeacherProfilePic() {
   
   const history = ReactRouterDOM.useHistory();
@@ -1993,11 +1995,26 @@ function TeacherProfilePic() {
 
   const user_email = localStorage.getItem("user_email");
 
+  
+   
+
+  let widget = window.cloudinary.createUploadWidget({
+
+    cloudName: "beanstalksquare",
+    uploadPreset: "veumz4ue" },
+
+    (error, data) => {});
+
+
+  const showWidget = (widget) => {
+    widget.open()
+  }
+  
+
   const handleFileChange = evt => {
 
     const file = evt.target.files[0];
     const fileName = evt.target.files[0].name;
-    
 
     setSelectedFile(file);
     console.log("selectedFile, file in handlefilechange:", selectedFile, file);
@@ -2046,9 +2063,10 @@ function TeacherProfilePic() {
     <Form>
       <Form.Group>
         <br/>
+       {/* <Button onClick={showWidget}>Upload photo with widget</Button>*/}
         <Form.File id="opener" label="Your Profile Photo" name="profile-pic" onChange={handleFileChange} />
         <br/>
-        {selectedFile ? <div>Your selected file: {selectedFile.name}.</div>:<Button variant="primary" onClick={handleFileUpload} type="submit">Upload Photo</Button>} 
+        {selectedFile ? <div>Currently: {selectedFile.name}.</div>:<Button variant="primary" onClick={handleFileUpload} type="submit">Upload Photo</Button>} 
         <br/>
       </Form.Group>
     </Form>
