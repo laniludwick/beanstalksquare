@@ -1992,6 +1992,7 @@ function TeacherProfilePic() {
   const history = ReactRouterDOM.useHistory();
 
   const [selectedFile, setSelectedFile] = React.useState(null); 
+  const [dataResult, setDataResult] = React.useState(null);
 
   const user_email = localStorage.getItem("user_email");
 
@@ -2004,11 +2005,8 @@ function TeacherProfilePic() {
     uploadPreset: "veumz4ue" },
 
     (error, data) => {});
-
-
-  const showWidget = (widget) => {
-    widget.open()
-  }
+    console.log("widget:", widget);
+    console.log("widget.open:", widget.open);
   
 
   const handleFileChange = evt => {
@@ -2020,8 +2018,6 @@ function TeacherProfilePic() {
     console.log("selectedFile, file in handlefilechange:", selectedFile, file);
 
     }
-
-
 
   const handleFileUpload = (evt) => {
     
@@ -2047,6 +2043,8 @@ function TeacherProfilePic() {
     .then(data => {
       console.log("Result of .then data:", data);
       // alert("You received a response, but need to read it.")
+      setDataResult(data);
+      console.log("dataResult in profile pic func:", dataResult);
     }); //Close .then
     // .catch(err => 
     //   console.log("Error caught:", err)
@@ -2063,11 +2061,34 @@ function TeacherProfilePic() {
     <Form>
       <Form.Group>
         <br/>
-       {/* <Button onClick={showWidget}>Upload photo with widget</Button>*/}
-        <Form.File id="opener" label="Your Profile Photo" name="profile-pic" onChange={handleFileChange} />
-        <br/>
-        {selectedFile ? <div>Currently: {selectedFile.name}.</div>:<Button variant="primary" onClick={handleFileUpload} type="submit">Upload Photo</Button>} 
-        <br/>
+    {/*    <Button id="opener" label="Your Profile Photo" name="profile-pic" onClick={widget.open} >Upload photo</Button>*/}
+        {/*<Form.File />*/}
+        {/*<br/>*/}
+        {/*{selectedFile ? <div>Currently: {selectedFile.name}.</div>:<Button variant="primary" onClick={handleFileUpload} type="submit">Upload Photo</Button>} */}
+        
+        {selectedFile ? 
+        <div>
+          Currently: {selectedFile.name}
+          <br/>
+          <br/>
+          <Button variant="primary" onClick={handleFileUpload} type="submit"> Upload Selected File</Button> or <label className="bold" id="profile-pic-button" >
+          <Form.File id="opener" label="Change File" name="profile-pic" onChange={handleFileChange} hidden />
+          </label> 
+          
+
+        </div>
+        : 
+        <div>
+          <p>Please select a profile photo.</p>
+          <label className="btn btn-secondary" id="profile-pic-button" >
+            <Form.File id="opener" label="Browse Files" name="profile-pic" onChange={handleFileChange} hidden />
+          </label>
+        </div>
+        }
+        {/*{selectedFile ? null: <div>Currently selected: None</div>}*/}
+
+
+        
       </Form.Group>
     </Form>
 
