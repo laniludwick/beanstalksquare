@@ -10,10 +10,9 @@ const { Badge, Button, Col, Container, CardDeck, Card, ListGroup, ListGroupItem,
 //import 'bootstrap/dist/css/bootstrap.min.css';
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-
-
-//console.log("greeting:", greeting);
-
+//import './site.css';
+//import { PodSearch, TeacherSearch } from './searchForm';
+//import LogInForm from './userAuth';
 
 function ContactTeacher() {
   
