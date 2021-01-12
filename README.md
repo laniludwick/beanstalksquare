@@ -35,7 +35,7 @@ Lani graduated from Stanford University with a B.S. in Industrial Engineering an
 #### Landing Page
 Users are brought to a webpage built in React containing an option to log in. The login functionality was created using JSON web tokens. The zipcode search allows parents to search for student pods or teachers. 
 
-<img src="https://media.giphy.com/media/hP67a2yQDs80jwn7gG/giphy.gif" alt="Beanstalk Square landing page" width="1000"/>
+![alt text](https://media.giphy.com/media/hP67a2yQDs80jwn7gG/giphy.gif "Beanstalk Square landing page")
 
 #### List of student pods 
 The parent or teacher can view a list of pods in their selected zipcode. The table data for the pod list is retrieved from the postGres database. The frontend components make Fetch requests to the Flask server routes, which call crud functions written using SQLAlchemy, a python-based ORM.
