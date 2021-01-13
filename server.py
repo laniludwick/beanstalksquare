@@ -10,7 +10,7 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
-cloud_name = os.environ["beanstalksquare"]
+cloud_name = os.environ["cloud_name"]
 cloudinary_api_key = os.environ["cloudinary_api_key"]
 cloudinary_api_secret = os.environ["cloudinary_api_secret"]
 
