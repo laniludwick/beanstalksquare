@@ -9,22 +9,15 @@ function LogInForm(props) {
   function handleEmailChange(event) {
     setLoginEmail(event.target.value);
   }
-
   function handlePasswordChange(event) { 
     setLoginPassword(event.target.value);
   }
-
   const attemptLogIn = (e) => {
     e.preventDefault();
-    console.log("This is inside the attemptLogIn arrow function!");
-    
     const logInData = {
                         "loginemail": loginemail,
                         "loginpassword": loginpassword,
                         }           
-    console.log("LogIn data from form:", logInData);
-    console.log("Stringified sign up data:", JSON.stringify(logInData));
-
     fetch('/api/login', {
       method: 'POST', 
       headers: {
@@ -32,16 +25,11 @@ function LogInForm(props) {
       },
       body: JSON.stringify(logInData),
     })
-
     .then(response => response.json())
     .then(data => {
-      console.log("Result of .then data:", data);
       if (data.access_token){
         localStorage.setItem("user", data.access_token);
         localStorage.setItem("useremail", logInData["loginemail"]);
-        console.log("***************set item useremail:", logInData["loginemail"]);
-        console.log("***************get item useremail:", localStorage.getItem("useremail"));
-        console.log("***************props in loginform function post-response:", props);
         props.setLoggedInStatus("True");
         history.push("/dashboard");
       }
@@ -50,7 +38,6 @@ function LogInForm(props) {
       }
     }); 
   } 
-
   return ( 
     <div className="entry-form-wrapper">
     <br/><h3>Welcome, back!</h3><br/>
