@@ -1,14 +1,11 @@
 from flask import (Flask, request, flash, session, redirect, render_template, 
                     jsonify)
+import os
 from model import connect_to_db
 import crud
-#import os
 from flask_jwt_extended import (JWTManager, jwt_required, create_access_token,
                                 get_jwt_identity)
-
 from twilio.rest import Client 
-import os
-
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
@@ -24,9 +21,6 @@ to_phone_number = os.environ["TO_PHONE_NUMBER"]
 UPLOAD_FOLDER = '/path/to/the/uploads'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
-
-
-
 cloudinary.config(
     cloud_name = cloud_name,
     api_key = cloudinary_api_key,
@@ -41,7 +35,6 @@ jwt = JWTManager(app)
 #app.secret_key = "dev"
 #app.jinja_env.undefined = StrictUndefined
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
 
 @app.route("/")
 def root():
@@ -83,22 +76,19 @@ def show_pods():
             "zipcode": pod_location.zipcode
             }, )
 
-    return jsonify(pods)
-                                  
+    return jsonify(pods)                                
 
 @app.route("/api/teachers")
 def show_teachers():
     """Show teachers filtered by zipcode."""
     
     zipcode = request.args.get("zipcode")
-
     filtered_teachers = crud.get_filtered_teachers(zipcode)
 
     #Turn the SQLAlchemy pod objects into dictioaries before jsonifying them.
     teachers = []
 
     for teacher in filtered_teachers: 
-
         teachers.append({
             "teacher_id": teacher.teacher_id,
             "zipcode": teacher.zipcode,
@@ -114,7 +104,6 @@ def show_teachers():
             "pay_rate_per_hour": teacher.pay_rate_per_hour
             },)
 
-
     return jsonify(teachers)
 
 
@@ -123,7 +112,6 @@ def show_pod_details(pod_id):
     """Show details of the selected pod."""
 
     pods = crud.get_pod_details_by_pod_id(pod_id) #Get pod based on click event.
-
     pod_details = []
 
     for pod, pod_location in pods:

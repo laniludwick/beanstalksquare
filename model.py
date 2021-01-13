@@ -1,9 +1,19 @@
-"""Models for PeachPodSquare app."""
+"""Models for Beanstalk Square app."""
 
 from flask_sqlalchemy import SQLAlchemy
 #import crud
+import os
 
 db = SQLAlchemy()
+#db_url = os.environ.get('DATABASE_URL','')
+
+def connect_to_db(flask_app, db_uri="postgresql:///beanstalksquare", echo=True):
+    flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+    flask_app.config['SQLALCHEMY_ECHO'] = echo
+    flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    db.app = flask_app
+    db.init_app(flask_app)
+    print('Connected to the db!')
 
 
 class Household(db.Model):
@@ -234,54 +244,6 @@ class School(db.Model):
 
     def __repr__(self):
         return f'<School school_id={self.school_id} school_name={self.school_name}>'
-
-
-
-def connect_to_db(flask_app, db_uri='postgresql:///beanstalksquare', echo=True):
-    flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
-    flask_app.config['SQLALCHEMY_ECHO'] = echo
-    flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-    db.app = flask_app
-    db.init_app(flask_app)
-
-    print('Connected to the db!')
-
-
-# def example_data():
-#     """Create some sample data."""
-
-#     #In case this is run more than once, empty out existing data in the tables.
-#     Covid_Risk_Profile.query.delete()
-#     Parent.query.delete()
-#     Child.query.delete()
-#     Child_Pod.query.delete()
-#     Parent_Pod.query.delete()
-#     School.query.delete()
-#     Grade.query.delete()
-#     Pod_Location.query.delete()
-#     Pod.query.delete()
-
-#     #Add sample data (via SQLAlchemy class instantiation) for all tables above
-#     cov = Covid_Risk_Profile(scale_value="Very strict", scale_description="Masks 100% of the time")
-#     cov2 = Covid_Risk_Profile(scale_value="Mostly strict", scale_description="Masks 80% of the time")
-#     hou = Household(covid_risk_profile_id=1)
-#     hou2 = Household(covid_risk_profile_id=2)
-#     par = Parent(fname="Fred", lname="Jamesson",household_id=1)
-#     par2 = Parent(fname="Frida", lname="Jones",household_id=2)
-#     gr = Grade(grade_name="Kindergarten")
-#     sch = School(school_name="Eldorado School")
-#     kid = Child(fname="Linky", lname="Williams", household_id=2, )
-#     kid2 = Child(fname="Alex", lname="Williams", household_id=2)
-#     falcon = Pod(pod_name="Falcons", covid_risk_profile_id=1)
-#     pokemon = Pod(pod_name="Pokemon", covid_risk_profile_id=2)
-#     loc = Pod_Location(street_address="1355 S. Walnut St")
-#     cp = Child_Pod(child_id=1, pod_id=1)
-#     pp = Parent_Pod(parent_id=2, pod_id=2)
-
-#     db.session.add_all([cov, cov2, hou, hou2, par, par2, kid, kid2, falcon, pokemon, gr, sch, loc, cp, pp])
-#     db.session.commit()
-
 
 
 if __name__ == '__main__':

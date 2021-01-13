@@ -914,123 +914,6 @@ return (
 )
 }
 
-// function PodDetailsAll2 (props) {
-
-//   return (
-//     <tbody>
-//           <tr> 
-//             <th className="pod-table-title" scope="row">Pod name</th>
-//             <td>{props.pod_name}</td>
-//             <th className="pod-table-title" scope="row">Same School Program</th>
-//             <td>{props.same_school_program_only}</td>
-//           </tr>
-
-//           <tr>
-//             <th className="pod-table-title" scope="row">Maximum Child Capacity</th>
-//             <td>{props.max_child_capacity}</td>
-//             <th className="pod-table-title" scope="row">Same Grade</th>
-//             <td>{props.same_grade_only}</td>
-//           </tr>
-
-//           <tr>
-//             <th className="pod-table-title" scope="row">Days per week</th>
-//             <td>{props.days_per_week}</td>
-//             <th className="pod-table-title" scope="row">Meets Outdoors Only</th>
-//             <td>{props.outdoors_only}</td>
-//           </tr>
-          
-//           <tr>
-//             <th className="pod-table-title" scope="row">Hours per day</th>
-//             <td>{props.total_hours_per_day}</td>
-//              <th className="pod-table-title" scope="row">Periodic Covid Testing</th>
-//             <td>{props.periodic_covid_testing}</td>
-//           </tr>
-          
-//           <tr>
-//             <th className="pod-table-title" scope="row">Paid teacher</th>
-//             <td>{props.paid_teacher}</td>
-//             <th className="pod-table-title" scope="row">Cost Per Hour</th>
-//             <td>{props.cost_per_hour}</td>
-//           </tr>
-          
-//           <tr>
-//             <th className="pod-table-title" scope="row">Same School</th>
-//             <td>{props.same_school_only}</td>
-//           </tr>
-
-//   </tbody>  
-//   );
-// }
-
-// function PodDetailsAll1 (props) {
-
-//   return (
-//     <tbody>
-//           <tr> 
-//             <th className="pod-table-title" scope="row">Pod name</th>
-//             <td>{props.pod_name}</td>
-//           </tr>
-
-//           <tr>
-//             <th className="pod-table-title" scope="row">Maximum Child Capacity</th>
-//             <td>{props.max_child_capacity}</td>
-//           </tr>
-
-//           <tr>
-//             <th className="pod-table-title" scope="row">Days per week</th>
-//             <td>{props.days_per_week}</td>
-//           </tr>
-          
-//           <tr>
-//             <th className="pod-table-title" scope="row">Hours per day</th>
-//             <td>{props.total_hours_per_day}</td>
-//           </tr>
-          
-//           <tr>
-//             <th className="pod-table-title" scope="row">Paid teacher</th>
-//             <td>{props.paid_teacher}</td>
-//           </tr>
-          
-//           <tr>
-//             <th className="pod-table-title" scope="row">Same School</th>
-//             <td>{props.same_school_only}</td>
-//           </tr>
-
-//           <tr>
-//             <th className="pod-table-title" scope="row">Same School Program</th>
-//             <td>{props.same_school_program_only}</td>
-//           </tr>
-          
-//           <tr>
-//             <th className="pod-table-title" scope="row">Same Grade</th>
-//             <td>{props.same_grade_only}</td>
-//           </tr>
-
-//           <tr>
-//             <th className="pod-table-title" scope="row">Meets Outdoors Only</th>
-//             <td>{props.outdoors_only}</td>
-//           </tr>
-          
-//           <tr>  
-//             <th className="pod-table-title" scope="row">Periodic Covid Testing</th>
-//             <td>{props.periodic_covid_testing}</td>
-//           </tr>
-
-//           <tr>
-//             <th className="pod-table-title" scope="row">Cost Per Hour</th>
-//             <td>{props.cost_per_hour}</td>
-//           </tr>
-
-//           {/*<tr>
-//             <th className="pod-table-title" scope="row">Location</th>
-//             <td>{props.street_address},
-//                 <br/>
-//                 {props.city}, {props.state}, {props.zipcode}</td>
-//           </tr>*/}
-//   </tbody>  
-//   );
-// }
-
 
 function PodDetails(props) {
 
@@ -1308,136 +1191,11 @@ function CreatePod() {
       <br/>
       <br/>
   </div>
-
-
-    // <div>
-    //  <br/>
-     
-    //  <label>Pod Name </label>
-    //  <br/>
-    //  <input type="text" name="pod_name" value={userInputPod.pod_name} onChange={handleChange}/>
-    //   <br/>
-
-    //   <label> Maximum number of students </label>
-    //   <br/>
-    //   <input type="text" value={userInputPod.max_child_capacity} name="max_child_capacity" onChange={handleChange} />
-    //   <br/>
-    
-    //   <label> Number of days per week</label>
-    //   <br/>
-    //   <input type="number" value={userInputPod.days_per_week} name="days_per_week" onChange={handleChange} />
-    //   <br/>
-
-    //   <label> Number of hours per day</label>
-    //   <br/>
-    //   <input type="number" value={userInputPod.total_hours_per_day} name="total_hours_per_day" onChange={handleChange} />
-    //   <br/>
-
-    //   <label> Paid teacher (rather than rotating parent volunteers)</label>
-    //   <br/>
-    //   <input type="checkbox" checked={userInputPod.paid_teacher} name="paid_teacher" onChange={handleChange} />
-    //   <br/>
-
-    //   <label> Students are in the same grade </label>
-    //   <br/>
-    //   <input type="checkbox" checked={userInputPod.same_grade_only} name="same_grade_only" onChange={handleChange} />
-    //   <br/>
-
-    //   <label> Students are in the same school </label>
-    //   <br/>
-    //   <input type="checkbox" checked={userInputPod.same_school_only} name="same_school_only" onChange={handleChange} />
-    //   <br/>
-
-    //   <label> Students are in the same school program </label>
-    //   <br/>
-    //   <input type="checkbox" checked={userInputPod.same_school_program_only} name="same_school_program_only" onChange={handleChange} />
-    //   <br/>
-
-    //   <label> Meets outdoors only</label>
-    //   <br/>
-    //   <input type="checkbox" checked={userInputPod.outdoors_only} name="outdoors_only" onChange={handleChange} />
-    //   <br/>
-
-    //   <label> Requests periodic tests for Covid</label>
-    //   <br/>
-    //   <input type="checkbox" checked={userInputPod.periodic_covid_testing} name="periodic_covid_testing" onChange={handleChange} />
-    //   <br/>
-
-    //   <label> Cost per hour</label>
-    //   <br/>
-    //   <input type="number" value={userInputPod.cost_per_hour} name="cost_per_hour" onChange={handleChange} />
-    //   <br/>
-    //   <br/>
-
-    //   <label> Pod meeting location:</label><br/>
-    //   <label> Street address</label>
-    //   <input type="text" value={userInputPod.street_address} name="street_address" onChange={handleChange} />
-    //   <br/>
-    //   <label> City</label>
-    //   <input type="text" value={userInputPod.city} name="city" onChange={handleChange} />
-    //   <label> State</label>
-    //   <input type="text" value={userInputPod.state} name="state" onChange={handleChange} />
-    //   <label> Zipcode</label>
-    //   <input type="text" value={userInputPod.zipcode} name="zipcode" onChange={handleChange} />
-    //   <br/>
-    //   <br/>
-
-    //   <label> Please read the following Covid risk profiles and select the profile that most closely represents your household.</label>
-    //   <br/>
-      
-    //   <label>
-    //     "Very strict": "Stays within home; Maintains 6’ distance; No one outside contact; Strict infection control protocol; No contact with outside world"
-    //   </label><br/>
-    //   <label>  
-    //     "Strict": "Leaves home for essentials; Maintains 6’ of distance outside of home when leaves for essentials; Strict etiquette including hand washing, masks and social distancing are used 100% of the time when outside of the home; No socializing outside of the home"
-    //   </label><br/>
-    //   <label>
-    //     "Fairly strict": "Leaves home only to go to work and for essentials; Fairly strict etiquette including hand washing, masks and social distancing are used 80-99% of the time when outside of the home; Occasionally socializes with others who are not in one’s home, but stay outdoors and maintain social distance of 6’ or less than 6’ only with masks"
-    //   </label><br/>
-    //     "Somewhat open": "Leaves home to exercise, go to the store, work,and other activities several times per week; Etiquette including hand washing, masks and social distancing are used 60-79% of the time when outside of the home; Sometimes socializes with others who are not in one’s home at less than a 6 foot distance if they have been following fairly strict or somewhat open protocols as well"
-    //   <label>
-    //     "Moderately open": "Leaves home to exercise, go to the store, work,and other activities multiple times per week; Etiquette including hand washing, masks and social distancing are used 20-59% of the time when outside of the home; May not maintain social distance and may see more than 10 people at a time"
-    //   </label><br/>
-    //     <label>
-    //     "Very open": "No precautions to protect oneself from infection; Actively socializes without regard to social distancing or recommended etiquette"
-    //     </label>
-    //     <br/>
-    //     Covid Risk Profile 
-    //   <select value={userInputPod.covid_risk_profile} onChange={handleChange}>
-    //     <option >Very strict </option>
-    //     <option >Strict </option>
-    //     <option >Fairly strict </option>
-    //     <option >Somewhat open </option>
-    //     <option >Moderately open </option>
-    //     <option >Fairly open </option>
-    //   </select>
-    //   <br/>
-    //   <br/>
-    //   <button onClick={makePod}> Complete Pod Creation </button>
-    // </div>
-     );
+  );
 }
 
 
 
-// function Teacher1(props) {
-
-//   console.log("data in for isLoggedIn in Teacher component:", props.isLoggedIn);
-//   const teacherDetailsLink = `/teacherdetails/${props.teacher_id}`;
-
-//   return (
-//     <tr className="table-vertical-align">
-//       <td><img src={props.img_url}/></td>
-//       <td className="table-vertical-align">{props.teacher_name}</td>
-//       <td className="table-vertical-align">{props.zipcode}</td>
-//       <td className="table-vertical-align">{props.days_of_week}</td>
-//       <td className="table-vertical-align">{props.teaching_experience_in_hours} hrs</td>
-//       <td className="table-vertical-align">${props.pay_rate_per_hour}/hr</td>
-//       {/*<td><Link to={podDetailsLink}> View details</Link></td>*/}
-//      {props.isLoggedIn==="True"? <td className="table-vertical-align"><Link to={teacherDetailsLink}> View</Link></td >: <td className="table-vertical-align">View</td>}
-//     </tr>
-//   );
-// }
 
 function Teacher(props) {
 
@@ -1506,23 +1264,6 @@ function Teacher(props) {
   );
 }
 
-// function Pod1(props) {
-
-//   console.log("data in for isLoggedIn in Pod component:", props.isLoggedIn);
-//   const podDetailsLink = `/poddetails/${props.pod_id}`;
-
-//   return (
-//     <tr className="table-vertical-align">   
-//       <td className="table-vertical-align">{props.pod_name}</td>
-//       <td className="table-vertical-align">{props.zipcode}</td>
-//       <td className="table-vertical-align">{props.days_per_week} days/wk</td>
-//       <td className="table-vertical-align">{props.total_hours_per_day} hrs/day</td>
-//       <td className="table-vertical-align">{props.paid_teacher}</td>
-//       {/*<td><Link to={podDetailsLink}> View details</Link></td>*/}
-//      {props.isLoggedIn==="True"? <td className="table-vertical-align"><Link to={podDetailsLink}> View</Link></td>: <td className="table-vertical-align">View</td>}
-//     </tr>
-//   );
-// }
 
 
 function Pod(props) {
@@ -1591,8 +1332,6 @@ function Pod(props) {
     
   );
 }
-
-
 
 
 
@@ -1858,95 +1597,79 @@ function TeacherSearch(props) {
 
 
 function Benefits() {
-
   return (
     <div className="card-deck-exterior-padding">
-    <Container fluid>
-      <Row>
-        <Col>
-          <CardDeck>
-            <Card>
-              <Card.Body>
-                <Card.Title>Contact Nearby Families</Card.Title>
-                <Card.Text>
-                  Get in touch with other families to discuss joining a pod together.
-                </Card.Text>
-              </Card.Body>
-              <Card.Img variant="bottom" src="/static/img/benefits1.jpg" />
-              {/*<Card.Footer>
-                <small className="text-muted">Last updated 3 mins ago</small>
-              </Card.Footer>*/}
-            </Card>
-            
-            <Card>
-              <Card.Body>
-                <Card.Title>Limit Your Risk Exposure</Card.Title>
-                <Card.Text>
-                  Stay safe by finding a small group of other children to study or play with.{' '}
-                </Card.Text>
-              </Card.Body>
-               <Card.Img variant="bottom" src="/static/img/benefits2.jpg" />
-              {/*<Card.Footer>
-                <small className="text-muted">Last updated 3 mins ago</small>
-              </Card.Footer>*/}
-            </Card>
-            <Card>
-          
-              <Card.Body>
-                <Card.Title>Gain Social Interaction</Card.Title>
-                <Card.Text>
-                  Social interaction is important for children to meet developmental milestones.
-                </Card.Text>
-              </Card.Body>
-              <Card.Img variant="bottom" src="/static/img/benefits3.jpg" />
-              {/*<Card.Footer>
-                <small className="text-muted">Last updated 3 mins ago</small>
-              </Card.Footer>*/}
-            </Card>
-          </CardDeck>
-        </Col>
-      </Row>  
-    </Container>
+      <Container fluid>
+        <Row>
+          <Col>
+            <CardDeck>
+              <Card>
+                <Card.Body>
+                  <Card.Title>Contact Nearby Families</Card.Title>
+                  <Card.Text>
+                    Get in touch with other families to discuss joining a pod together.
+                  </Card.Text>
+                </Card.Body>
+                <Card.Img variant="bottom" src="/static/img/benefits1.jpg" />
+                {/*<Card.Footer>
+                  <small className="text-muted">Last updated 3 mins ago</small>
+                </Card.Footer>*/}
+              </Card>
+              <Card>
+                <Card.Body>
+                  <Card.Title>Limit Your Risk Exposure</Card.Title>
+                  <Card.Text>
+                    Stay safe by finding a small group of other children to study or play with.{' '}
+                  </Card.Text>
+                </Card.Body>
+                <Card.Img variant="bottom" src="/static/img/benefits2.jpg" />
+                {/*<Card.Footer>
+                  <small className="text-muted">Last updated 3 mins ago</small>
+                </Card.Footer>*/}
+              </Card>
+              <Card>
+                <Card.Body>
+                  <Card.Title>Gain Social Interaction</Card.Title>
+                  <Card.Text>
+                    Social interaction is important for children to meet developmental milestones.
+                  </Card.Text>
+                </Card.Body>
+                <Card.Img variant="bottom" src="/static/img/benefits3.jpg" />
+                {/*<Card.Footer>
+                  <small className="text-muted">Last updated 3 mins ago</small>
+                </Card.Footer>*/}
+              </Card>
+            </CardDeck>
+          </Col>
+        </Row>  
+      </Container>
     </div>
   );
 }
 
 
-
-
 function HomeContainer() {
 
   const [linkStatus, setLinkStatus] = React.useState("find_students");
-
   const [originalStatus, setOriginalStatus] = React.useState("active-style;");
   const [oppositeStatus, setOppositeStatus] = React.useState("");
-  
-  console.log("originalStatus, oppositeStatus before render in HomeContainer:", originalStatus, oppositeStatus);
-
 
   const clickStudents = () => {
-
     // alert("clickStudents");
     setLinkStatus("find_students");
     setOriginalStatus("active-style");
     setOppositeStatus("");
     console.log("originalStatus, oppositeStatus, linkStatus after clickstudents:", originalStatus, oppositeStatus, linkStatus);
   }
-
   const clickTeachers = () => {
-
     // alert("clickTeachers");
     setLinkStatus("find_teachers");
     setOriginalStatus("");
     setOppositeStatus("active-style");
     console.log("originalStatus oppositeStatus, linkStatus after clickteachers:", originalStatus, oppositeStatus, linkStatus);
   }
-
-
-
   return (
     <div>
-
       <div className="hero">
         {/*<img src="/static/img/beanstalkhero2.jpg" width="100%" useMap="#heromap"/>*/}
         <map name="heromap">
@@ -1954,11 +1677,9 @@ function HomeContainer() {
           <area shape="rect" id="find-teachers" coords="150,140,300,250" onClick={clickTeachers} alt="FindTeachers"  />
         </map>
       </div>
-      
       <div className="upper-hero-text">
         Engage in distance learning together.
       </div>
-      
       <div>
         <div className="hero-search-options">
           {linkStatus=="find_students"? 
@@ -1970,14 +1691,11 @@ function HomeContainer() {
           {linkStatus=="find_students"? <PodSearch  /> : <TeacherSearch />}
         </div>
       </div>
-      
       <div className="middle-left">
       </div>
-
       <br/>
       <div className="card-deck">
         <Benefits />
-
       </div>
     </div>
   )
