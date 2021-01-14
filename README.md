@@ -40,6 +40,8 @@ Users are brought to a webpage built in React containing an option to log in. Th
 #### List of student pods 
 The parent or teacher can view a list of pods in their selected zipcode. The table data for the pod list is retrieved from the postGres database. The frontend components make Fetch requests to the Flask server routes, which call crud functions written using SQLAlchemy, a python-based ORM.
 
+![alt text](https://github.com/gloryleilani/beanstalksquare1/blob/main/static/readme-img/beanstalk-studentpodlist.gif "Beanstalk Square Student Pod List")
+
 #### Pod details page 
 The parent could choose a student pod from the list and view its details, which includes both student and teacher information. If the parent is interested to learn even more about the pod, he or she may contact the pod's organizer. The data in the messaging form gets sent in a text message to the parents associated with the pod. I built the messaging functionality using Twilio's programmable messaging API. When the message data arrives to the backend, a route extracts the data that got sent from the front-end in JSON format, and a crud function returns the parent mobile phone numbers, which I put into an array for Twilio to use.  
 
