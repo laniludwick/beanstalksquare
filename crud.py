@@ -260,7 +260,7 @@ def get_household_join_code_by_household_id(household_id):
 
 def get_user_by_email(email):
 
-    return db.session.query(Parent).filter(Parent.email==email).first()
+    return db.session.query(Parent).filter(Parent.email==email).first() or db.session.query(Teacher).filter(Teacher.email==email).first()
 
 
 

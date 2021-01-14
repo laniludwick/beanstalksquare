@@ -1,7 +1,9 @@
 // ***** TeacherProfileForm and TeacherProfilePic components *****
 
+const { Button, Form } = ReactBootstrap;
+
 function TeacherProfilePic() {
-  
+
   const history = ReactRouterDOM.useHistory();
   const [selectedFile, setSelectedFile] = React.useState(null); 
   const [dataResult, setDataResult] = React.useState(null);
@@ -11,13 +13,11 @@ function TeacherProfilePic() {
     cloudName: "beanstalksquare",
     uploadPreset: "veumz4ue" },
     (error, data) => {});
-    //console.log("widget.open:", widget.open);
 
   const handleFileChange = evt => {
     const file = evt.target.files[0];
     const fileName = evt.target.files[0].name;
     setSelectedFile(file);
-    //console.log("selectedFile, file in handlefilechange:", selectedFile, file);
     }
   const handleFileUpload = (evt) => {
     evt.preventDefault();
@@ -28,25 +28,26 @@ function TeacherProfilePic() {
     fetch('/api/profile_pic_teacher', {
       method: 'POST', 
       body: formData,
-    }) 
+    })
     .then(response => response.json())
     .then(data => {
+      console.log("Result of .then data:", data);
       // alert("You received a response, but need to read it.")
       setDataResult(data);
+      localStorage.setItem("user_img", data);
     }); 
     // .catch(err => 
     //   console.log("Error caught:", err)
     // ); //Close catch  
   } 
+
   return ( 
     <Form>
-      <Form.Group>
-        <br/>
+      <Form.Group><br/>
     {/*    <Button id="opener" label="Your Profile Photo" name="profile-pic" onClick={widget.open} >Upload photo</Button>*/}
         {/*<Form.File />*/}
         {/*<br/>*/}
         {/*{selectedFile ? <div>Currently: {selectedFile.name}.</div>:<Button variant="primary" onClick={handleFileUpload} type="submit">Upload Photo</Button>} */}
-        
         {selectedFile ? 
         <div>
           Currently: {selectedFile.name}
@@ -63,7 +64,7 @@ function TeacherProfilePic() {
           </label>
         </div>
         }
-        {/*{selectedFile ? null: <div>Currently selected: None</div>}*/}
+        {/*{selectedFile ? null: <div>Currently selected: None</div>}*/} 
       </Form.Group>
     </Form>
   );
@@ -74,6 +75,8 @@ function TeacherProfileForm() {
   
   const history = ReactRouterDOM.useHistory();
   const user_email = localStorage.getItem("user_email");
+  const user_img = localStorage.getItem("user_img");
+
   const [userInputProfile, setUserInputProfile] = React.useReducer(
     (state, newState) => ({...state, ...newState}),
     { 
@@ -90,7 +93,7 @@ function TeacherProfileForm() {
     const newValue = evt.target.value;
     setUserInputProfile({[name]: newValue});
   }
-  const makeProfile = (e) => {
+  const makeProfile = (e) => { 
     e.preventDefault();
     const profileData = {
                         "bio": userInputProfile.teacher_bio,
@@ -98,6 +101,7 @@ function TeacherProfileForm() {
                         "days_of_week": userInputProfile.days_of_week,
                         "teaching_experience_in_hours": userInputProfile.teaching_experience_in_hours,
                         "pay_rate_per_hour": userInputProfile.pay_rate_per_hour,
+                        "img_url": user_img,
                         "user_email": user_email,
                         }
     fetch('/api/profile_teacher', {
@@ -109,28 +113,26 @@ function TeacherProfileForm() {
     })
     .then(response => response.json())
     .then(data => {
+      console.log("Result of .then data:", data);
       // alert("You successfully added to your profile!")
       //setIsLoggedIn("True")
       history.push("/");
     });
   } 
-  return (   
+  
+  return ( 
     <div className="entry-form-wrapper">
     <br/><h3>Adding to your profile helps families find you.</h3>
-    <hr />
-      <TeacherProfilePic />
-    <hr />
-    <br/>
+    <hr/><TeacherProfilePic /><hr/><br/>
     <Form>
       <Form.Group controlId="formBio">
-        {/*<Form.Control type="textarea" rows="3" placeholder="Bio" value={userInputProfile.teacher_bio} name="teacher_bio" onChange={handleChange}/> */}
         <textarea className="form-control" placeholder="Bio" rows="3" value={userInputProfile.teacher_bio} name="teacher_bio" onChange={handleChange}></textarea>
       </Form.Group>
       <Form.Group controlId="formZipcode">
         <Form.Control type="text" placeholder="Zipcode" value={userInputProfile.zipcode} name="zipcode" onChange={handleChange}/> 
       </Form.Group>
       <Form.Group controlId="formPreferredDaysOfWeek">
-        <Form.Control type="text" placeholder="Preferred Days of Week (e.g. 'Mon-Fri')" value={userInputProfile.days_of_week} name="days_of_week" onChange={handleChange}/> 
+        <Form.Control type="text" placeholder="Preferred Days of Week (e.g. 'Mon-Fri')" value={userInputProfile.days_of_week} name="days_of_week" onChange={handleChange}/>
       </Form.Group>
       <Form.Group controlId="TeachingExperience">
         <Form.Control type="text" placeholder="Teaching Experience (total hours)" value={userInputProfile.teaching_experience_in_hours} name="teaching_experience_in_hours" onChange={handleChange}/> 

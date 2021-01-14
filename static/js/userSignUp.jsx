@@ -1,6 +1,10 @@
 // ***** SignUpParties, TeacherSignUpForm, and ParentSignUpForm components *****
 
+const Link =  ReactRouterDOM.Link;
+const { Button, Col, Container, Form, Row } = ReactBootstrap;
+
 function SignUpParties () {
+
   return (
   <Container className="linen-background">
     <Row>
@@ -41,8 +45,9 @@ function SignUpParties () {
   )
 }
 
+
 function TeacherSignUpForm(props) {
-  
+
   const history = ReactRouterDOM.useHistory();
   const [userInputSignUp, setUserInputSignUp] = React.useReducer(
     (state, newState) => ({...state, ...newState}),
@@ -79,13 +84,13 @@ function TeacherSignUpForm(props) {
       if (data.access_token){
         localStorage.setItem("user", data.access_token);
         localStorage.setItem("useremail", userInputSignUp.signupemail);
-        // alert("You are now logged in!");
-        //console.log("props in loginform function post-response:", props);
+        //alert("You are now logged in!");
         props.setLoggedInStatus("True");
         history.push("/profile_teacher");
       }
     }); 
   } 
+
   return ( 
     <div className="entry-form-wrapper">
     <h3>Try Beanstalk Square today!</h3>
@@ -147,12 +152,13 @@ function ParentSignUpForm(props) {
       if (data.access_token){
         localStorage.setItem("user", data.access_token);
         localStorage.setItem("useremail", userInputSignUp.signupemail);
-        // alert("You are now logged in!");
+        alert("You are now logged in!");
         props.setLoggedInStatus("True");
         history.push("/dashboard");
       }
     }); 
   }
+
   return ( 
     <div className="entry-form-wrapper">
     <h3>Try Beanstalk Square today!</h3>

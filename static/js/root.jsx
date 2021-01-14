@@ -12,7 +12,7 @@ const { Badge, Button, Col, Container, CardDeck, Card, ListGroup, ListGroupItem,
 
 //import './site.css';
 //import { PodSearch, TeacherSearch } from './searchForm';
-//import LogInForm from './userAuth';
+//import { LogInForm } from './userAuth';
 
 function ContactTeacher() {
   
@@ -1593,10 +1593,10 @@ function TeacherSearch(props) {
     </div>
     ); //Close return of HTML in PodSearch function.
   } //Close the entire PodSearch function.
-    
 
 
 function Benefits() {
+  
   return (
     <div className="card-deck-exterior-padding">
       <Container fluid>
@@ -1655,19 +1655,16 @@ function HomeContainer() {
   const [oppositeStatus, setOppositeStatus] = React.useState("");
 
   const clickStudents = () => {
-    // alert("clickStudents");
     setLinkStatus("find_students");
     setOriginalStatus("active-style");
     setOppositeStatus("");
-    console.log("originalStatus, oppositeStatus, linkStatus after clickstudents:", originalStatus, oppositeStatus, linkStatus);
   }
   const clickTeachers = () => {
-    // alert("clickTeachers");
     setLinkStatus("find_teachers");
     setOriginalStatus("");
     setOppositeStatus("active-style");
-    console.log("originalStatus oppositeStatus, linkStatus after clickteachers:", originalStatus, oppositeStatus, linkStatus);
   }
+
   return (
     <div>
       <div className="hero">
@@ -1702,650 +1699,46 @@ function HomeContainer() {
 }
 
 
-
-
-function TeacherProfilePic() {
-  
-  const history = ReactRouterDOM.useHistory();
-
-  const [selectedFile, setSelectedFile] = React.useState(null); 
-  const [dataResult, setDataResult] = React.useState(null);
-
-  const user_email = localStorage.getItem("user_email");
-
-  
-   
-
-  let widget = window.cloudinary.createUploadWidget({
-
-    cloudName: "beanstalksquare",
-    uploadPreset: "veumz4ue" },
-
-    (error, data) => {});
-    console.log("widget:", widget);
-    console.log("widget.open:", widget.open);
-  
-  
-  const handleFileChange = evt => {
-
-    const file = evt.target.files[0];
-    const fileName = evt.target.files[0].name;
-
-    setSelectedFile(file);
-    console.log("selectedFile", selectedFile);
-    console.log("file in handlefilechange:",file);
-    }
-  
-  
-  const handleFileUpload = (evt) => {
-    
-    evt.preventDefault();
-    console.log("This is inside the handleFileUpload arrow function!");
-    
-    const formData = new FormData();
-    console.log("Form data:", formData);
-    console.log("selectedFile:", selectedFile)
-    console.log("selectedFile:", {"hi": selectedFile});
-    formData.append('file', selectedFile);
-    formData.append('email', user_email);
-  
-    //console.log("Stringified selected File data:", JSON.stringify(formData));
-  
-  
-    fetch('/api/profile_pic_teacher', {
-      method: 'POST', 
-      body: formData,
-      
-    })
-    
-    .then(response => response.json())
-    .then(data => {
-      console.log("Result of .then data:", data);
-      // alert("You received a response, but need to read it.")
-      setDataResult(data);
-      console.log("dataResult in profile pic func:", dataResult);
-      localStorage.setItem("user_img", data);
-    }); 
-    // .catch(err => 
-    //   console.log("Error caught:", err)
-    // ); //Close catch  
-  } //Close handleFileUpload function
-  
-
-  
-  return ( 
-   
- 
-    <Form>
-      <Form.Group>
-        <br/>
-    {/*    <Button id="opener" label="Your Profile Photo" name="profile-pic" onClick={widget.open} >Upload photo</Button>*/}
-        {/*<Form.File />*/}
-        {/*<br/>*/}
-        {/*{selectedFile ? <div>Currently: {selectedFile.name}.</div>:<Button variant="primary" onClick={handleFileUpload} type="submit">Upload Photo</Button>} */}
-        
-        {selectedFile ? 
-        <div>
-          Currently: {selectedFile.name}
-          <br/>
-          <br/>
-          <Button variant="primary" onClick={handleFileUpload} type="submit"> Upload Selected File</Button> or <label className="bold" id="profile-pic-button" >
-          <Form.File id="opener" label="Change File" name="profile-pic" onChange={handleFileChange} hidden />
-          </label> 
-          
-
-        </div>
-        : 
-        <div>
-          <p>Please select a profile photo.</p>
-          <label className="btn btn-secondary" id="profile-pic-button" >
-            <Form.File id="opener" label="Browse Files" name="profile-pic" onChange={handleFileChange} hidden />
-          </label>
-        </div>
-        }
-        {/*{selectedFile ? null: <div>Currently selected: None</div>}*/}
-
-
-        
-      </Form.Group>
-    </Form>
-
-  );
-}
-
-
-
-
-
-function TeacherProfileForm() {
-  
-  const history = ReactRouterDOM.useHistory();
-  
-  const user_email = localStorage.getItem("user_email");
-  const user_img = localStorage.getItem("user_img");
-
-  const [userInputProfile, setUserInputProfile] = React.useReducer(
-    (state, newState) => ({...state, ...newState}),
-
-    { 
-    bio: "",
-    zipcode: "",
-    days_of_week: "",
-    teaching_experience_in_hours: "",
-    pay_rate_per_hour: "",
-    
-    //covid_risk_profile: "",
-    }
-  );
-
-  const handleChange = evt => {
-    const name = evt.target.name;
-    const newValue = evt.target.value;
-    setUserInputProfile({[name]: newValue});
-    
-    console.log("name:", name);
-    console.log("newValue:", newValue);
-    console.log("userInputProfile:", userInputProfile);
-  }
-
-  const makeProfile = (e) => {
-    
-    e.preventDefault();
-    console.log("This is inside the makeProfile arrow function!");
-    
-    const profileData = {
-                        "bio": userInputProfile.teacher_bio,
-                        "zipcode": userInputProfile.zipcode,
-                        "days_of_week": userInputProfile.days_of_week,
-                        "teaching_experience_in_hours": userInputProfile.teaching_experience_in_hours,
-                        "pay_rate_per_hour": userInputProfile.pay_rate_per_hour,
-                        "img_url": user_img,
-                        "user_email": user_email,
-                        }
-    
-    console.log("profile data from form:", profileData);
-    console.log("Stringified profile data:", JSON.stringify(profileData));
-
-    fetch('/api/profile_teacher', {
-      method: 'POST', 
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(profileData),
-    })//Close fetch
-
-    .then(response => response.json())
-    .then(data => {
-      console.log("Result of .then data:", data);
-      // alert("You successfully added to your profile!")
-      //setIsLoggedIn("True")
-      history.push("/");
-    }); //Close .then
-    
-  } //Close makeProfile function
-
-  
-  return ( 
-   
-    <div className="entry-form-wrapper">
-
-     <br/>
-     <h3>Adding to your profile helps families find you.</h3>
-     <hr />
-     <TeacherProfilePic />
-     <hr />
-     <br/>
-    <Form>
-      <Form.Group controlId="formBio">
-        {/*<Form.Control type="textarea" rows="3" placeholder="Bio" value={userInputProfile.teacher_bio} name="teacher_bio" onChange={handleChange}/> */}
-        <textarea className="form-control" placeholder="Bio" rows="3" value={userInputProfile.teacher_bio} name="teacher_bio" onChange={handleChange}></textarea>
-      </Form.Group>
-
-      <Form.Group controlId="formZipcode">
-        <Form.Control type="text" placeholder="Zipcode" value={userInputProfile.zipcode} name="zipcode" onChange={handleChange}/> 
-      </Form.Group>
-
-      <Form.Group controlId="formPreferredDaysOfWeek">
-        <Form.Control type="text" placeholder="Preferred Days of Week (e.g. 'Mon-Fri')" value={userInputProfile.days_of_week} name="days_of_week" onChange={handleChange}/> 
-      
-      </Form.Group>
-
-      <Form.Group controlId="TeachingExperience">
-        <Form.Control type="text" placeholder="Teaching Experience (total hours)" value={userInputProfile.teaching_experience_in_hours} name="teaching_experience_in_hours" onChange={handleChange}/> 
-      </Form.Group>
-
-      <Form.Group controlId="PayRatePerHour">
-        <Form.Control type="number" placeholder="Pay Rate per Hour" value={userInputProfile.pay_rate_per_hour} name="pay_rate_per_hour" onChange={handleChange}/> 
-      </Form.Group>
-
-      <Button variant="primary" onClick={makeProfile} type="submit">Update Profile</Button> 
-    </Form>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-  </div>
-
-  );
-}
-    
-
-
-function TeacherSignUpForm(props) {
-  
-  const history = ReactRouterDOM.useHistory();
-  const [userInputSignUp, setUserInputSignUp] = React.useReducer(
-    (state, newState) => ({...state, ...newState}),
-
-    {
-    fname: "",
-    lname: "",
-    email: "",
-    password: "",
-    
-    }
-  );
-
-  const handleChange = evt => {
-    const name = evt.target.name;
-    const newValue = evt.target.value;
-    setUserInputSignUp({[name]: newValue});
-    
-    console.log("name:", name);
-    console.log("newValue:", newValue);
-    console.log("userInputSignUp:", userInputSignUp);
-  }
-
-  const makeSignUp = (e) => {
-    
-    e.preventDefault();
-    console.log("This is inside the makeSignUp arrow function!");
-    
-    const signUpData = {"fname": userInputSignUp.fname, 
-                        "lname": userInputSignUp.lname,
-                        "signupemail": userInputSignUp.signupemail,
-                        "signuppassword": userInputSignUp.signuppassword,      
-                        }
-
-    console.log("SignUp data from form:", signUpData);
-    console.log("Stringified sign up data:", JSON.stringify(signUpData));
-
-    localStorage.setItem("user_email", userInputSignUp.signupemail);
-
-    fetch('/api/signup_teacher', {
-      method: 'POST', 
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(signUpData),
-    })//Close fetch
-
-    .then(response => response.json())
-    .then(data => {
-      console.log("Result of .then data:", data);
-      if (data.access_token){
-        localStorage.setItem("user", data.access_token);
-        localStorage.setItem("useremail", userInputSignUp.signupemail);
-        console.log("***************set item useremail:", userInputSignUp.signupemail);
-        console.log("***************get item useremail:", localStorage.getItem("useremail"));
-        // alert("You are now logged in!");
-        console.log("***************props in loginform function post-response:", props);
-        props.setLoggedInStatus("True");
-        
-        history.push("/profile_teacher");
-    }}); //Close .then
-    
-  } //Close makeSignUp function
-
-
-
-  return ( 
-   
-    <div className="entry-form-wrapper">
-     <h3>Try Beanstalk Square today!</h3>
-     <hr />
-     <br/>
-    <Form>
-      <Form.Group controlId="formFirstName">
-      
-        <Form.Control type="text" placeholder="First Name" value={userInputSignUp.fname} name="fname" onChange={handleChange}/> 
-      </Form.Group>
-
-      <Form.Group controlId="formLastName">
-
-        <Form.Control type="text" placeholder="Last Name" value={userInputSignUp.lname} name="lname" onChange={handleChange}/> 
-      </Form.Group>
-
-      <Form.Group controlId="formBasicEmail">
-
-        <Form.Control type="text" placeholder="Enter email" value={userInputSignUp.signupemail} name="signupemail" onChange={handleChange}/> 
-        <Form.Text className="text-muted">We'll never share your email with anyone else.</Form.Text>
-      </Form.Group>
-
-      <Form.Group controlId="formBasicPassword">
-
-        <Form.Control type="password" placeholder="Password" value={userInputSignUp.signuppassword} name="signuppassword" onChange={handleChange}/> 
-      </Form.Group>
-
-      <Button variant="primary" onClick={makeSignUp} type="submit">Complete Sign Up</Button> 
-    </Form>
-  </div>
-
-  );
-}
-
-
-
-
-function ParentSignUpForm(props) {
-  
-  const history = ReactRouterDOM.useHistory();
-  const [userInputSignUp, setUserInputSignUp] = React.useReducer(
-    (state, newState) => ({...state, ...newState}),
-
-    {
-    fname: "",
-    lname: "",
-    email: "",
-    password: "",
-    }
-  );
-
-  const handleChange = evt => {
-    const name = evt.target.name;
-    const newValue = evt.target.value;
-    setUserInputSignUp({[name]: newValue});
-    
-    console.log("name:", name);
-    console.log("newValue:", newValue);
-    console.log("userInputSignUp:", userInputSignUp);
-  }
-
-  const makeSignUp = (e) => {
-    
-    e.preventDefault();
-    console.log("This is inside the makeSignUp arrow function!");
-    
-    const signUpData = {"fname": userInputSignUp.fname, 
-                        "lname": userInputSignUp.lname,
-                        "signupemail": userInputSignUp.signupemail,
-                        "signuppassword": userInputSignUp.signuppassword,
-                        }
-
-                
-    console.log("SignUp data from form:", signUpData);
-    console.log("Stringified sign up data:", JSON.stringify(signUpData));
-
-    fetch('/api/signup_parent', {
-      method: 'POST', 
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(signUpData),
-    })//Close fetch
-
-    .then(response => response.json())
-    .then(data => {
-      console.log("Result of .then data:", data);
-      if (data.access_token){
-        localStorage.setItem("user", data.access_token);
-        localStorage.setItem("useremail", userInputSignUp.signupemail);
-        console.log("***************set item useremail:", userInputSignUp.signupemail);
-        console.log("***************get item useremail:", localStorage.getItem("useremail"));
-        // alert("You are now logged in!");
-        console.log("***************props in loginform function post-response:", props);
-        props.setLoggedInStatus("True");
-        history.push("/dashboard");
-    }}); //Close .then
-  }
-
-
-
-  return ( 
-   
-   <div className="entry-form-wrapper">
-     <h3>Try Beanstalk Square today!</h3>
-     <hr />
-     <br/>
-    <Form>
-      <Form.Group controlId="formFirstName">
-      
-        <Form.Control type="text" placeholder="First Name" value={userInputSignUp.fname} name="fname" onChange={handleChange}/> 
-      </Form.Group>
-
-      <Form.Group controlId="formLastName">
-
-        <Form.Control type="text" placeholder="Last Name" value={userInputSignUp.lname} name="lname" onChange={handleChange}/> 
-      </Form.Group>
-
-      <Form.Group controlId="formBasicEmail">
-
-        <Form.Control type="email" placeholder="Enter email" value={userInputSignUp.signupemail} name="signupemail" onChange={handleChange}/> 
-        <Form.Text className="text-muted">We'll never share your email with anyone else.</Form.Text>
-      </Form.Group>
-
-      <Form.Group controlId="formBasicPassword">
-
-        <Form.Control type="password" placeholder="Password" value={userInputSignUp.signuppassword} name="signuppassword" onChange={handleChange}/> 
-      </Form.Group>
-
-      <Button className="btn btn-primary" variant="primary" onClick={makeSignUp} type="submit">Complete Sign Up</Button> 
-    </Form>
-  </div>
-    
-  );  
-}
-
-
-function LogInForm(props) {
-
-  const [loginemail, setLoginEmail] = React.useState("");
-  const [loginpassword, setLoginPassword] = React.useState("");
-  const history = ReactRouterDOM.useHistory(); 
-
-  function handleEmailChange(event) {
-    setLoginEmail(event.target.value);
-    
-  }
-
-  function handlePasswordChange(event) {
-  
-    setLoginPassword(event.target.value);
-  }
-
-  const attemptLogIn = (e) => {
-    
-    e.preventDefault();
-    console.log("This is inside the attemptLogIn arrow function!");
-    
-    const logInData = {
-                        "loginemail": loginemail,
-                        "loginpassword": loginpassword,
-                        }
-
-                
-    console.log("LogIn data from form:", logInData);
-    console.log("Stringified sign up data:", JSON.stringify(logInData));
-
-    fetch('/api/login', {
-      method: 'POST', 
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(logInData),
-    })//Close fetch
-
-    .then(response => response.json())
-    .then(data => {
-      console.log("Result of .then data:", data);
-      if (data.access_token){
-        localStorage.setItem("user", data.access_token);
-        localStorage.setItem("useremail", logInData["loginemail"]);
-        console.log("***************set item useremail:", logInData["loginemail"]);
-        console.log("***************get item useremail:", localStorage.getItem("useremail"));
-        
-        console.log("***************props in loginform function post-response:", props);
-        props.setLoggedInStatus("True");
-        history.push("/dashboard");
-      }
-      else{
-        alert("Incorrect email address or password. Please try again.")
-      }
-
-    }); //Close .then
-  }
-    
-   
-
-  return ( 
-    <div className="entry-form-wrapper">
-      <br/>
-      <h3>Welcome, back!</h3>
-      {/*<hr />*/}
-      <br/>
-      <Form onSubmit={attemptLogIn} >
-        <Form.Group controlId="formBasicEmail">
-         
-          <Form.Control type="email" placeholder="Enter Email Address" value={loginemail} name="loginemail" onChange={handleEmailChange}/> 
-        </Form.Group>
-
-        <Form.Group controlId="formBasicPassword">
-         
-          <Form.Control type="password" placeholder="Password" value={loginpassword} name="loginpassword" onChange={handlePasswordChange}/> 
-        </Form.Group>
-
-        <Button className="btn btn-primary" type="submit">Submit</Button> 
-      </Form>
-  </div>
-  );
-      
-  
-} //Close the entire LogIn Function
-
-
-
-function SignUpParties () {
-
-  return (
-  <Container className="linen-background">
-    <Row>
-    <br/>
-    <br/>
-    <Row/>
-    <h3 className="centered-header">Let's get started! Please choose an option. </h3>
-    </Row>
-    <br/>
-    <Row xs="12">
-      
-      <Col> </Col>
-      <Col> </Col>
-      <Col> </Col>
-      <Col xs="4">
-        <div className="rounded outline-card" id="sign-up-1"> 
-          <h3>I'm a parent</h3>
-            <p>Looking for students or a teacher.</p>
-            <div >
-            <Link key={1} to="/signup_parent" className="btn btn-primary" > Begin</Link>
-            </div>
-        </div>
-      </Col>
-      
-      <Col> </Col>
-      <Col> </Col>
-      <Col xs="4">
-        <div className="rounded outline-card" id="sign-up-2">
-          <h3>I'm a teacher </h3>
-            <p>Looking for students to teach.</p>
-            <div>
-            <Link key={2} to="/signup_teacher" className="btn btn-primary" >Begin</Link> 
-            </div>
-        </div>
-      </Col>
-      <Col> </Col>
-      <Col> </Col>
-      <Col> </Col>
-
-    {/*<div className = "two-containers" >
-    <br/>
-    
-      <div className="row">
-        <div className = "col-3 bg-white rounded"> 
-          <div className="outline-card" id="sign-up-1">
-            
-          </div>
-          </div>
-          <br/>
-          
-        </div>
-
-        <div className="col-3 bg-white rounded"> 
-          <div className="outline-card" id="sign-up-2">
-            
-          </div>
-          </div>
-          <br/>
-          
-        </div>
-      </div>
-    </div>  */}
-    </Row>
-  </Container>
-  )
-}
-
-
-
 function GlobalNavigationBar(props) {
-  console.log("props in Global nav:******", props)
-  
+  //console.log("props in Global nav:******", props)
   let location = ReactRouterDOM.useLocation();
-  console.log("location pathname:", location.pathname);
+  //console.log("location pathname:", location.pathname);
   const [justLoggedOut, setJustLoggedOut] = React.useState(false);
   
-
   function LogOut(event) {
-
-    console.log("***************local storage user islogged in before removal:", localStorage);
+    //console.log("***************local storage user islogged in before removal:", localStorage);
     localStorage.removeItem("user");
-    console.log("***************local storage user islogged in after removal:", localStorage);
-
-    // alert("You are now logged out of your account.");
+    //console.log("***************local storage user islogged in after removal:", localStorage);
+    alert("You are now logged out of your account.");
     props.setLoggedInStatus();
     setJustLoggedOut(true);
-
   }
 
-  function AlertLoggedOut() {
-    
-    const [show, setShow] = React.useState(true);
+  // function AlertLoggedOut() {
 
-    if (show) {
-      return (
-
-      <Alert variant="success" onClose={() => setShow(false)} dismissible>>
-        {/*<Alert.Heading>Hey, nice to see you</Alert.Heading>*/}
-        <p>
-          You are now logged out of your account.
-        </p>
-        {/*<hr />
-        <p className="mb-0">
-          Whenever you need to, be sure to use margin utilities to keep things nice
-          and tidy.
-        </p>*/}
-      </Alert>
-    );
-  }}
+  //   const [show, setShow] = React.useState(true);
+  //   if (show) {
+      
+  //     return (
+  //     <Alert variant="success" onClose={() => setShow(false)} dismissible>>
+  //       {/*<Alert.Heading>Hey, nice to see you</Alert.Heading>*/}
+  //       <p>You are now logged out of your account.</p>
+  //       {/*<hr />
+  //       <p className="mb-0">
+  //         Whenever you need to, be sure to use margin utilities to keep things nice
+  //         and tidy.
+  //       </p>*/}
+  //     </Alert>
+  //   );
+  // }}
 
   return (
-
     <div> 
       <Navbar bg="none" variant="light">
       <Navbar.Brand href="#home"><img src="static/img/beanstalksquarelogo.png" width="270px" height="40px"/></Navbar.Brand>
       <Nav className="navbar-nav ml-auto">
-      
       <Form inline >
         {/*<FormControl type="text" placeholder="Search" className="mr-sm-2" /> */}
-            
             {/*{props.isLoggedIn==="True"? 
             [<Link key={1} to="/" onClick={LogOut} className="btn bg-transparent nav-links nav-item" variant="btn-secondary" > Log Out </Link>]
             : [<Link key={1} to="/login" className="btn nav-links nav-item" variant="btn-secondary"> Log In </Link>, 
@@ -2357,118 +1750,81 @@ function GlobalNavigationBar(props) {
             [<Link key={1} to="/login" className="btn nav-links nav-item" variant="btn-secondary"> Log In </Link>] : 
             location.pathname==="/login" ? [<Link key={2} to="/signup" className="btn btn-primary nav-links nav-item" variant="btn-primary"> Sign Up </Link>] 
             :[<Link key={1} to="/login" className="btn nav-links nav-item" variant="btn-secondary"> Log In </Link>, 
-            <Link key={2} to="/signup" className="btn btn-primary nav-links nav-item" variant="btn-primary"> Sign Up </Link>]}
-            
+            <Link key={2} to="/signup" className="btn btn-primary nav-links nav-item" variant="btn-primary"> Sign Up </Link>]} 
         {/*<Button variant="outline-primary">Search</Button> */}
       </Form>
-      
       </Nav>
-      
   {/*    <Nav className="navbar-nav ml-auto">
       <Nav.Link href="#deets" className="nav-item" >More deets</Nav.Link>
       </Nav>*/}
       </Navbar>
-        
     {/*  {justLoggedOut?  <AlertLoggedOut/>: null}  */}
-
       <Switch>
-              
         <Route exact path="/podlist" component={PodList}>
         </Route>  
-
         <Route path="/signup" component={SignUpParties}>
         </Route>  
-
         <Route path="/signup_parent">
           <ParentSignUpForm setLoggedInStatus={props.setLoggedInStatus}/>
         </Route>  
-
         <Route path="/signup_teacher"> 
           <TeacherSignUpForm setLoggedInStatus={props.setLoggedInStatus} />
         </Route> 
-
         <Route path="/profile_teacher">
           <TeacherProfileForm />
         </Route>
-
-
-
         <Route path="/dashboard">
           <HomeContainer />
         </Route>
-
         <Route path="/login">
           <LogInForm setLoggedInStatus={props.setLoggedInStatus} />
         </Route>
-
         <Route path="/logout">
           <LogOut />
         </Route>
-
         <Route path="/createpod">
         <CreatePod /> 
         </Route>
-
         <Route path ="/contactpodorganizer/:podId">
         <ContactPodOrganizer />
         </Route>
-
         <Route path ="/contactteacher/:teacherId">
         <ContactTeacher />
         </Route>
-
         <Route path="/podlist/:zipcode">
         <PodList isLoggedIn={props.isLoggedIn}/>
         </Route>
-
         <Route path="/teacherlist/:zipcode">
         <TeacherList isLoggedIn={props.isLoggedIn}/>
         </Route>
-
         <Route path="/poddetails/:podId">
         <PodDetailsContainer isLoggedIn={props.isLoggedIn}/> 
         </Route>
-
         <Route path="/teacherdetails/:teacherId">
         <TeacherDetails isLoggedIn={props.isLoggedIn}/> 
         </Route>
-
-
         <Route path="/">
           <HomeContainer />
         </Route>
-
       </Switch>
-
     </div>
-
     );
   }
 
 
-  
-
 function App() {
-    
-    //Use logic to determine if the user is logged in or not
 
   const [isLoggedIn, setIsLoggedIn] = React.useState("False");
   const [hasJustLoggedIn, setHasJustLoggedIn] = React.useState("False");
-  
   const setLoggedInStatus = () => { 
-
     let loggedInStatus = localStorage.getItem('user')? "True" : "False";
-
-    console.log("***************local storage user loggedInStatus:", loggedInStatus);
-
+    //console.log("***************local storage user loggedInStatus:", loggedInStatus);
     if (loggedInStatus !=null) {
-      console.log("*******setislogged in prior to setting it to loggedInStatus:", loggedInStatus)
+      //console.log("*******setislogged in prior to setting it to loggedInStatus:", loggedInStatus)
       setIsLoggedIn(loggedInStatus);
     }
-
   }
 
-  
   return (
     <div>
       <Router>
@@ -2480,19 +1836,13 @@ function App() {
                                 hasJustLoggedIn={hasJustLoggedIn}
                                 />
         </div>
-      </Router>
-      <br/>
-      <br/>
-      <div className="footer">
-        <br/>
-        <p className="footer-padding">© 2020 Copyright: Beanstalk Square.<br/>
-        All rights reserved.</p>
+      </Router><br/><br/>
+      <div className="footer"><br/>
+        <p className="footer-padding">© 2020 Copyright: Beanstalk Square.<br/>All rights reserved.</p>
       </div>
     </div>
-
   );
 }
-
 
 ReactDOM.render(
   <App />, document.querySelector('#root')

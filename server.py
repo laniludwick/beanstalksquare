@@ -430,17 +430,18 @@ def process_login():
     print("Email to login:", email)
     print("Password to login:", password)
 
-    if ((crud.get_user_by_email(email))=="undefined"):
+    if ((crud.get_user_by_email(email))== None):
         return jsonify({"msg": "Unrecognized email or password"})
        
     else:
-        parent = crud.get_user_by_email(email)
-        print("Parent from crud get user by email:", parent)
+        user = crud.get_user_by_email(email)
+        print("user check:", user)
+        print("Parent from crud get user by email:", user)
 
-        if (parent.email != email) or (parent.password != password):  
+        if (user.email != email) or (user.password != password):  
             return jsonify({"msg": "Bad email or password"})
     
-        access_token = create_access_token(identity=parent.email)
+        access_token = create_access_token(identity=user.email)
         print("******Access token:", access_token)
         
         return jsonify({"access_token": access_token})
