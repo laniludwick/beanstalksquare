@@ -1,7 +1,6 @@
 """Models for Beanstalk Square app."""
 
 from flask_sqlalchemy import SQLAlchemy
-#import crud
 import os
 
 db = SQLAlchemy()
@@ -160,13 +159,12 @@ class Pod_Location(db.Model):
     city = db.Column(db.String(50))
     state = db.Column(db.String(50))
     zipcode = db.Column(db.String(50))
-    day_of_week = db.Column(db.String(50)) #Note- this is an enum
+    day_of_week = db.Column(db.String(50)) 
     
     pod = db.relationship('Pod')
 
     def __repr__(self):
         return f'<Pod_Location pod_location_id={self.pod_location_id} street_address={self.street_address}>'
-
 
 
 class Covid_Risk_Profile(db.Model):
@@ -176,7 +174,7 @@ class Covid_Risk_Profile(db.Model):
 
     covid_risk_profile_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     scale_value = db.Column(db.String(50))
-    scale_description = db.Column(db.String) #This is an enum
+    scale_description = db.Column(db.String) 
 
     household = db.relationship('Household')
     pod = db.relationship('Pod')
@@ -231,7 +229,6 @@ class Grade(db.Model):
         return f'<Grade grade_id={self.grade_id} grade_name={self.grade_name}>'
 
 
-
 class School(db.Model):
     """A child's school name."""
 
@@ -249,9 +246,5 @@ class School(db.Model):
 if __name__ == '__main__':
     from server import app
 
-    # Call connect_to_db(app, echo=False) if your program output gets
-    # too annoying; this will tell SQLAlchemy not to print out every
-    # query it executes.
-
-    connect_to_db(app)
+    connect_to_db(app, echo=True)
 

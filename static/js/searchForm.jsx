@@ -1,18 +1,18 @@
 // ***** PodSearch and TeacherSearch components used during zipcode search on landing page *****
 
+const { Button, Form } = ReactBootstrap;
+
 function PodSearch(props) {
 
   const [zipcode, setZipcode] = React.useState("");
-  const history = ReactRouterDOM.useHistory(); //Not needed
+  const history = ReactRouterDOM.useHistory(); 
 
   function handleChange(event) {
     setZipcode(event.target.value);
   }
 
   function handleSubmit(event) {
-    //alert (`We're looking in zipcode: `+ zipcode);
     event.preventDefault();
-    //Want to redirect to route.
     history.push(`/podlist/${zipcode}`); 
   }
 
@@ -32,16 +32,14 @@ function PodSearch(props) {
 function TeacherSearch(props) {
 
   const [zipcode, setZipcode] = React.useState("");
-  const history = ReactRouterDOM.useHistory(); //Not needed
+  const history = ReactRouterDOM.useHistory(); 
 
   function handleChange(event) {
     setZipcode(event.target.value);
   }
 
   function handleSubmit(event) {
-    //alert (`We're looking in zipcode: `+ zipcode);
     event.preventDefault();
-    //Want to redirect to route.
     history.push(`/teacherlist/${zipcode}`); 
   }
 
