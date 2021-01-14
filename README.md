@@ -3,12 +3,13 @@ Beanstalk Square was a project I built during Hackbright's full-stack software e
 
 I wrote this single page app's frontend using React and the backend using Python with Flask as the web framework. Beanstalk Square includes features such as a zipcode-based search yielding a list of student pods or teachers, detailed pod and teacher profile views, an ability to create new pods, and an ability to send messages to pod organizers or teachers.
 
+# <img src="/static/img/beanstalksquare-intro.png" width="100%" alt="Beanstalk Square Intro">
+
 ## Deployment
 http://www.beanstalksquare.com
 
 ## About the Developer
 Lani graduated from Stanford University with a B.S. in Industrial Engineering and a M.A. in Sociology with a focus on "Organizations, Business and the Economy." She worked in real estate private equity investing in New York for several years and grew determined to help modernize the industry. She joined a startup in San Francisco building an online investment marketplace and became a product manager. She later joined a B2B SaaS company selling a CRM, an end-user portal, and investment management products. In her product management roles, Lani enjoyed deciding which products to build and why, but she grew increasingly interested in how to build the products, which led her to software engineering.
-
 
 ## Contents
 * [Tech Stack](#tech-stack)
@@ -30,6 +31,8 @@ Lani graduated from Stanford University with a B.S. in Industrial Engineering an
 * Bootstrap
 * APIs used: Google Maps Javascript API including the geocoding service, Cloudinary’s image upload API, and Twilio’s programmable messaging API.
 
+# <img src="/static/img/beanstalksquare-techstack.png" width="100%" alt="Beanstalk Square Tech Stack">
+
 ## <a name="features"></a>Features
 
 #### Landing Page
@@ -45,14 +48,22 @@ The parent or teacher can view a list of pods in their selected zipcode. The tab
 #### Pod details page 
 The parent could choose a student pod from the list and view its details, which includes both student and teacher information. If the parent is interested to learn even more about the pod, he or she may contact the pod's organizer. The data in the messaging form gets sent in a text message to the parents associated with the pod. I built the messaging functionality using Twilio's programmable messaging API. When the message data arrives to the backend, a route extracts the data that got sent from the front-end in JSON format, and a crud function returns the parent mobile phone numbers, which I put into an array for Twilio to use.  
 
+![alt text](https://github.com/gloryleilani/beanstalksquare1/blob/main/static/readme-img/beanstalk-studentpoddetails.gif "Beanstalk Square Student Pod Details Page")
+
 #### List of available teachers and teacher profile page
 The parent could choose from the list of available teachers in their area and view the teacher's profile. Teachers may create a profile for themselves so that parents can easily find them. The profile page allows the parent to text message the teacher directly. The messaging functionality uses Twilio's API.  
+
+![alt text](https://github.com/gloryleilani/beanstalksquare1/blob/main/static/readme-img/beanstalk-teacherlist.gif "Beanstalk Square Student Teacher List and Details Pages")
 
 #### Photo upload in teacher's sign-up flow 
 After creating an account on Beanstalk Square, the teacher's sign-up flow allows the teacher to upload a profile photo and a biography as well as other details. The profile photo uses Cloudinary's Upload API.  On the frontend, the Fetch method sends the data containing the file to the backend in a post request. In the server route, the file data is sent to Cloudinary and receives a secure URL in the response which I save to the database.   
 
 #### Ability to create a new pod
 If a parent does not find an existing pod that is a fit for their child, the parent can start a new pod that gets published with its own details. 
+
+#### Ability to text message a teacher or pod organizers 
+If a user would like to contact a teacher or the pod organizers, who are parents in the pod, the user may fill out a contact form which uses Twilio's text-messaging API. 
+
 
 ## <a name="future"></a>The Future of Beanstalk Square
 Possible future features:
