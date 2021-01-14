@@ -3,8 +3,6 @@ Beanstalk Square was a project I built during Hackbright's full-stack software e
 
 I wrote this single page app's frontend using React and the backend using Python with Flask as the web framework. Beanstalk Square includes features such as a zipcode-based search yielding a list of student pods or teachers, detailed pod and teacher profile views, an ability to create new pods, and an ability to send messages to pod organizers or teachers.
 
-# <img src="/static/readme-img/beanstalksquare-intro.png" width="100%" alt="Beanstalk Square Intro">
-
 ## Deployment
 http://www.beanstalksquare.com
 
