@@ -1095,13 +1095,13 @@ function CreatePod() {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(pod),
-    })//Close fetch
+    })
 
     .then(response => response.json())
     .then(data => {
       console.log("Result of .then data response for create pod:", data);
       history.push('/')
-    }); //Close .then
+    }); 
   }
 
   return (
@@ -1725,17 +1725,18 @@ function TeacherProfilePic() {
     console.log("widget:", widget);
     console.log("widget.open:", widget.open);
   
-
+  
   const handleFileChange = evt => {
 
     const file = evt.target.files[0];
     const fileName = evt.target.files[0].name;
 
     setSelectedFile(file);
-    console.log("selectedFile, file in handlefilechange:", selectedFile, file);
-
+    console.log("selectedFile", selectedFile);
+    console.log("file in handlefilechange:",file);
     }
-
+  
+  
   const handleFileUpload = (evt) => {
     
     evt.preventDefault();
@@ -1747,29 +1748,29 @@ function TeacherProfilePic() {
     console.log("selectedFile:", {"hi": selectedFile});
     formData.append('file', selectedFile);
     formData.append('email', user_email);
-    
+  
     //console.log("Stringified selected File data:", JSON.stringify(formData));
-
+  
+  
     fetch('/api/profile_pic_teacher', {
       method: 'POST', 
       body: formData,
       
-    })//Close fetch
-       
+    })
+    
     .then(response => response.json())
     .then(data => {
       console.log("Result of .then data:", data);
       // alert("You received a response, but need to read it.")
       setDataResult(data);
       console.log("dataResult in profile pic func:", dataResult);
-    }); //Close .then
+      localStorage.setItem("user_img", data);
+    }); 
     // .catch(err => 
     //   console.log("Error caught:", err)
     // ); //Close catch  
-
-    //history.push("/");
-    
   } //Close handleFileUpload function
+  
 
   
   return ( 
@@ -1821,6 +1822,7 @@ function TeacherProfileForm() {
   const history = ReactRouterDOM.useHistory();
   
   const user_email = localStorage.getItem("user_email");
+  const user_img = localStorage.getItem("user_img");
 
   const [userInputProfile, setUserInputProfile] = React.useReducer(
     (state, newState) => ({...state, ...newState}),
@@ -1857,6 +1859,7 @@ function TeacherProfileForm() {
                         "days_of_week": userInputProfile.days_of_week,
                         "teaching_experience_in_hours": userInputProfile.teaching_experience_in_hours,
                         "pay_rate_per_hour": userInputProfile.pay_rate_per_hour,
+                        "img_url": user_img,
                         "user_email": user_email,
                         }
     

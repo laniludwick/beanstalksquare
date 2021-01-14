@@ -120,8 +120,8 @@ def update_teacher(email=None, zipcode=None, bio=None,
     teacher.days_of_week=days_of_week
     teacher.teaching_experience_in_hours=teaching_experience_in_hours
     teacher.pay_rate_per_hour=pay_rate_per_hour
-    teacher.img_url=img_url
     teacher.pod_id=pod_id
+    teacher.img_url=img_url
     teacher.covid_risk_profile_id=covid_risk_profile_id
 
     db.session.commit()

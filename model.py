@@ -5,9 +5,9 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 
 db = SQLAlchemy()
-#db_url = os.environ.get('DATABASE_URL','')
+db_url = os.environ['DATABASE_URL']
 
-def connect_to_db(flask_app, db_uri="postgresql:///beanstalksquare", echo=True):
+def connect_to_db(flask_app, db_uri=db_url, echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     flask_app.config['SQLALCHEMY_ECHO'] = echo
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

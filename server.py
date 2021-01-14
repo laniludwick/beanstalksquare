@@ -13,7 +13,6 @@ import cloudinary.api
 cloud_name = os.environ["cloud_name"]
 cloudinary_api_key = os.environ["cloudinary_api_key"]
 cloudinary_api_secret = os.environ["cloudinary_api_secret"]
-
 account_sid = os.environ["ACCOUNT_SID"]
 auth_token = os.environ["AUTH_TOKEN"]
 to_phone_number = os.environ["TO_PHONE_NUMBER"]
@@ -377,7 +376,7 @@ def upload_profile_pic_teacher():
 
         user = crud.update_teacher(email=email, img_url=img_url)
     
-        return jsonify("Successfully added a teacher's profile pic!")
+        return jsonify(img_url)
 
     else:
         return jsonify("Issue extracting image from json?")
@@ -395,10 +394,11 @@ def create_profile_teacher():
     days_of_week = data["days_of_week"]
     teaching_experience_in_hours = data["teaching_experience_in_hours"]
     pay_rate_per_hour = data["pay_rate_per_hour"]
+    img_url = data["img_url"]
 
     
     #Need to update teacher!!!!!!
-    user = crud.update_teacher(email, zipcode, bio, days_of_week, teaching_experience_in_hours, pay_rate_per_hour)
+    user = crud.update_teacher(email, zipcode, bio, days_of_week, teaching_experience_in_hours, pay_rate_per_hour=pay_rate_per_hour, img_url=img_url)
     
     return jsonify("Successfully created a teacher profile!")
 
