@@ -3,7 +3,7 @@ Beanstalk Square was a project I built during Hackbright's full-stack software e
 
 I wrote this single page app's frontend using React and the backend using Python with Flask as the web framework. Beanstalk Square includes features such as a zipcode-based search yielding a list of student pods or teachers, detailed pod and teacher profile views, an ability to create new pods, and an ability to send messages to pod organizers or teachers.
 
-# <img src="/static/img/beanstalksquare-intro.png" width="100%" alt="Beanstalk Square Intro">
+# <img src="/static/readme-img/beanstalksquare-intro.png" width="100%" alt="Beanstalk Square Intro">
 
 ## Deployment
 http://www.beanstalksquare.com
@@ -31,7 +31,7 @@ Lani graduated from Stanford University with a B.S. in Industrial Engineering an
 * Bootstrap
 * APIs used: Google Maps Javascript API including the geocoding service, Cloudinary’s image upload API, and Twilio’s programmable messaging API.
 
-# <img src="/static/img/beanstalksquare-techstack.png" width="100%" alt="Beanstalk Square Tech Stack">
+# <img src="/static/readme-img/beanstalksquare-techstack.png" width="100%" alt="Beanstalk Square Tech Stack">
 
 ## <a name="features"></a>Features
 
@@ -58,11 +58,17 @@ The parent could choose from the list of available teachers in their area and vi
 #### Photo upload in teacher's sign-up flow 
 After creating an account on Beanstalk Square, the teacher's sign-up flow allows the teacher to upload a profile photo and a biography as well as other details. The profile photo uses Cloudinary's Upload API.  On the frontend, the Fetch method sends the data containing the file to the backend in a post request. In the server route, the file data is sent to Cloudinary and receives a secure URL in the response which I save to the database.   
 
+![alt text](https://github.com/gloryleilani/beanstalksquare1/blob/main/static/readme-img/beanstalk-teacherphotoupload.gif "Beanstalk Square Teacher Sign-Up and Photo Upload")
+
 #### Ability to create a new pod
 If a parent does not find an existing pod that is a fit for their child, the parent can start a new pod that gets published with its own details. 
 
+![alt text](https://github.com/gloryleilani/beanstalksquare1/blob/main/static/readme-img/beanstalk-podcreation.gif "Beanstalk Square New Pod Creation")
+
 #### Ability to text message a teacher or pod organizers 
 If a user would like to contact a teacher or the pod organizers, who are parents in the pod, the user may fill out a contact form which uses Twilio's text-messaging API. 
+
+![alt text](https://github.com/gloryleilani/beanstalksquare1/blob/main/static/readme-img/beanstalk-textmessage.gif "Beanstalk Square Text Messaging")
 
 
 ## <a name="future"></a>The Future of Beanstalk Square
