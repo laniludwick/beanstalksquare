@@ -48,10 +48,8 @@ def show_pods():
     """Show pods filtered by zipcode."""
     
     zipcode = request.args.get("zipcode")
-
     filtered_pods = crud.get_filtered_pods(zipcode)
 
-    #Turn the SQLAlchemy pod objects into dictioaries before jsonifying them.
     pods = []
 
     for pod, pod_location in filtered_pods: 
@@ -167,11 +165,9 @@ def show_pod_details(pod_id):
 def show_teacher_details(teacher_id):
     """Show details of the selected teacher."""
 
-    print("**************teacher for teacher details page before crud function in route")
     teacher_results = crud.get_teacher_details_by_teacher_id(teacher_id) 
 
     teacher_details = []
-    print("teacher for teacher details page after crud function:", teacher_results)
 
     for teacher in teacher_results:
         teacher_details.append({
@@ -199,8 +195,7 @@ def show_children_in_pod(pod_id):
 
     children = crud.get_children_by_pod_id(pod_id)
     #children returns tuples of Child, Child_Pod, Grade, School as list of SQL Alchemy objects
-    
-    print("************children result of crud op:", children)
+
     childrenlist = []
 
     for child in children:
@@ -217,22 +212,19 @@ def show_children_in_pod(pod_id):
             "school_name": child[3].school_name
             },)
 
-    print("************children list:", childrenlist)
     return jsonify(childrenlist)
 
 
 @app.route("/api/teachersinpod/<pod_id>")
 def show_teachers_in_pod(pod_id):
     """Show teacher details of the selected pod."""
-    print("************teachers in pod route right before crud op")
+
     teachers = crud.get_teachers_by_pod_id(pod_id) 
     
-    print("************teachers result of crud op:", teachers)
     teacherslist = []
 
     for teacher in teachers:
     
-        print("*************teacher in teachers:", teacher)
         teacherslist.append({
             "teacher_id": teacher.teacher_id,
             "fname": teacher.fname,
@@ -243,7 +235,6 @@ def show_teachers_in_pod(pod_id):
             "pay_rate_per_hour": teacher.pay_rate_per_hour
             },)
 
-    print("************teachers list:", teacherslist)
     return jsonify(teacherslist)
 
 
@@ -252,7 +243,7 @@ def start_pod():
     """Create a new pod."""
 
     data = request.get_json()
-    print("******************data in createpod route:", data)
+
     pod_name = data["pod_name"]
     max_child_capacity = data["max_child_capacity"]
     days_per_week = data["days_per_week"]
@@ -297,9 +288,7 @@ def signup_parent():
     #Otherwise, allow user to register for an account with that email address.
     #else:
     user = crud.create_parent(fname, lname, email, password)
-    
     access_token = create_access_token(identity=email)
-    print("******Access token:", access_token)
         
     return jsonify({"access_token": access_token})
 
@@ -315,9 +304,7 @@ def signup_teacher():
     password = data["signuppassword"]
     
     user = crud.create_teacher(fname, lname, email, password)
-    
     access_token = create_access_token(identity=email)
-    print("******Access token:", access_token)
         
     return jsonify({"access_token": access_token})
 
@@ -337,17 +324,14 @@ def upload_profile_pic_teacher():
         print("key not in request.files")
 
     file = request.files.get('file')
-    print("file:", file)
-
     email = request.form.get('email')
 
     if file.filename == '':
         print("no selected file")
+
     if file and allowed_file(file.filename):
         result = cloudinary.uploader.upload(file)
-        print("result:", result)
         img_url = result['secure_url'] 
-        print("img url:", img_url)
         user = crud.update_teacher(email=email, img_url=img_url) 
         return jsonify(img_url)
     else:
@@ -412,7 +396,6 @@ def protected():
 @app.route("/api/send_stock_sms_pod/<pod_id>", methods=['POST'])
 def send_stock_sms_to_pod_organizer(pod_id):
 
-    print("pod_id in sms api route:", pod_id)
     data = request.get_json()
     name = data["name"]
     phone = data["phone"]
@@ -440,7 +423,6 @@ def send_stock_sms_to_pod_organizer(pod_id):
                         messaging_service_sid='MG8b0587e27f85f4b05d7525a5833f89db',
                         to=pod_organizers_mobiles,
                     )
-    print("message.sid:", message.sid)
     if message.sid is not None:
         return jsonify("Successful message")
     else:
@@ -450,7 +432,6 @@ def send_stock_sms_to_pod_organizer(pod_id):
 @app.route("/api/send_stock_sms_teacher/<teacher_id>", methods=['POST'])
 def send_stock_sms_to_teacher(teacher_id):
 
-    print("teacher_id in sms api route:", teacher_id)
     data = request.get_json()
     name = data["name"]
     phone = data["phone"]
@@ -463,10 +444,7 @@ def send_stock_sms_to_teacher(teacher_id):
         print("**************data from json seems to be nonexistent.")
 
     teacher = crud.get_teacher_by_teacher_id(teacher_id=teacher_id)
-    print("teacher:", teacher)
     teacher_mobile = teacher.mobile_number
-    print("***********teacher mobile:", teacher.mobile_number)
-
     client = Client(account_sid, auth_token)
 
     message = client.messages \
@@ -475,7 +453,6 @@ def send_stock_sms_to_teacher(teacher_id):
                         messaging_service_sid='MG8b0587e27f85f4b05d7525a5833f89db',
                         to=teacher_mobile,
                     )
-    print("teacher message.sid:", message.sid)
     if message.sid is not None:
         return jsonify("Successful message")
     else:
