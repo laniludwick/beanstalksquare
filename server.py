@@ -1,5 +1,6 @@
-from flask import (Flask, request, flash, session, redirect, render_template, 
-                    jsonify)
+"""Flask server for Beanstalk Square"""
+
+from flask import (Flask, request, render_template, jsonify)
 import os
 from model import connect_to_db
 import crud
@@ -17,7 +18,6 @@ account_sid = os.environ["ACCOUNT_SID"]
 auth_token = os.environ["AUTH_TOKEN"]
 to_phone_number = os.environ["TO_PHONE_NUMBER"]
 
-UPLOAD_FOLDER = '/path/to/the/uploads'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 cloudinary.config(
@@ -28,10 +28,8 @@ cloudinary.config(
 
 app = Flask(__name__)
 app.secret_key = "dev"
-#app.config['JWT_SECRET_KEY'] = 'super-secret'  # Change this!
 jwt = JWTManager(app)
-#app.secret_key = "dev"
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 
 @app.route("/")
 def root():
@@ -325,6 +323,8 @@ def signup_teacher():
 
     
 def allowed_file(filename):
+    """Determine whether file is an allowed file type."""
+    
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 

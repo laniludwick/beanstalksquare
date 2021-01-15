@@ -48,7 +48,7 @@ function PodList(props) {
         {props.isLoggedIn==="True"? <Link key={1} to="/createpod" className="btn btn-primary" variant="btn-primary" > Start a pod </Link>: null}
       </span><br/><br/>
       <div className="search-results-wrapper">
-        {podList}
+        {podList}<br/><br/>
       </div>
     </div>
   );
@@ -109,7 +109,7 @@ function TeacherList(props) {
         <br/><h3 className="mx-auto" id="teacher-list-title-row">{zipcode} Search Results</h3><br/>
       </div> 
       <div>
-        {teacherList}
+        {teacherList}<br/><br/>
       </div>
     </div>
   );
