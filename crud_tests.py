@@ -6,8 +6,6 @@ db = SQLAlchemy()
 from server import app
 
 
-
-
 class BeanstalkCrudUnitTestCases(unittest.TestCase):
     """Tests for my CRUD functions."""
 
@@ -54,9 +52,6 @@ class BeanstalkCrudUnitTestCases(unittest.TestCase):
         self.assertEqual(type(testpod),Pod)
         #db.session.query(Child).filter(Child.fname=="Johnny").one()
 
-
-    #add_child_to_pod(child_id=2, pod_id=1)
-    #add_parent_to_pod(parent_id=1, pod_id=2)
 
 if __name__ == '__main__':
     unittest.main()

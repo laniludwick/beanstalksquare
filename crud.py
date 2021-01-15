@@ -1,24 +1,7 @@
 from model import (db, Parent, Household, Pod, Child, Teacher, Pod_Location, School, 
-Grade, Child_Pod, Parent_Pod, Covid_Risk_Profile, connect_to_db) #Need to fill in here
+Grade, Child_Pod, Parent_Pod, Covid_Risk_Profile, connect_to_db) 
 import string
 import random
-
-def create_household(covid_risk_profile_id=None):
-    """Add a new household to the households table and return the household."""
-
-    #Create household join code: 
-    #using random string with the combination of lower and upper case
-    letters = string.ascii_letters
-    household_join_code = ''.join(random.choice(letters) for i in range(8))
-    #print("HH join code is:", household_join_code)    
-
-    household = Household(covid_risk_profile_id=covid_risk_profile_id, household_join_code=household_join_code)
-    
-    db.session.add(household)
-    db.session.commit()
-
-    return household
-
 
 def create_parent(fname, lname, email, password, household_id=None, 
                 mobile_number=None):
@@ -26,6 +9,7 @@ def create_parent(fname, lname, email, password, household_id=None,
 
     parent = Parent(fname=fname, lname=lname, email=email, password=password, 
                     household_id=household_id, mobile_number=mobile_number)
+    
     db.session.add(parent)
     db.session.commit()
 
@@ -36,9 +20,8 @@ def create_pod(pod_name=None, max_child_capacity=None, days_per_week=None,
             total_hours_per_day=None, paid_teacher=None, 
             same_school_program_only=None, same_school_only=None, 
             same_grade_only=None, outdoors_only=None, periodic_covid_testing=None, 
-            covid_risk_profile_id=None, cost_per_hour=None):
+            covid_risk_profile_id=None, cost_per_hour=None, street_address=None, city=None, zipcode=None):
     """Add a new pod to the pods table and return the pod."""
-    #Need to add covid_risk_profile description into UI
 
     pod = Pod(pod_name=pod_name, 
             max_child_capacity=max_child_capacity, 
@@ -51,7 +34,9 @@ def create_pod(pod_name=None, max_child_capacity=None, days_per_week=None,
             outdoors_only=outdoors_only, 
             periodic_covid_testing=periodic_covid_testing, 
             covid_risk_profile_id=covid_risk_profile_id,
-            cost_per_hour=cost_per_hour)
+            cost_per_hour=cost_per_hour,)
+    pod_location = Pod_Location(street_address=street_address, city=city, state=state, zipcode=zipcode)
+    
     db.session.add(pod)
     db.session.commit()
 
@@ -81,6 +66,7 @@ def create_child(fname, lname, zipcode, school_id, grade_id, household_id,
                 prefer_outdoors_only=prefer_outdoors_only,
                 prefer_periodic_covid_testing=prefer_periodic_covid_testing,
                 max_budget_per_hour=max_budget_per_hour)
+    
     db.session.add(child)
     db.session.commit()
 
@@ -106,28 +92,17 @@ def create_teacher(fname, lname, email, password, zipcode=None, bio=None,
     return teacher
 
 
-def update_teacher(email=None, zipcode=None, bio=None, 
-    mobile_number=None, days_of_week=None,teaching_experience_in_hours=None,
-    pay_rate_per_hour=None, pod_id=None, img_url=None, covid_risk_profile_id=None):
-    """Update teacher info on the teachers table and return the teacher."""
+def create_household(covid_risk_profile_id=None):
+    """Add a new household to the households table and return the household."""
 
-    print("email, image url:", email, img_url)
-    teacher = db.session.query(Teacher).filter(Teacher.email==email).one()
-
-    teacher.zipcode=zipcode 
-    teacher.bio=bio 
-    teacher.mobile_number=mobile_number
-    teacher.days_of_week=days_of_week
-    teacher.teaching_experience_in_hours=teaching_experience_in_hours
-    teacher.pay_rate_per_hour=pay_rate_per_hour
-    teacher.img_url=img_url
-    teacher.pod_id=pod_id
-    teacher.covid_risk_profile_id=covid_risk_profile_id
-
+    letters = string.ascii_letters
+    household_join_code = ''.join(random.choice(letters) for i in range(8))
+    household = Household(covid_risk_profile_id=covid_risk_profile_id, household_join_code=household_join_code)
+    
+    db.session.add(household)
     db.session.commit()
-    #db.session.flush()
 
-    return teacher
+    return household
 
 
 def create_pod_location(pod_id, zipcode, street_address=None, city=None, 
@@ -137,9 +112,30 @@ def create_pod_location(pod_id, zipcode, street_address=None, city=None,
     pod_location = Pod_Location(pod_id=pod_id, street_address=street_address, 
                                 city=city, state=state, 
                                 zipcode=zipcode, day_of_week=day_of_week)
+    
     db.session.add(pod_location)
     db.session.commit()
 
+
+def update_teacher(email=None, zipcode=None, bio=None, 
+    mobile_number=None, days_of_week=None,teaching_experience_in_hours=None,
+    pay_rate_per_hour=None, pod_id=None, img_url=None, covid_risk_profile_id=None):
+    """Update teacher info on the teachers table and return the teacher."""
+
+    teacher = db.session.query(Teacher).filter(Teacher.email==email).one()
+    teacher.zipcode=zipcode 
+    teacher.bio=bio 
+    teacher.mobile_number=mobile_number
+    teacher.days_of_week=days_of_week
+    teacher.teaching_experience_in_hours=teaching_experience_in_hours
+    teacher.pay_rate_per_hour=pay_rate_per_hour
+    teacher.pod_id=pod_id
+    teacher.img_url=img_url
+    teacher.covid_risk_profile_id=covid_risk_profile_id
+
+    db.session.commit()
+
+    return teacher
 
 
 def get_all_pods():
@@ -147,26 +143,20 @@ def get_all_pods():
 
     return db.session.query(Pod, Pod_Location).join(Pod_Location).all()
 
-    #return pods
 
+def get_filtered_pods(zipcode): 
+    """Get and return pods filtered by zipcode entered by the user.
 
-def get_filtered_pods(zipcode): #Must use single quotes in SQL and SQLAlchemy
-    """Get and return pods filtered by zipcode entered by the user."""
+    Returns a tuple of Pod and Pod_Location objects."""
 
-    #def get_filtered_pods(zipcode, school_name, grade_name)
-    #filtered_pods = db.session.query(Pod).join tables filter(Pod.zipcode==zipcode, school_name, grade_name).all()
-    #Need to refactor the query to add the poddless children later.
-    
-
-    #Returns a tuple of Pod and Pod_Location objects
     return db.session.query(Pod, Pod_Location).join(Pod_Location).filter(Pod_Location.zipcode==zipcode).all()
-
 
 
 def add_parent_to_pod(parent_id, pod_id):
     """Add a new parent to the parents_pods table."""
 
     parent_pod_rel = Parent_Pod(parent_id=parent_id, pod_id=pod_id)
+    
     db.session.add(parent_pod_rel)
     db.session.commit()
 
@@ -175,56 +165,45 @@ def add_child_to_pod(child_id, pod_id):
     """Add a new child to the children_pods table."""
 
     child_pod_rel = Child_Pod(child_id=child_id, pod_id=pod_id)
+    
     db.session.add(child_pod_rel)
     db.session.commit()
 
 
 def get_pod_details_by_pod_id(pod_id):
-    """Get the SQLAlchemy pod object based on the pod_id."""
+    """Get the SQLAlchemy pod object based on the pod_id.
+    
+    Returns a tuple of Pod and Pod_Location objects"""
 
-    #Returns a tuple of Pod and Pod_Location objects
+    
     return db.session.query(Pod, Pod_Location).join(Child_Pod, Pod.pod_id==Child_Pod.pod_id).join(Pod_Location, Pod.pod_id==Pod_Location.pod_id).filter(Pod.pod_id==pod_id).all()
 
 
 def get_teacher_details_by_teacher_id(teacher_id):
     """Get the SQLAlchemy teacher object based on the teacher_id."""
 
-    #Returns a Teacher object
     return db.session.query(Teacher).filter(Teacher.teacher_id==teacher_id).all()
 
 
-
 def get_children_by_pod_id(pod_id):
-    """Get the SQLAlchemy child objects based on the associated pod_id."""
+    """Get the SQLAlchemy child objects based on the associated pod_id.
+
+    Returns a list including one tuple of Child, Child_Pod, Grade, and School objects (so children[0][3].school_name accesses school_name)
+    children[0].fname = 'Eric'"""
 
     children = db.session.query(Child, Child_Pod, Grade, School).join(Child_Pod, Child.child_id==Child_Pod.child_id).join(Pod, Child_Pod.pod_id==Pod.pod_id).join(Grade, Child.grade_id==Grade.grade_id).join(School, Child.school_id==School.school_id).filter(Pod.pod_id==pod_id).all()
-    #Returns a list including one tuple of Child, Child_Pod, Grade, and School objects (so children[0][3].school_name accesses school_name)
-    #return db.session.query(Pod, Child_Pod, Child).join(Child_Pod, Pod.pod_id==Child_Pod.pod_id).join(Child, Child.child_id==Child_Pod.child_id).filter(Pod.pod_id==pod_id).all()
-
-    #Creates a list of SQLAlchemy objects
-    #children[0].fname = 'Eric'
-    # child = []
-    # for child in children:
-    #     child_name = child.fname+child.lname
-    #     grade = child.grade_name
-    #     school = child.school_name
-    #     zipcode = child.zipcode
-
+    
     return children
 
 
 def get_parents_by_pod_id(pod_id):
-    """Get the SQLAlchemy parent objects based on the associated pod_id."""
+    """Get the SQLAlchemy parent objects based on the associated pod_id.
+    
+    Returns a list including one tuple of Parent and Parent_Pod objects 
+    parents[0].fname = 'Eric'"""
 
     parents = db.session.query(Parent, Parent_Pod).join(Parent_Pod, Parent.parent_id==Parent_Pod.parent_id).join(Pod, Parent_Pod.pod_id==Pod.pod_id).filter(Pod.pod_id==pod_id).all()
-    #Returns a list including one tuple of Parent and Parent_Pod objects 
     
-    #Creates a list of SQLAlchemy objects
-    #parents[0].fname = 'Eric'
-    # parent = []
-    # for parent in parents:
-    #     parent_name = parent.fname+parent.lname
-
     return parents
 
 
@@ -232,7 +211,6 @@ def get_teachers_by_pod_id(pod_id):
     """Get the SQLAlchemy teacher object based on the associated pod_id."""
 
     teachers = db.session.query(Teacher).filter(Teacher.pod_id==pod_id).all()
-    print("teachers in pod: ", teachers)
     return teachers
 
 
@@ -240,17 +218,13 @@ def get_teacher_by_teacher_id(teacher_id):
     """Get the SQLAlchemy teacher object based on the associated teacher_id."""
 
     teacher = db.session.query(Teacher).filter(Teacher.teacher_id==teacher_id).one()
-    print("crud teacher by id: ", teacher)
     return teacher
 
 
-def get_filtered_teachers(zipcode): #Must use single quotes in SQL and SQLAlchemy
+def get_filtered_teachers(zipcode): 
     """Get and return teachers filtered by zipcode entered by the user."""
 
-    #Returns a teacher object
-
     return db.session.query(Teacher).filter(Teacher.zipcode==zipcode).all()
-
 
 
 def get_household_join_code_by_household_id(household_id):
@@ -260,8 +234,7 @@ def get_household_join_code_by_household_id(household_id):
 
 def get_user_by_email(email):
 
-    return db.session.query(Parent).filter(Parent.email==email).first()
-
+    return db.session.query(Parent).filter(Parent.email==email).first() or db.session.query(Teacher).filter(Teacher.email==email).first()
 
 
 #Below are constants:
@@ -304,7 +277,6 @@ def create_covid_risk_profiles():
         db.session.commit()
 
 
-
 def create_grades():
     """Add the list of grade levels for use in a child questionnaire form."""
 
@@ -332,23 +304,8 @@ def create_schools():
         db.session.commit()
 
 
-
-
-
-
-
-
 if __name__ == '__main__':
     from server import app
     connect_to_db(app)
 
-
-    # def find_humans_by_animal_species(species):
-    # """Returns a list of all Human objects who have animals of that species."""
-
-    # humans = db.session.query(Human).join(Animal) #SQLAlchemy base object
-    # #Chaining base object to filter method:
-    # filtered_humans = humans.filter(Animal.animal_species==species).all()
-
-    # return filtered_humans
 

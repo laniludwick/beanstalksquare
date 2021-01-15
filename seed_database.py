@@ -1,58 +1,44 @@
 """Script to seed database"""
 
-#We won't define functions because this is a script. 
-#This file will be used to re-create my databaseand seed it with data.
+import os 
+from random import randrange, randint  
+from datetime import datetime 
 
-import os #Module from std library, contains code related to working w/ my computer's OS.
-import json #needed to load data from data/movies.json
-from random import randrange, randint #takes a list and returns rand el from list; return rand num in range. 
-from datetime import datetime #we'll use datetime.strptime to turn string into Python datetime object.
-
-import crud #my file
-import model #my file
-import server #my file
+import crud 
+import model 
+import server 
 from faker import Faker
 import string
 import random
 
 fake = Faker()
+os.system('dropdb beanstalksquare') 
+os.system('createdb beanstalksquare') 
 
-
-
-os.system('dropdb beanstalksquare') #Run the string as a command in a subshell 
-os.system('createdb beanstalksquare') #Run the string as a command in a subshell 
-
-model.connect_to_db(server.app) #import app from server.py file.
-model.db.drop_all() #Drops all existing tables, import from model.py file.
-model.db.create_all() #Creates all tables, import from model.py file.
-
+model.connect_to_db(server.app) 
+model.db.drop_all() 
+model.db.create_all() 
 
 #Create schools, grades, covid_risk_profiles
 crud.create_covid_risk_profiles()
 crud.create_grades()
 crud.create_schools()
 
-
 #Create households in db:
 i=1
 for _ in range(20):
-
     if i<6:
         new_household = crud.create_household(covid_risk_profile_id=i)
-   
     else:
         new_household = crud.create_household(covid_risk_profile_id=1)
-   
+    
     model.db.session.add(new_household)
     model.db.session.commit()
     i+=1
 
-
 #Create parents in db:
 j=1
 for _ in range(20):
-
-    #Faker.seed(0)
     fname = fake.first_name()
     lname = fake.last_name()
     email= fake.ascii_email()
@@ -65,23 +51,16 @@ for _ in range(20):
                             mobile_number=mobile_number)
     j+=1
 
-
 eric = crud.create_parent(fname="Eric", lname="Anderson", email="eric.anderson@gmail.com", password="asdf", household_id=11, mobile_number="917-538-4741")
-
 marcy = crud.create_parent(fname="Marcy", lname="Anderson", email="marcy.anderson@gmail.com", password="asdf", household_id=11, mobile_number="917-538-4741")
-
 jessica = crud.create_parent(fname="Jessica", lname="Martinez", email="jessica.martinez@gmail.com", password="asdf", household_id=12, mobile_number="917-538-4741",)
-
 
 #Create children in db
 k=1
 for _ in range(20):
-
-    #Faker.seed(0)
     fname = fake.first_name()
     lname = fake.last_name()
-    zipcode = fake.zipcode()
-    
+    zipcode = fake.zipcode()  
     school_id = 1
     grade_id = 3
     household_id = k 
@@ -123,26 +102,21 @@ for _ in range(20):
                                 prefer_outdoors_only=prefer_outdoors_only,
                                 prefer_periodic_covid_testing=prefer_periodic_covid_testing,
                                 max_budget_per_hour=max_budget_per_hour)
-
     k+=1
 
 jackson = crud.create_child(fname="Jackson", lname="Daniels", gender="Male",
     zipcode="94010", school_id=1,school_program="Spanish immersion",
     grade_id=3, household_id=1)
-
 emily = crud.create_child(fname="Emily", lname="Sanders", gender="Female",
     zipcode="94010", school_id=1, school_program="Spanish immersion", 
     grade_id=3, household_id=2)
-
 zahara = crud.create_child(fname="Zahara", lname="Gupta", gender="Female", 
     zipcode="94010", school_id=1,school_program="Spanish immersion",
     grade_id=3, household_id=3)
 
-
 #Create pods in db
 m=1
 for _ in range(20):
-
     pod_name = fake.color_name() + " learning pod"
     max_child_capacity = randrange(2,8)
     days_per_week = randrange(3,5)
@@ -168,7 +142,6 @@ for _ in range(20):
                             covid_risk_profile_id=covid_risk_profile_id, cost_per_hour=cost_per_hour)
     m+=1
 
-
 new_pod1 = crud.create_pod(pod_name="Dragons", max_child_capacity=5, days_per_week=5, total_hours_per_day=5,
     paid_teacher=True, same_school_program_only=True,same_school_only=True,
     same_grade_only=False,outdoors_only=False, periodic_covid_testing=False,
@@ -192,8 +165,6 @@ new_pod4 = crud.create_pod(pod_name="Explorers", max_child_capacity=5,
     outdoors_only=False, periodic_covid_testing=False,
     covid_risk_profile_id=3, cost_per_hour=3)
 
-
-
 #Create teachers in db
 tonya = crud.create_teacher(fname="Tonya", lname="Kramer", email="tonya.lopez@gmail.com", password="asdf", mobile_number="917-538-4741", zipcode="94010",
     bio="I'm a positive and energetic 28-year-old college graduate. Ever since I was in high school I have been tutoring children and even my peers in all subjects.",
@@ -216,22 +187,17 @@ sara = crud.create_teacher(fname="Mary", lname="Chan", email="mary.chan@gmail.co
     days_of_week="Mon, Wed, Fri",teaching_experience_in_hours="675",pay_rate_per_hour=15,covid_risk_profile_id=3,img_url="/static/img/teacher5.png",)
 
 
-
-
 #Add parents to pods
 r=1
 for _ in range(10):
     pp_pod_id=r
     pp_parent_id=r
-
     new_parent_pod=crud.add_parent_to_pod(pod_id=pp_pod_id, parent_id=pp_parent_id)
     r+=1
 
 parent1 = new_parent_pod=crud.add_parent_to_pod(pod_id=21, parent_id=21)
 parent2 = new_parent_pod=crud.add_parent_to_pod(pod_id=21, parent_id=22)
 parent3 = new_parent_pod=crud.add_parent_to_pod(pod_id=21, parent_id=23)
-
-
 
 # #Add children to pods
 q=1
@@ -244,11 +210,9 @@ for _ in range(20):
     else:
         new_child_pod=crud.add_child_to_pod(pod_id=1, child_id=child_id)
 
-
 kid1 = new_child_pod=crud.add_child_to_pod(pod_id=21, child_id=21)
 kid2 = new_child_pod=crud.add_child_to_pod(pod_id=21, child_id=22)
 kid3 = new_child_pod=crud.add_child_to_pod(pod_id=21, child_id=23)
-
 
 #Create pod locations in db
 n=1
@@ -260,12 +224,11 @@ for _ in range(10):
     pl_state = "CA" #fake.state_abbr()
     pl_zipcode = fake.zipcode()
     day_of_week = "All"
-    print("Print:", pl_pod_id, pl_street_address, pl_city, pl_state, pl_zipcode, day_of_week)
-    new_pod_location = crud.create_pod_location(pod_id=pl_pod_id, 
-                               street_address=pl_street_address, 
-                               city=pl_city, state=pl_state, zipcode=pl_zipcode, 
-                               day_of_week = day_of_week)
     
+    new_pod_location = crud.create_pod_location(pod_id=pl_pod_id, 
+                            street_address=pl_street_address, 
+                            city=pl_city, state=pl_state, zipcode=pl_zipcode, 
+                            day_of_week = day_of_week)
     n+=1
 
 new_pod_location1 = crud.create_pod_location(pod_id=21,
@@ -288,28 +251,4 @@ new_pod_location1 = crud.create_pod_location(pod_id=24,
     city="Burlingame", state="CA", zipcode="94010",
     day_of_week = "Mon-Fri")
 
-# for _ in range(10):
-#     email = f'{i}@gmail.com'
-#     pw = f'password{i}'
-
-#     user = crud.create_user(email, pw)
-
-
-#Load parent data from JSON file (for practice loading data from file)
-#with open('data/parent_data.json') as f:
-#    parent_data = json.loads(f.read())
-
-#Parent data will be a list of dictionaries. Loop over each dictionary in 
-#parent_data and use it to supply args to crud.create_parent.
-#When read in data from a file, we always get strings.
-
-#Create parents, store them in list so we can use them to create fake children 
-#for parent in parent_data:
-        
-    #fname, lname, email, password, household_id, mobile_number = (parent["fname"], parent["lname"], parent["email"], parent["password"], parent["household_id"], parent["mobile_number"])
-    #release_date = datetime.strptime(movie["release_date"],"%Y-%m-%d") #"2020-05-22"
-
-    #new_parent = crud.create_parent(fname, lname, email, password, household_id, mobile_number) #Need non-nullable fields as args
-    #db.session.add(new_parent)
-    #db.session.commit()
 
