@@ -343,19 +343,13 @@ def upload_profile_pic_teacher():
 
     if file.filename == '':
         print("no selected file")
-
     if file and allowed_file(file.filename):
-
         result = cloudinary.uploader.upload(file)
         print("result:", result)
-
         img_url = result['secure_url'] 
         print("img url:", img_url)
-
-        user = crud.update_teacher(email=email, img_url=img_url)
-    
+        user = crud.update_teacher(email=email, img_url=img_url) 
         return jsonify(img_url)
-
     else:
         return jsonify("Issue extracting image from json?")
 
@@ -365,7 +359,6 @@ def create_profile_teacher():
     """Create a new profile for a teacher."""
 
     data = request.get_json()
-    
     email = data["user_email"] 
     bio = data["bio"]
     zipcode = data["zipcode"]
@@ -373,13 +366,9 @@ def create_profile_teacher():
     teaching_experience_in_hours = data["teaching_experience_in_hours"]
     pay_rate_per_hour = data["pay_rate_per_hour"]
     img_url = data["img_url"]
-
-    
-    #Need to update teacher
     user = crud.update_teacher(email, zipcode, bio, days_of_week, teaching_experience_in_hours, pay_rate_per_hour=pay_rate_per_hour, img_url=img_url)
     
     return jsonify("Successfully created a teacher profile!")
-
 
 
 @app.route("/api/login", methods=['POST'])
@@ -393,27 +382,19 @@ def process_login():
 
     email = data["loginemail"]
     password = data["loginpassword"]
-    #password = request.json.get('password', None)
     
     if not email:
         return jsonify({"msg": "Missing username parameter"})
-
     if not password:
         return jsonify({"msg": "Missing password parameter"})
-
-    print("Email to login:", email)
-    print("Password to login:", password)
-
     if ((crud.get_user_by_email(email))== None):
         return jsonify({"msg": "Unrecognized email or password"})
     else:
         user = crud.get_user_by_email(email)
-
         if (user.email != email) or (user.password != password):  
             return jsonify({"msg": "Bad email or password"})
     
         access_token = create_access_token(identity=user.email)
-        print("******Access token:", access_token)
         
         return jsonify({"access_token": access_token})        
 
@@ -433,7 +414,6 @@ def send_stock_sms_to_pod_organizer(pod_id):
 
     print("pod_id in sms api route:", pod_id)
     data = request.get_json()
-
     name = data["name"]
     phone = data["phone"]
     email = data["email"]
@@ -444,14 +424,10 @@ def send_stock_sms_to_pod_organizer(pod_id):
     else:
         print("**************data from json seems to be nonexistent.")
 
-
     pod_organizers = crud.get_parents_by_pod_id(pod_id)
-    print(pod_organizers)
-    
     pod_organizers_mobiles = []
 
     for parent, parent_pod in pod_organizers:
-
         pod_organizers_mobiles.append(parent.mobile_number)
         print("parent mobile:", parent.mobile_number)
         print("pod organizers mobiles list:", pod_organizers_mobiles)
@@ -460,14 +436,15 @@ def send_stock_sms_to_pod_organizer(pod_id):
 
     message = client.messages \
                     .create(
-                         body="\n\nA parent is interested to learn more about this pod. Please respond at your earliest convenience. \n \nContact info: \n" + name + " \n" + phone + " \n" + email + ". \n\n Message: \n \""+message +"\"",
-                         messaging_service_sid='MG8b0587e27f85f4b05d7525a5833f89db',
-                         to=pod_organizers_mobiles,
-                     )
-
+                        body="\n\nA parent is interested to learn more about this pod. Please respond at your earliest convenience. \n \nContact info: \n" + name + " \n" + phone + " \n" + email + ". \n\n Message: \n \""+message +"\"",
+                        messaging_service_sid='MG8b0587e27f85f4b05d7525a5833f89db',
+                        to=pod_organizers_mobiles,
+                    )
     print("message.sid:", message.sid)
-    return jsonify({"message.sid": message.sid,
-                    "pod_organizers_mobiles": pod_organizers_mobiles},)
+    if message.sid is not None:
+        return jsonify("Successful message")
+    else:
+        return jsonify("Unsuccessful message")
         
 
 @app.route("/api/send_stock_sms_teacher/<teacher_id>", methods=['POST'])
@@ -475,7 +452,6 @@ def send_stock_sms_to_teacher(teacher_id):
 
     print("teacher_id in sms api route:", teacher_id)
     data = request.get_json()
-
     name = data["name"]
     phone = data["phone"]
     email = data["email"]
@@ -486,10 +462,8 @@ def send_stock_sms_to_teacher(teacher_id):
     else:
         print("**************data from json seems to be nonexistent.")
 
-
     teacher = crud.get_teacher_by_teacher_id(teacher_id=teacher_id)
     print("teacher:", teacher)
-    
     teacher_mobile = teacher.mobile_number
     print("***********teacher mobile:", teacher.mobile_number)
 
@@ -497,49 +471,17 @@ def send_stock_sms_to_teacher(teacher_id):
 
     message = client.messages \
                     .create(
-                         body="A parent is interested to learn more about you. Please respond at your earliest convenience. \n \n Contact info: \n" + name + ", \n" + phone + ", \n" + email + ". \n Message: \n \" "+message +"\"",
-                         messaging_service_sid='MG8b0587e27f85f4b05d7525a5833f89db',
-                         to=teacher_mobile,
-                     )
-
+                        body="A parent is interested to learn more about you. Please respond at your earliest convenience. \n \n Contact info: \n" + name + ", \n" + phone + ", \n" + email + ". \n Message: \n \" "+message +"\"",
+                        messaging_service_sid='MG8b0587e27f85f4b05d7525a5833f89db',
+                        to=teacher_mobile,
+                    )
     print("teacher message.sid:", message.sid)
-    return jsonify({"message.sid": message.sid,
-                    "teacher_mobile": teacher_mobile},)
+    if message.sid is not None:
+        return jsonify("Successful message")
+    else:
+        return jsonify("Unsuccessful message")
 
 
 if __name__ == '__main__':
     connect_to_db(app)
     app.run(host='0.0.0.0', debug=True)
-
-
-
-# @app.route("/login")
-# def process_login():
-
-#     email = request.args.get("email")
-#     password = request.args.get("password")
-
-#     #Check if possword matches with the stored user's password:
-    
-#     print("email:", email)
-#     print("password:",password)
-
-#     try: 
-#         parent = crud.get_user_by_email(email)
-
-#         print("parent:", parent)
-        
-#         print("parent.password:", parent.password)
-    
-#         return parent
-
-#         if password == parent.password:
-#             session["logged_in_parent"] = parent.parent_id
-#             print("session:", session)
-#             flash("Login successful!")
-
-#         else: 
-#             flash("Sorry, failed login attempt. Please try again.")
-
-#     except:
-#         flash("Sorry, no user found. Please try again.")
