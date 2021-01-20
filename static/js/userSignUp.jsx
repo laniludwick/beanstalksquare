@@ -1,9 +1,11 @@
 // ***** SignUpParties, TeacherSignUpForm, and ParentSignUpForm components *****
 
+import formReducer from "./reducers";
 const Link =  ReactRouterDOM.Link;
 const { Button, Col, Container, Form, Row } = ReactBootstrap;
 
-function SignUpParties () {
+
+function SignUpParties() {
 
   return (
   <Container className="linen-background">
@@ -119,26 +121,30 @@ function TeacherSignUpForm(props) {
 function ParentSignUpForm(props) {
   
   const history = ReactRouterDOM.useHistory();
-  const [userInputSignUp, setUserInputSignUp] = React.useReducer(
-    (state, newState) => ({...state, ...newState}),
-    {
-    fname: "",
-    lname: "",
-    email: "",
-    password: "",
-    }
-  );
-  const handleChange = evt => {
-    const name = evt.target.name;
-    const newValue = evt.target.value;
-    setUserInputSignUp({[name]: newValue});
+  const [fname, setFname] = React.useState("");
+  const [lname, setLname] = React.useState("");
+  const [signupemail, setSignupemail] = React.useState("");
+  const [signuppassword, setSignuppassword] = React.useState("");
+
+  function handleFnameChange(event) {
+    setFname(event.target.value);
   }
+  function handleLnameChange(event) { 
+    setLname(event.target.value);
+  }
+  function handleEmailChange(event) {
+    setSignupemail(event.target.value);
+  }
+  function handlePasswordChange(event) { 
+    setSignuppassword(event.target.value);
+  }
+
   const makeSignUp = (e) => {
     e.preventDefault();
-    const signUpData = {"fname": userInputSignUp.fname, 
-                        "lname": userInputSignUp.lname,
-                        "signupemail": userInputSignUp.signupemail,
-                        "signuppassword": userInputSignUp.signuppassword,
+    const signUpData = {"fname": fname, 
+                        "lname": lname,
+                        "signupemail": signupemail,
+                        "signuppassword": signuppassword,
                         }                
     fetch('/api/signup_parent', {
       method: 'POST', 
@@ -151,7 +157,7 @@ function ParentSignUpForm(props) {
     .then(data => {
       if (data.access_token){
         localStorage.setItem("user", data.access_token);
-        localStorage.setItem("useremail", userInputSignUp.signupemail);
+        localStorage.setItem("useremail", signupemail);
         alert("You are now logged in!");
         props.setLoggedInStatus("True");
         history.push("/dashboard");
@@ -165,22 +171,97 @@ function ParentSignUpForm(props) {
     <hr/><br/>
       <Form>
         <Form.Group controlId="formFirstName">
-          <Form.Control type="text" placeholder="First Name" value={userInputSignUp.fname} name="fname" onChange={handleChange}/> 
+          <Form.Control type="text" placeholder="First Name" value={fname} name="fname" onChange={handleFnameChange}/> 
         </Form.Group>
         <Form.Group controlId="formLastName">
-          <Form.Control type="text" placeholder="Last Name" value={userInputSignUp.lname} name="lname" onChange={handleChange}/> 
+          <Form.Control type="text" placeholder="Last Name" value={lname} name="lname" onChange={handleLnameChange}/> 
         </Form.Group>
         <Form.Group controlId="formBasicEmail">
-          <Form.Control type="email" placeholder="Enter email" value={userInputSignUp.signupemail} name="signupemail" onChange={handleChange}/> 
+          <Form.Control type="email" placeholder="Enter email" value={signupemail} name="signupemail" onChange={handleEmailChange}/> 
           <Form.Text className="text-muted">We'll never share your email with anyone else.</Form.Text>
         </Form.Group>
         <Form.Group controlId="formBasicPassword">
-          <Form.Control type="password" placeholder="Password" value={userInputSignUp.signuppassword} name="signuppassword" onChange={handleChange}/> 
+          <Form.Control type="password" placeholder="Password" value={signuppassword} name="signuppassword" onChange={handlePasswordChange}/> 
         </Form.Group>
         <Button className="btn btn-primary" variant="primary" onClick={makeSignUp} type="submit">Complete Sign Up</Button> 
       </Form>
   </div>
   );  
 }
+
+// function ParentSignUpForm(props) {
+  
+//   const history = ReactRouterDOM.useHistory();
+
+
+//   const [userInputSignUp, dispatch] = React.useReducer(
+//     formReducer,
+//     {
+//     fname: "",
+//     lname: "",
+//     signupemail: "",
+//     signuppassword: "",
+//     }
+//   );
+
+//   const handleChange = evt => {
+//     dispatch({
+//       type: "HANDLE INPUT TEXT",
+//       field: evt.target.name,
+//       payload: evt.target.value,
+//     });
+//   };
+    
+//   const { fname, lname, signupemail, signuppassword } = userInputSignUp;
+
+//   const makeSignUp = (e) => {
+//     e.preventDefault();
+//     const signUpData = {"fname": fname, 
+//                         "lname": lname,
+//                         "signupemail": signupemail,
+//                         "signuppassword": signuppassword,
+//                         }                
+//     fetch('/api/signup_parent', {
+//       method: 'POST', 
+//       headers: {
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify(signUpData),
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//       if (data.access_token){
+//         localStorage.setItem("user", data.access_token);
+//         localStorage.setItem("useremail", signupemail);
+//         alert("You are now logged in!");
+//         props.setLoggedInStatus("True");
+//         history.push("/dashboard");
+//       }
+//     }); 
+//   }
+
+//   return ( 
+//     <div className="entry-form-wrapper">
+//     <h3>Try Beanstalk Square today!</h3>
+//     <hr/><br/>
+//       <Form>
+//         <Form.Group controlId="formFirstName">
+//           <Form.Control type="text" placeholder="First Name" value={fname} name="fname" onChange={handleChange}/> 
+//         </Form.Group>
+//         <Form.Group controlId="formLastName">
+//           <Form.Control type="text" placeholder="Last Name" value={lname} name="lname" onChange={handleChange}/> 
+//         </Form.Group>
+//         <Form.Group controlId="formBasicEmail">
+//           <Form.Control type="email" placeholder="Enter email" value={signupemail} name="signupemail" onChange={handleChange}/> 
+//           <Form.Text className="text-muted">We'll never share your email with anyone else.</Form.Text>
+//         </Form.Group>
+//         <Form.Group controlId="formBasicPassword">
+//           <Form.Control type="password" placeholder="Password" value={signuppassword} name="signuppassword" onChange={handleChange}/> 
+//         </Form.Group>
+//         <Button className="btn btn-primary" variant="primary" onClick={makeSignUp} type="submit">Complete Sign Up</Button> 
+//       </Form>
+//   </div>
+//   );  
+// }
 
 export { SignUpParties, TeacherSignUpForm, ParentSignUpForm }

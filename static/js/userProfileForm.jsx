@@ -77,12 +77,12 @@ function TeacherProfileForm() {
   const user_email = localStorage.getItem("user_email");
   const user_img = localStorage.getItem("user_img");
 
-  const [userInputProfile, setUserInputProfile] = React.useReducer(
-    (state, newState) => ({...state, ...newState}),
+    const [userInputProfile, setUserInputProfile] = React.useReducer(
+      (state, newState) => ({...state, ...newState}),
     { 
     bio: "",
     zipcode: "",
-    days_of_week: "",
+    days_of_week: "", 
     teaching_experience_in_hours: "",
     pay_rate_per_hour: "",
     //covid_risk_profile: "",
@@ -119,7 +119,7 @@ function TeacherProfileForm() {
       history.push("/");
     });
   } 
-  
+
   return ( 
     <div className="entry-form-wrapper">
     <br/><h3>Adding to your profile helps families find you.</h3>
