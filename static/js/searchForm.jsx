@@ -55,4 +55,4 @@ function TeacherSearch(props) {
     ); 
   } 
 
-  export { PodSearch, TeacherSearch }
+  

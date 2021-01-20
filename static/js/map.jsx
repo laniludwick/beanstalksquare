@@ -1,5 +1,17 @@
 // ***** GoogleMap and MapContainer components *****
 
+
+//Google map 
+const googleMapScript = document.createElement('script');    
+googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDfi_n1PK5s4Sht9nLaojscjyos8qvkIqo&libraries=places`;
+//In body tag of DOM, add script tags.
+document.body.appendChild(googleMapScript);
+
+//Call the function to create map and geocode after script tag has loaded.
+googleMapScript.addEventListener('load', () => {    
+  window.googlemapsdidload=true;
+});
+
 function GoogleMap(props) {
   console.log("props in Googlemap component:", props.podDetailsStats.props.street_address);
   const address = props.podDetailsStats.props.street_address + ", " + 
@@ -105,4 +117,4 @@ function MapContainer(props) {
   )
 }
 
-export { GoogleMap, MapContainer }
+

@@ -38,16 +38,7 @@ function App() {
   );
 }
 
-//Google map 
-const googleMapScript = document.createElement('script');    
-googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=apikey&libraries=places`;
-//In body tag of DOM, add script tags.
-document.body.appendChild(googleMapScript);
 
-//Call the function to create map and geocode after script tag has loaded.
-googleMapScript.addEventListener('load', () => {    
-  window.googlemapsdidload=true;
-});
 
 
 ReactDOM.render(

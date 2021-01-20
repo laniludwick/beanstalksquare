@@ -20,7 +20,7 @@ def create_pod(pod_name=None, max_child_capacity=None, days_per_week=None,
             total_hours_per_day=None, paid_teacher=None, 
             same_school_program_only=None, same_school_only=None, 
             same_grade_only=None, outdoors_only=None, periodic_covid_testing=None, 
-            covid_risk_profile_id=None, cost_per_hour=None):
+            covid_risk_profile_id=None, cost_per_hour=None, street_address=None, city=None, state=None, zipcode=None):
     """Add a new pod to the pods table and return the pod."""
 
     pod = Pod(pod_name=pod_name, 
@@ -35,10 +35,14 @@ def create_pod(pod_name=None, max_child_capacity=None, days_per_week=None,
             periodic_covid_testing=periodic_covid_testing, 
             covid_risk_profile_id=covid_risk_profile_id,
             cost_per_hour=cost_per_hour,)
-    #pod_location = Pod_Location(street_address=street_address, city=city, state=state, zipcode=zipcode)
     
     db.session.add(pod)
     db.session.commit()
+    
+    # print("pod_id", pod.id)
+    # pod_location = Pod_Location(pod_id=pod.id, street_address=street_address, city=city, state=state, zipcode=zipcode)
+    # db.session.add(pod_location)
+    # db.session.commit()
 
     return pod
 

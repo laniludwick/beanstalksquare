@@ -115,4 +115,3 @@ function TeacherList(props) {
   );
 } 
 
-export { PodList, TeacherList }

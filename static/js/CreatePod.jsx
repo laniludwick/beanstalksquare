@@ -130,4 +130,3 @@ function CreatePod() {
   );
 }
 
-export default CreatePod;

@@ -145,4 +145,3 @@ function ContactPodOrganizer() {
   );
 }
 
-export { ContactTeacher, ContactPodOrganizer }

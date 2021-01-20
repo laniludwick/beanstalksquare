@@ -177,4 +177,3 @@ function PodDetailsContainer(props) {
   )
 }
 
-export { Pod, PodDetailsStats, PodDetailsStatsAndMap, PodDetailsContainer }

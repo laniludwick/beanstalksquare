@@ -1,6 +1,5 @@
 // ***** SignUpParties, TeacherSignUpForm, and ParentSignUpForm components *****
 
-import formReducer from "./reducers";
 const Link =  ReactRouterDOM.Link;
 const { Button, Col, Container, Form, Row } = ReactBootstrap;
 
@@ -52,12 +51,16 @@ function TeacherSignUpForm(props) {
 
   const history = ReactRouterDOM.useHistory();
   const [userInputSignUp, setUserInputSignUp] = React.useReducer(
-    (state, newState) => ({...state, ...newState}),
+    (state, newState) => {
+      console.log("state", state)
+      console.log("new state", newState)
+      return {...state, ...newState}
+    },
     {
     fname: "",
     lname: "",
-    email: "",
-    password: "",
+    signupemail: "",
+    signuppassword: "",
     }
   );
   const handleChange = evt => {
@@ -105,7 +108,7 @@ function TeacherSignUpForm(props) {
           <Form.Control type="text" placeholder="Last Name" value={userInputSignUp.lname} name="lname" onChange={handleChange}/> 
         </Form.Group>
         <Form.Group controlId="formBasicEmail">
-          <Form.Control type="text" placeholder="Enter email" value={userInputSignUp.signupemail} name="signupemail" onChange={handleChange}/> 
+          <Form.Control type="email" placeholder="Enter email" value={userInputSignUp.signupemail} name="signupemail" onChange={handleChange}/> 
           <Form.Text className="text-muted">We'll never share your email with anyone else.</Form.Text>
         </Form.Group>
         <Form.Group controlId="formBasicPassword">
@@ -264,4 +267,3 @@ function ParentSignUpForm(props) {
 //   );  
 // }
 
-export { SignUpParties, TeacherSignUpForm, ParentSignUpForm }
