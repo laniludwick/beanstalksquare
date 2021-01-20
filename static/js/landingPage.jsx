@@ -1,6 +1,5 @@
 // ***** HomeContainer, GlobalNavigationBar, and Benefits components, used on the landing page *****
 
-
 function HomeContainer() {
 
   const [linkStatus, setLinkStatus] = React.useState("find_students");

@@ -42,7 +42,7 @@ function PodList(props) {
   return ( 
     <div className="mx-auto" id="pod-list-title-row"><br/>
       <span className="float-left"> 
-        <h3>{zipcode} Search Results</h3><br/>
+        <h3>{zipcode} Pod Results</h3><br/>
       </span>
       <span className="float-right">
         {props.isLoggedIn==="True"? <Link key={1} to="/createpod" className="btn btn-primary" variant="btn-primary" > Start a pod </Link>: null}
@@ -106,7 +106,7 @@ function TeacherList(props) {
   return ( 
     <div>
       <div>
-        <br/><h3 className="mx-auto" id="teacher-list-title-row">{zipcode} Search Results</h3><br/>
+        <br/><h3 className="mx-auto" id="teacher-list-title-row">{zipcode} Teacher Results</h3><br/>
       </div> 
       <div>
         {teacherList}<br/><br/>
