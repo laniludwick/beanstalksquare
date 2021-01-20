@@ -156,4 +156,3 @@ function ChildrenInPodList(props) {
   )
 }
 
-export { TeacherInPod, TeachersInPodList, Child, ChildrenInPodList }

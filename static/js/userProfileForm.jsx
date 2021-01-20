@@ -147,4 +147,3 @@ function TeacherProfileForm() {
   );
 }
 
-export { TeacherProfilePic, TeacherProfileForm }

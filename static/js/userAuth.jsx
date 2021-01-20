@@ -40,7 +40,7 @@ function LogInForm(props) {
       }
     }); 
   } 
-  
+
   return ( 
     <div className="entry-form-wrapper">
     <br/><h3>Welcome, back!</h3><br/>
@@ -57,4 +57,3 @@ function LogInForm(props) {
   );
 } 
 
-export default LogInForm;

@@ -127,6 +127,4 @@ function TeacherDetails(props) {
 }
 
 
-export { Teacher, TeacherDetails }
-
 
