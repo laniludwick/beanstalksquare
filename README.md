@@ -5,6 +5,7 @@ I wrote this single page app's frontend using React and the backend using Python
 
 ## Deployment
 http://www.beanstalksquare.com
+* This is a demo site. Once you sign up as a new user, you can search the zipcode 94010 and see prepopulated data. I could also provide you with log in credentials and walk you through the site if you contact me at lani.ludwick@gmail.com. 
 
 ## About the Developer
 Lani graduated from Stanford University with a B.S. in Industrial Engineering and a M.A. in Sociology with a focus on "Organizations, Business and the Economy." She worked in real estate private equity investing in New York for several years and grew determined to help modernize the industry. She joined a startup in San Francisco building an online investment marketplace and became a product manager. She later joined a B2B SaaS company selling a CRM, an end-user portal, and investment management products. In her product management roles, Lani enjoyed deciding which products to build and why, but she grew increasingly interested in how to build the products, which led her to software engineering.
