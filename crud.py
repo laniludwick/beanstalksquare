@@ -36,6 +36,8 @@ def create_pod(pod_name=None, max_child_capacity=None, days_per_week=None,
             covid_risk_profile_id=covid_risk_profile_id,
             cost_per_hour=cost_per_hour,)
     
+    #pod.pod_locations.append(Pod_Location(pod_id=pod.id, street_address=street_address, city=city, state=state, zipcode=zipcode))
+
     db.session.add(pod)
     db.session.commit()
     

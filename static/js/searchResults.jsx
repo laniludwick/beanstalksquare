@@ -5,7 +5,6 @@ const Link =  ReactRouterDOM.Link;
 function PodList(props) {
   
   const [podList, setPodList] = React.useState([]);
-  const [dataResult, setDataResult] = React.useState([]);
   const {zipcode} = ReactRouterDOM.useParams();
 
   React.useEffect(() => {
@@ -17,27 +16,10 @@ function PodList(props) {
     })
     .then(response => response.json())
     .then(data => {
-      setDataResult(data);
+      setPodList(data);
     }) 
   }, []); 
 
-  React.useEffect(() => {
-    const podComponentsList = [];
-
-    for (let pod of dataResult) {
-      const podComponent = <Pod key={pod.pod_id}
-                                pod_id={pod.pod_id}
-                                pod_name={pod.pod_name}
-                                zipcode={pod.zipcode}
-                                days_per_week={pod.days_per_week}
-                                total_hours_per_day={pod.total_hours_per_day}
-                                paid_teacher={pod.paid_teacher}
-                                isLoggedIn={props.isLoggedIn}
-                                />
-      podComponentsList.push(podComponent);
-    }; 
-    setPodList(podComponentsList);
-  }, [dataResult]);
 
   return ( 
     <div className="mx-auto" id="pod-list-title-row"><br/>
@@ -48,7 +30,16 @@ function PodList(props) {
         {props.isLoggedIn==="True"? <Link key={1} to="/createpod" className="btn btn-primary" variant="btn-primary" > Start a pod </Link>: null}
       </span><br/><br/>
       <div className="search-results-wrapper">
-        {podList}<br/><br/>
+        {podList.map(pod => <Pod key={pod.pod_id}
+                                pod_id={pod.pod_id}
+                                pod_name={pod.pod_name}
+                                zipcode={pod.zipcode}
+                                days_per_week={pod.days_per_week}
+                                total_hours_per_day={pod.total_hours_per_day}
+                                paid_teacher={pod.paid_teacher}
+                                isLoggedIn={props.isLoggedIn}
+                                />)}
+                                <br/><br/>
       </div>
     </div>
   );
