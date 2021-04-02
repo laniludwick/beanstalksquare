@@ -1,6 +1,6 @@
 // ***** CreatePod component *****
 
-const { Button, Form } = ReactBootstrap;
+import { Button, Form } from 'react-bootstrap';
 
 function CreatePod() {
   

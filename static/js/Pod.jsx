@@ -1,6 +1,5 @@
 // ***** Pod component, used in pod search results *****
 
-
 function Pod(props) {
 
   const podDetailsLink = `/poddetails/${props.pod_id}`;

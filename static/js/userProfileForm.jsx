@@ -1,6 +1,6 @@
 // ***** TeacherProfileForm and TeacherProfilePic components *****
 
-const { Button, Form } = ReactBootstrap;
+import { Button, Form } from 'react-bootstrap';
 
 function TeacherProfilePic() {
 

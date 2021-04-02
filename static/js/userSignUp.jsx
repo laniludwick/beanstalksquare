@@ -1,7 +1,7 @@
 // ***** SignUpParties, TeacherSignUpForm, and ParentSignUpForm components *****
 
 const Link =  ReactRouterDOM.Link;
-const { Button, Col, Container, Form, Row } = ReactBootstrap;
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 
 
 function SignUpParties() {

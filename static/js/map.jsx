@@ -1,6 +1,5 @@
 // ***** GoogleMap and MapContainer components *****
 
-
 //Google map 
 const googleMapScript = document.createElement('script');    
 googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDfi_n1PK5s4Sht9nLaojscjyos8qvkIqo&libraries=places`;

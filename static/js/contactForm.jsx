@@ -1,6 +1,6 @@
 // ***** ContactTeacher and ContactPodOrganizer components, which use Twilio's API *****
 
-const { Button, Form } = ReactBootstrap;
+import { Button, Form } from 'react-bootstrap';
 
 function ContactTeacher() {
   

@@ -1,6 +1,5 @@
 // ***** TeacherDetails component, used in teacher search results *****
 
-
 function TeacherDetails(props) {
 
   const [teacherDetailsAll, setTeacherDetailsAll] = React.useState({});

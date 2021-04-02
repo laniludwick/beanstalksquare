@@ -5,7 +5,7 @@ const Prompt =  ReactRouterDOM.Prompt;
 const Switch = ReactRouterDOM.Switch;
 const Redirect = ReactRouterDOM.Redirect;
 
-const { Button, Col, Container, CardDeck, Card, ListGroup, ListGroupItem, Form, FormControl, Navbar, Nav, Row, Table, Modal, Spinner, Alert } = ReactBootstrap;
+import { Button, Col, Container, CardDeck, Card, ListGroup, ListGroupItem, Form, FormControl, Navbar, Nav, Row, Table, Modal, Spinner, Alert } from 'react-bootstrap';
 
 
 function App() {

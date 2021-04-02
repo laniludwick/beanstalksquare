@@ -1,6 +1,6 @@
 // ***** PodSearch and TeacherSearch components used during zipcode search on landing page *****
 
-const { Button, Form } = ReactBootstrap;
+import { Button, Form } from 'react-boostrap';
 
 function PodSearch(props) {
 
