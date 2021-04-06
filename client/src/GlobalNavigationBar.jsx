@@ -1,7 +1,22 @@
 // ***** GlobalNavigationBar component *****
 
+import { Switch, Route, Link } from 'react-router-dom';
+import React from 'react';
+import HomeContainer from './HomeContainer';
+import LogInForm from './LogInForm';
+import { SignUpParties, TeacherSignUpForm, ParentSignUpForm } from './userSignUp';
+import { TeacherProfileForm } from './userProfileForm';
+import { PodList, TeacherList } from './searchResults';
+import CreatePod from './CreatePod';
+import { ContactTeacher, ContactPodOrganizer } from './contactForm';
+import { PodDetailsContainer } from './podDetailsMain';
+import TeacherDetails from './TeacherDetails';
+import beanstalksquarelogo from './img/beanstalksquarelogo.png';
+import { Form, Navbar, Nav } from 'react-bootstrap';
+import { useLocation } from 'react-router-dom';
+
 function GlobalNavigationBar(props) {
-  let location = ReactRouterDOM.useLocation();
+  let location = useLocation();
   const [justLoggedOut, setJustLoggedOut] = React.useState(false);
   
   function LogOut(event) {
@@ -14,7 +29,7 @@ function GlobalNavigationBar(props) {
   return (
     <div> 
       <Navbar bg="none" variant="light">
-      <Navbar.Brand href="#home"><img src="static/img/beanstalksquarelogo.png" width="270px" height="40px"/></Navbar.Brand>
+      <Navbar.Brand href="#home"><img src={beanstalksquarelogo} width="270px" height="40px" alt="beanstalksquarelogo"/></Navbar.Brand>
       <Nav className="navbar-nav ml-auto">
       <Form inline >
             {props.isLoggedIn==="True"? 
@@ -78,3 +93,5 @@ function GlobalNavigationBar(props) {
     </div>
     );
   }
+
+export default GlobalNavigationBar;

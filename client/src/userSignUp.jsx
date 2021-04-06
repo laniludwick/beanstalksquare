@@ -1,10 +1,11 @@
 // ***** SignUpParties, TeacherSignUpForm, and ParentSignUpForm components *****
 
-const Link =  ReactRouterDOM.Link;
+import React from 'react';
+import { Link, useHistory } from 'react-router-dom'; 
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 
 
-function SignUpParties() {
+export function SignUpParties() {
 
   return (
   <Container className="linen-background">
@@ -47,9 +48,9 @@ function SignUpParties() {
 }
 
 
-function TeacherSignUpForm(props) {
+export function TeacherSignUpForm(props) {
 
-  const history = ReactRouterDOM.useHistory();
+  let history = useHistory();
   const [userInputSignUp, setUserInputSignUp] = React.useReducer(
     (state, newState) => {
       console.log("state", state)
@@ -121,9 +122,9 @@ function TeacherSignUpForm(props) {
 }
 
 
-function ParentSignUpForm(props) {
+export function ParentSignUpForm(props) {
   
-  const history = ReactRouterDOM.useHistory();
+  let history = useHistory();
   const [fname, setFname] = React.useState("");
   const [lname, setLname] = React.useState("");
   const [signupemail, setSignupemail] = React.useState("");

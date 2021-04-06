@@ -1,5 +1,6 @@
 /* CSS styles for Beanstalk Square */
 
+
 /* General styles -------------------------------------------- */
 body {
   font-family: 'Poppins', sans-serif;
@@ -37,7 +38,7 @@ body {
 }
 
 .hero {
-  background-image: url("/static/img/beanstalkhero2.jpg");
+  background-image: url("./img/beanstalkhero2.jpg");
   height: 500px; 
   background-position: 75% 25%;
   background-size: contain;
@@ -447,11 +448,3 @@ a.btn-primary:visited,
 .search-list-img {
   padding-bottom: 20px;
 }
-
-
-
-
-
-
-
-

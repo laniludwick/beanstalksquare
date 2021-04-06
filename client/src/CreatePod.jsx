@@ -1,10 +1,12 @@
 // ***** CreatePod component *****
 
-import { Button, Form } from 'react-bootstrap';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { Button, Form, Col } from 'react-bootstrap';
 
 function CreatePod() {
   
-  const history = ReactRouterDOM.useHistory(); 
+  let history = useHistory(); 
   const [userInputPod, setUserInputPod] = React.useReducer(
     (state, newState) => ({...state, ...newState}),
     {
@@ -28,7 +30,7 @@ function CreatePod() {
 
   const handleChange = evt => {
     const name = evt.target.name;
-    const newValue = evt.target.type=="checkbox"? evt.target.checked : evt.target.value;
+    const newValue = evt.target.type==="checkbox"? evt.target.checked : evt.target.value;
     setUserInputPod({[name]: newValue});
   }
 
@@ -130,3 +132,4 @@ function CreatePod() {
   );
 }
 
+export default CreatePod;

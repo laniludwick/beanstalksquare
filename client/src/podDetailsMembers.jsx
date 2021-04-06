@@ -1,6 +1,10 @@
 // ***** TeacherInPod, TeachersInPodList, Child, and ChildrenInPod components, used on pod details page *****
 
-function TeacherInPod(props) {
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import child from "./img/child.png";
+
+export function TeacherInPod(props) {
 
   return (
     <div className="card mx-auto w-100 card-width">
@@ -10,7 +14,7 @@ function TeacherInPod(props) {
             <td id="table-vertical-align-top">
               <div className="row no-gutters">
                 <div className="col-sm-3 card-image-position" >
-                  <img src={props.img_url} />
+                  <img src={props.img_url} alt="podTeacherPhoto"/>
                 </div>
               </div>
             </td>
@@ -35,10 +39,10 @@ function TeacherInPod(props) {
 }
 
 
-function TeachersInPodList(props) {
+export function TeachersInPodList(props) {
 
   const [teachersInPod, setTeachersInPod] = React.useState(null);
-  const {podId} = ReactRouterDOM.useParams();
+  let {podId} = useParams();
 
   React.useEffect(() => {
     fetch(`/api/teachersinpod/${podId}`, {
@@ -73,7 +77,7 @@ function TeachersInPodList(props) {
 }
 
 
-function Child(props) {
+export function Child(props) {
 
   return (
     <div className="card mx-auto w-100 card-width">
@@ -83,7 +87,7 @@ function Child(props) {
             <td>
               <div className="row no-gutters">
                 <div className="col-sm-3 card-image-position" >
-                  <img src="/static/img/child.png"/>
+                  <img src={child} alt="podChildPhoto"/>
                 </div>
               </div>
             </td>
@@ -118,10 +122,10 @@ function Child(props) {
 }
 
 
-function ChildrenInPodList(props) {
+export function ChildrenInPodList(props) {
 
   const [childrenInPod, setChildrenInPod] = React.useState(null);
-  const {podId} = ReactRouterDOM.useParams();
+  let {podId} = useParams();
 
   React.useEffect(() => {
     fetch(`/api/children/${podId}`, {

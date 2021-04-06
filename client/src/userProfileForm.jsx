@@ -1,10 +1,13 @@
 // ***** TeacherProfileForm and TeacherProfilePic components *****
 
+import React from 'react';
+import { useHistory } from 'react-router-dom'; 
 import { Button, Form } from 'react-bootstrap';
 
-function TeacherProfilePic() {
 
-  const history = ReactRouterDOM.useHistory();
+export function TeacherProfilePic() {
+
+  let history = useHistory();
   const [selectedFile, setSelectedFile] = React.useState(null); 
   const [dataResult, setDataResult] = React.useState(null);
   const user_email = localStorage.getItem("user_email");
@@ -71,9 +74,9 @@ function TeacherProfilePic() {
 }
 
 
-function TeacherProfileForm() {
+export function TeacherProfileForm() {
   
-  const history = ReactRouterDOM.useHistory();
+  let history = useHistory();
   const user_email = localStorage.getItem("user_email");
   const user_img = localStorage.getItem("user_img");
 

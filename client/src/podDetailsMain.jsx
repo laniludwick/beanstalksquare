@@ -1,7 +1,12 @@
 // ***** PodDetailsStats, PodDetailsStatsAndMap, and PodDetailsContainer components, used on pod details page *****
 
+import React from 'react';
+import { Card, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { useParams, Link } from 'react-router-dom';
+import { MapContainer }  from './map';
+import { TeachersInPodList, ChildrenInPodList } from './podDetailsMembers';
 
-function PodDetailsStats (props) {
+export function PodDetailsStats (props) {
 
   return (
     <Card style={{ width: '100%' }}>
@@ -49,10 +54,10 @@ function PodDetailsStats (props) {
   )
 }
 
-function PodDetailsStatsAndMap(props) {
+export function PodDetailsStatsAndMap(props) {
 
   const [podDetailsStats, setPodDetailsStats] = React.useState(null);
-  const {podId} = ReactRouterDOM.useParams();
+  let {podId} = useParams();
 
   React.useEffect(() => {
     console.log("Beg of getPodDetails");
@@ -103,9 +108,9 @@ function PodDetailsStatsAndMap(props) {
 }
 
 
-function PodDetailsContainer(props) {
+export function PodDetailsContainer(props) {
 
-  const {podId} = ReactRouterDOM.useParams();
+  const {podId} = useParams();
   const contact_pod_organizers_link = `/contactpodorganizer/${podId}`
 
   return (

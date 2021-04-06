@@ -1,9 +1,12 @@
 // ***** TeacherDetails component, used in teacher search results *****
 
+import React from 'react';
+import { useParams, Link } from 'react-router-dom';
+
 function TeacherDetails(props) {
 
   const [teacherDetailsAll, setTeacherDetailsAll] = React.useState({});
-  const {teacherId} = ReactRouterDOM.useParams();
+  let {teacherId} = useParams();
   const contact_teacher_link = `/contactteacher/${teacherId}`
 
   React.useEffect(() => { 
@@ -49,7 +52,7 @@ function TeacherDetails(props) {
                 <td id="table-vertical-align-top">
                   <div className="row no-gutters">
                     <div className="col-sm-3 card-image-position" >
-                      <img src={teacherDetailsAll.img_url} />
+                      <img src={teacherDetailsAll.img_url} alt="teacherProfilePhoto"/>
                     </div>
                   </div>
                 </td>
@@ -77,5 +80,5 @@ function TeacherDetails(props) {
   );
 }
 
-
+export default TeacherDetails;
 

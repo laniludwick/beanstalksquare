@@ -1,11 +1,13 @@
 // ***** PodSearch and TeacherSearch components used during zipcode search on landing page *****
 
-import { Button, Form } from 'react-boostrap';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { Button, Form } from 'react-bootstrap';
 
-function PodSearch(props) {
+export function PodSearch(props) {
 
   const [zipcode, setZipcode] = React.useState("");
-  const history = ReactRouterDOM.useHistory(); 
+  let history = useHistory(); 
 
   function handleChange(event) {
     setZipcode(event.target.value);
@@ -29,10 +31,10 @@ function PodSearch(props) {
   }  
 
 
-function TeacherSearch(props) {
+export function TeacherSearch(props) {
 
   const [zipcode, setZipcode] = React.useState("");
-  const history = ReactRouterDOM.useHistory(); 
+  let history = useHistory(); 
 
   function handleChange(event) {
     setZipcode(event.target.value);

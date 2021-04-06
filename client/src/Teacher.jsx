@@ -1,5 +1,7 @@
 // ***** Teacher component, used in teacher search results *****
 
+import { Link } from 'react-router-dom';
+
 function Teacher(props) {
 
   const teacherDetailsLink = `/teacherdetails/${props.teacher_id}`;
@@ -12,7 +14,7 @@ function Teacher(props) {
             <td>
               <div className="row no-gutters">
                 <div className="col-sm-3 card-image-position" >
-                  <img src={props.img_url} className="search-list-img"/>
+                  <img src={props.img_url} className="search-list-img" alt="teacherImage" />
                 </div>
               </div>
             </td>
@@ -47,3 +49,5 @@ function Teacher(props) {
     </div>
   );
 }
+
+export default Teacher;

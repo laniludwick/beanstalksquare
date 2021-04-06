@@ -1,11 +1,14 @@
 // ***** TeacherList and PodList components used in zipcode search results *****
 
-const Link =  ReactRouterDOM.Link;
+import React from 'react';
+import { Link, useParams } from 'react-router-dom';
+import Pod from './Pod';
+import Teacher from './Teacher';
 
-function PodList(props) {
+export function PodList(props) {
   
   const [podList, setPodList] = React.useState([]);
-  const {zipcode} = ReactRouterDOM.useParams();
+  const {zipcode} = useParams();
 
   React.useEffect(() => {
     fetch(`/api/pods?zipcode=${zipcode}`, {
@@ -46,11 +49,11 @@ function PodList(props) {
 } 
 
 
-function TeacherList(props) {
+export function TeacherList(props) {
   
   const [teacherList, setTeacherList] = React.useState([]);
   const [dataResult, setDataResult] = React.useState([]);
-  const {zipcode} = ReactRouterDOM.useParams();
+  const {zipcode} = useParams();
 
   React.useEffect(() => {
     fetch(`/api/teachers?zipcode=${zipcode}`, {
@@ -73,7 +76,7 @@ function TeacherList(props) {
     for (let teacher of dataResult) {
       const full_name = teacher.fname+" "+teacher.lname;
 
-      if (teacher.pod_id == undefined) {
+      if (teacher.pod_id === undefined) {
         const teacherComponent = <Teacher key={teacher.teacher_id}
                                   teacher_id={teacher.teacher_id}
                                   bio={teacher.bio}

@@ -1,5 +1,8 @@
 // ***** Pod component, used in pod search results *****
 
+import { Link } from 'react-router-dom';
+import plantIcon from './img/planticon.png';
+
 function Pod(props) {
 
   const podDetailsLink = `/poddetails/${props.pod_id}`;
@@ -12,7 +15,7 @@ function Pod(props) {
             <td>
               <div className="row no-gutters">
                 <div className="col-sm-3 card-image-position" >
-                  <img src="/static/img/planticon.png" className="search-list-img"/>
+                  <img src={plantIcon} className="search-list-img" alt="podImage" />
                 </div>
               </div>
             </td>
@@ -47,3 +50,5 @@ function Pod(props) {
     </div>
   );
 }
+
+export default Pod;

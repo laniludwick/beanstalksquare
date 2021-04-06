@@ -1,6 +1,9 @@
 // ***** GoogleMap and MapContainer components *****
 
+import React from 'react';
+
 //Google map 
+
 const googleMapScript = document.createElement('script');    
 googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDfi_n1PK5s4Sht9nLaojscjyos8qvkIqo&libraries=places`;
 //In body tag of DOM, add script tags.
@@ -11,7 +14,9 @@ googleMapScript.addEventListener('load', () => {
   window.googlemapsdidload=true;
 });
 
+
 function GoogleMap(props) {
+  const google = window.google;
   console.log("props in Googlemap component:", props.podDetailsStats.props.street_address);
   const address = props.podDetailsStats.props.street_address + ", " + 
                   props.podDetailsStats.props.city + ", " + 
@@ -45,6 +50,7 @@ function GoogleMap(props) {
 
   //Define function to convert address into geocode address
   function code_address(address) {
+    
     const geocoder = new google.maps.Geocoder();
     console.log("address post geocode constructor:", address);
     
@@ -102,15 +108,20 @@ function GoogleMap(props) {
 }
 
 
-function MapContainer(props) {
+export function MapContainer(props) {
   console.log("props in Mapcontainer component:", props)
   
+  const loadMap = () => {
+    console.log("loadMap inner function")
+  }
+
   return ( 
     <div className="map"><br/>
     <h3>Pod location(s) </h3>
       <p>{props.podDetailsStats.props.street_address}<br/>
         {props.podDetailsStats.props.city}, {props.podDetailsStats.props.state}, {props.podDetailsStats.props.zipcode}
       </p>
+      {loadMap}
       <GoogleMap podDetailsStats={props.podDetailsStats} />    
     </div>
   )

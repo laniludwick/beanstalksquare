@@ -1,12 +1,14 @@
 // ***** ContactTeacher and ContactPodOrganizer components, which use Twilio's API *****
 
+import React from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
 
-function ContactTeacher() {
+export function ContactTeacher() {
   
-  const {teacherId} = ReactRouterDOM.useParams();
+  let {teacherId} = useParams();
   console.log("teacherID from use params {teacherId} and teacherId:", {teacherId}, teacherId);
-  const history = ReactRouterDOM.useHistory();
+  let history = useHistory();
   const [userInputSms, setUserInputSms] = React.useReducer(
     (state, newState) => ({...state, ...newState}),
     {
@@ -75,10 +77,10 @@ function ContactTeacher() {
 }
 
 
-function ContactPodOrganizer() {
+export function ContactPodOrganizer() {
   
-  const {podId} = ReactRouterDOM.useParams();
-  const history = ReactRouterDOM.useHistory();
+  let {podId} = useParams();
+  let history = useHistory();
   const [userInputSms, setUserInputSms] = React.useReducer(
     (state, newState) => ({...state, ...newState}),
     {

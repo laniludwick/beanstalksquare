@@ -1,12 +1,14 @@
 //***** LogInForm component *****
 
+import React from 'react';
 import { Button, Form } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
 
 function LogInForm(props) {
 
   const [loginemail, setLoginEmail] = React.useState("");
   const [loginpassword, setLoginPassword] = React.useState("");
-  const history = ReactRouterDOM.useHistory(); 
+  let history = useHistory(); 
 
   function handleEmailChange(event) {
     setLoginEmail(event.target.value);
@@ -57,3 +59,4 @@ function LogInForm(props) {
   );
 } 
 
+export default LogInForm;
