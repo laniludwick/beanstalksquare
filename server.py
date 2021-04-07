@@ -26,7 +26,7 @@ cloudinary.config(
     api_secret = cloudinary_api_secret
     )
 
-app = Flask(__name__, static_folder="build/static", template_folder="build")
+app = Flask(__name__, static_folder="client/build/static", template_folder="client/build")
 app.secret_key = "dev"
 jwt = JWTManager(app)
 
@@ -36,11 +36,6 @@ def root():
     """Show homepage."""
 
     return render_template("index.html")
-
-# @app.route('/', defaults={'path': ''})
-# @app.route('/<path:path>')
-# def catch_all(path):
-#     return render_template('root.html')
 
 
 @app.route("/api/pods")
