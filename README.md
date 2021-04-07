@@ -1,4 +1,4 @@
-# <img src="/static/img/beanstalksquarelogo.png" width="50%" alt="Beanstalk Square">
+# <img src="/client/src/img/beanstalksquarelogo.png" width="50%" alt="Beanstalk Square">
 Beanstalk Square was a project I built during Hackbright's full-stack software engineering program. I was inspired to create this project to help ease the burden the global Coronavirus pandemic has caused for parents. Beanstalk Square is a tool to help families create and find distance learning pods for their children since many schools have been operating remotely due to Covid. The pods consist of students and teachers or parent volunteers. 
 
 I wrote this single page app's frontend using React and the backend using Python with Flask as the web framework. Beanstalk Square includes features such as a zipcode-based search yielding a list of student pods or teachers, detailed pod and teacher profile views, an ability to create new pods, and an ability to send messages to pod organizers or teachers.

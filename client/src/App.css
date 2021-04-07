@@ -313,10 +313,10 @@ body {
 }
 
 .btn-primary {
-  border-radius: 40px !important;
-  background: #589e85 !important;
-  border-color: #589e85 !important;
-  color: white !important;
+  border-radius: 40px;
+  background: #589e85;
+  border-color: #589e85;
+  color: white;
 }
 
 .btn-primary:hover {

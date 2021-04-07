@@ -73,7 +73,9 @@ export function TeacherList(props) {
         <br/><h3 className="mx-auto" id="teacher-list-title-row">{zipcode} Teacher Results</h3><br/>
       </div> 
       <div className="search-results-wrapper">
-        {teacherList.map(teacher => <Teacher key={teacher.teacher_id}
+        {teacherList.map(teacher => 
+                            // if (teacher.pod_id === undefined)
+                              <Teacher key={teacher.teacher_id}
                                   teacher_id={teacher.teacher_id}
                                   bio={teacher.bio}
                                   email={teacher.email}
@@ -86,9 +88,9 @@ export function TeacherList(props) {
                                   teaching_experience_in_hours={teacher.teaching_experience_in_hours}
                                   pay_rate_per_hour={teacher.pay_rate_per_hour}
                                   isLoggedIn={props.isLoggedIn}
-                                  />)}
-                                <br/><br/>
-      </div>
+                                  />
+                                )}                      
+      </div><br/>
     </div>
   );
 } 
