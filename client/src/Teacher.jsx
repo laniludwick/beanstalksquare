@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 function Teacher(props) {
 
   const teacherDetailsLink = `/teacherdetails/${props.teacher_id}`;
-
+  console.log("Teacher component");
   return (
     <div className="card mx-auto w-75 card-width">
       <table>

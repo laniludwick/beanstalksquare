@@ -19,7 +19,8 @@ function App() {
   }
 
   return (
-    <div>
+    <React.Fragment>
+    <div className="content">
       <Router>
         <div> 
           <Spinner color="info" />
@@ -29,11 +30,12 @@ function App() {
                                 hasJustLoggedIn={hasJustLoggedIn}
                                 />
         </div>
-      </Router><br/><br/>
-      {/* <div className="footer"><br/>
-        <p className="footer-padding">© 2020 Copyright: Beanstalk Square.<br/>All rights reserved.</p>
-      </div> */}
+      </Router> 
     </div>
+    <div className="footer"><br/>
+      <p className="footer-padding">© 2020 Copyright: Beanstalk Square.<br/>All rights reserved.</p>
+    </div>
+  </React.Fragment>
   );
 }
 

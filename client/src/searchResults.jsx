@@ -21,8 +21,7 @@ export function PodList(props) {
     .then(data => {
       setPodList(data);
     }) 
-  }, []); 
-
+  }, [zipcode]); 
 
   return ( 
     <div className="mx-auto" id="pod-list-title-row"><br/>
@@ -52,7 +51,6 @@ export function PodList(props) {
 export function TeacherList(props) {
   
   const [teacherList, setTeacherList] = React.useState([]);
-  const [dataResult, setDataResult] = React.useState([]);
   const {zipcode} = useParams();
 
   React.useEffect(() => {
@@ -65,24 +63,22 @@ export function TeacherList(props) {
     .then(response => response.json())
     .then(data => {
       console.log("data:", data);
-      setDataResult(data);
-      console.log("dataresult:", dataResult);
-    }) 
-  }, []); 
+      setTeacherList(data);
+    })
+  },[zipcode]); 
 
-  React.useEffect(() => {
-    const teacherComponentsList = [];
-
-    for (let teacher of dataResult) {
-      const full_name = teacher.fname+" "+teacher.lname;
-
-      if (teacher.pod_id === undefined) {
-        const teacherComponent = <Teacher key={teacher.teacher_id}
+  return ( 
+    <div>
+      <div>
+        <br/><h3 className="mx-auto" id="teacher-list-title-row">{zipcode} Teacher Results</h3><br/>
+      </div> 
+      <div className="search-results-wrapper">
+        {teacherList.map(teacher => <Teacher key={teacher.teacher_id}
                                   teacher_id={teacher.teacher_id}
                                   bio={teacher.bio}
                                   email={teacher.email}
                                   mobile_number={teacher.mobile_number}
-                                  teacher_name={full_name}
+                                  teacher_name={teacher.fname+" "+teacher.lname}
                                   zipcode={teacher.zipcode}
                                   pod_id={teacher.pod_id}
                                   img_url={teacher.img_url}
@@ -90,20 +86,8 @@ export function TeacherList(props) {
                                   teaching_experience_in_hours={teacher.teaching_experience_in_hours}
                                   pay_rate_per_hour={teacher.pay_rate_per_hour}
                                   isLoggedIn={props.isLoggedIn}
-                                  />
-        teacherComponentsList.push(teacherComponent);
-      }
-    }; 
-    setTeacherList(teacherComponentsList);
-  }, [dataResult]);
-
-  return ( 
-    <div>
-      <div>
-        <br/><h3 className="mx-auto" id="teacher-list-title-row">{zipcode} Teacher Results</h3><br/>
-      </div> 
-      <div>
-        {teacherList}<br/><br/>
+                                  />)}
+                                <br/><br/>
       </div>
     </div>
   );

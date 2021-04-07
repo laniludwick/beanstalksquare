@@ -71,7 +71,7 @@ function GoogleMap(props) {
         }
       }
       else {
-        alert("Geocode was not successful, here's the status:", status);
+        console.log("Geocode was not successful, here's the status:", status);
       } 
     }); 
   } 

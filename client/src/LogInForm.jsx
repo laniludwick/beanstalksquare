@@ -44,7 +44,7 @@ function LogInForm(props) {
   } 
 
   return ( 
-    <div className="entry-form-wrapper">
+    <div className="content entry-form-wrapper">
     <br/><h3>Welcome, back!</h3><br/>
       <Form onSubmit={attemptLogIn} >
         <Form.Group controlId="formBasicEmail">

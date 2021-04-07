@@ -2,9 +2,20 @@
 
 
 /* General styles -------------------------------------------- */
+html {
+  height: 100%;
+}
+
 body {
   font-family: 'Poppins', sans-serif;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   }
+
+.content {
+  min-height: calc(100vh - 70px);
+}
 
 .bold {
   font-family: 'Poppins', sans-serif;
@@ -302,16 +313,16 @@ body {
 }
 
 .btn-primary {
-  border-radius: 40px;
-  background: #76B39D;
-  border-color: #76B39D;
-  color: white;
+  border-radius: 40px !important;
+  background: #589e85 !important;
+  border-color: #589e85 !important;
+  color: white !important;
 }
 
 .btn-primary:hover {
   border-radius: 40px !important;
   background-color: #155E63 !important;
-  border-color: #155E63 !important;
+  border-color: #6d7a7a !important;
   box-shadow: #155E63 !important;
 }
 
@@ -426,10 +437,12 @@ a.btn-primary:visited,
 }
 
 .footer {
-  position: absolute;
-  left: 0;
+  
+  height: 90px;
+  /* left: 0;
   bottom: 0;
-  width: 100%;
+  width: 100%;  */
+  /* margin-top: auto; */
   background-color: #EAE7E7;
   color: #696969;
   text-align: center;
