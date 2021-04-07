@@ -35,7 +35,7 @@ jwt = JWTManager(app)
 def root():
     """Show homepage."""
 
-    return render_template("root.html")
+    return render_template("index.html")
 
 # @app.route('/', defaults={'path': ''})
 # @app.route('/<path:path>')
