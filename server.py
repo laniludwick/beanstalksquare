@@ -26,7 +26,7 @@ cloudinary.config(
     api_secret = cloudinary_api_secret
     )
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="client/build/static", template_folder="client/build")
 app.secret_key = "dev"
 jwt = JWTManager(app)
 
@@ -35,12 +35,7 @@ jwt = JWTManager(app)
 def root():
     """Show homepage."""
 
-    return render_template("root.html")
-
-# @app.route('/', defaults={'path': ''})
-# @app.route('/<path:path>')
-# def catch_all(path):
-#     return render_template('root.html')
+    return render_template("index.html")
 
 
 @app.route("/api/pods")
@@ -332,6 +327,7 @@ def upload_profile_pic_teacher():
     if file and allowed_file(file.filename):
         result = cloudinary.uploader.upload(file)
         img_url = result['secure_url'] 
+        print("img_url:", img_url)
         user = crud.update_teacher(email=email, img_url=img_url) 
         return jsonify(img_url)
     else:
@@ -461,4 +457,4 @@ def send_stock_sms_to_teacher(teacher_id):
 
 if __name__ == '__main__':
     connect_to_db(app)
-    app.run(host='0.0.0.0', debug=False)
+    app.run(host='0.0.0.0', debug=True)
