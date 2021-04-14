@@ -1,6 +1,6 @@
 env/
-venv/
 __pycache__
 secrets.sh
 .DS_Store
 ngrok
+node_modules/

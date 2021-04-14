@@ -127,6 +127,13 @@ Source your keys from your secrets.sh file into your virtual environment:
 source secrets.sh
 ```
 
+Install yarn if it's not already installed, then:
+
+```
+yarn install
+yarn build
+```
+
 Set up the database:
 
 ```
